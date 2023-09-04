@@ -25,7 +25,7 @@ const HorizontalNonLinearStepper = (props) =>  {
   const handleStep = step => () => {
     setActiveStep(step)
     // Populate with the data from the database
-    const abilityDesc = (data['proficiencyLevel'].find(item => item['proficiencyLevel'] === step + 1)?.filteredAbility) || [];
+    const abilityDesc = (data['proficiencyLevel'].find(item => item['proficiencyLevel'] === step + 1)?.filteredAbility) || ["Not Applicable"];
     setTextBoxValue(abilityDesc)
   }
 

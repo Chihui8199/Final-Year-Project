@@ -1,38 +1,60 @@
 import { useState, useEffect } from 'react'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import Stepper from '../../../views/stepper/'
-import results from '../../../../result.json' // Import the JSON file\
-import { useRouter } from 'next/router';
-import { Paper, Grid, Typography } from '@mui/material';
+import { useRouter } from 'next/router'
+import { Paper, Grid, Typography } from '@mui/material'
+import { Button } from '@mui/material'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 
-const TechnicalSkillsProfile = (props) => {
-  const router = useRouter();
-  console.log("QUERY", router.query);
+const TechnicalSkillsProfile = props => {
+  const router = useRouter()
+  console.log('QUERY', router.query)
+  const [results, setResults] = useState(null)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await fetch('/api/technicalskills')
+        if (result.ok) {
+          const data = await result.json()
+          console.log('DATA', result)
+          setResults(data.data)
+        } else {
+          console.error('Failed to fetch data from /api/jobs')
+        }
+      } catch (error) {
+        console.error('An error occurred while fetching data:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
   return (
-   
-<div>
-  <h1>Step 2. Technical Skills</h1>
-  <DatePickerWrapper>
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">
-          Modify and Select the Technical Skills You Have
-        </Typography>
-        {results.map((item, index) => (
-          item && (
-            <Paper key={index} elevation={5} style={{ padding: '20px', marginBottom: '20px' }}>
-              <Stepper item={item} />
-            </Paper>
-          )
-        ))}
-      </Grid>
-    </Grid>
-  </DatePickerWrapper>
-</div>
-  )
+    <div>
+      <DatePickerWrapper>
+        <body2>SET UP LEARNER PROFILE</body2>
+        <h1 style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '2px' }}>Step 2. Skills and Competencies</h1>
+        <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
+          <Grid item xs={12}>
+            <Typography variant='subtitle1' sx={{ marginBottom: '3%' }}>
+              Review Your Mastery of Technical Skills You Have
+            </Typography>
+            {results && results.map((item, index) => item && (
+              <Paper key={index} elevation={5} style={{ padding: '20px', marginBottom: '20px' }}>
+                <Stepper item={item} />
+              </Paper>
+            ))}
+          </Grid>
+          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button variant="contained" color="primary">
+              Next
+            </Button>
+          </Grid>
+        </Grid>
+      </DatePickerWrapper>
+    </div>
+  );
 }
 
 export default TechnicalSkillsProfile
