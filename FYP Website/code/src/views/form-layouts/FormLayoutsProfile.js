@@ -130,6 +130,7 @@ const FormLayoutsAlignment = () => {
                   </Box>
                 )}
                 MenuProps={MenuProps}
+                sx={{ width: '100%' }}
               >
                 {jobOptions}
               </Select>
@@ -142,6 +143,7 @@ const FormLayoutsAlignment = () => {
                 value={curSector}
                 label='Age'
                 onChange={handleSelectCurSector}
+                sx={{ width: '100%' }}
               >
                 {sectors.map((q, index) => (
                   <MenuItem key={index} value={q}>
@@ -158,6 +160,7 @@ const FormLayoutsAlignment = () => {
                 value={curJobRole}
                 label='Age'
                 onChange={handleCurJobRole}
+                sx={{ width: '100%' }}
               >
                 {jobOptions}
               </Select>
@@ -170,6 +173,7 @@ const FormLayoutsAlignment = () => {
                 value={targetJobRole}
                 label='Age'
                 onChange={handleTargetJobRole}
+                sx={{ width: '100%' }}
               >
                 {jobOptions}
               </Select>
