@@ -13,16 +13,20 @@ import results from '../../../result.json' // Import the JSON file
 import { TextBox } from 'mdi-material-ui'
 const steps = ['No Proficiency', 'Basic', 'Intermediate', 'Advanced', 'Expert', 'Master']
 
-const data = results
 
-export default function HorizontalNonLinearStepper() {
+
+const HorizontalNonLinearStepper = (props) =>  {
   const [activeStep, setActiveStep] = React.useState(0)
-  const [textBoxValue, setTextBoxValue] = React.useState([]) // State for the text box
+  const [textBoxValue, setTextBoxValue] = React.useState([])
+
+  const data = props.item // TODO: fix with dynamically changing data
+  const tscTitle = data["tscTitle"]
 
   const handleStep = step => () => {
     setActiveStep(step)
     // Populate with the data from the database
-    setTextBoxValue(data[0]['proficiencyLevels'][0]['filteredKnowledge']) // Reset the text box value
+    const abilityDesc = (data['proficiencyLevel'].find(item => item['proficiencyLevel'] === step + 1)?.filteredAbility) || [];
+    setTextBoxValue(abilityDesc)
   }
 
   return (
@@ -40,16 +44,15 @@ export default function HorizontalNonLinearStepper() {
           </Stepper>
           <div>
             <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1, py: 1 }}>Level {activeStep + 1}</Typography>
+              <Typography sx={{ mt: 2, mb: 1, py: 1 }}>{tscTitle} - Level {activeStep + 1}</Typography>
               <Card sx={{ border: 0, boxShadow: 0, color: 'common.white', backgroundColor: 'primary.main' }}>
                 <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5, 4.5)} !important` }}>
-                  <Typography variant='body2' sx={{ marginBottom: 3, color: 'common.white' }}>
+                  <Typography variant='body2' sx={{ marginBottom: 3, color: 'common.white' }}></Typography>
                     <ul>
                       {textBoxValue.map((value, index) => (
                         <li key={index}>{value}</li>
                       ))}
                     </ul>
-                  </Typography>
                 </CardContent>
               </Card>
             </React.Fragment>
@@ -59,3 +62,4 @@ export default function HorizontalNonLinearStepper() {
     </Grid>
   )
 }
+export default HorizontalNonLinearStepper

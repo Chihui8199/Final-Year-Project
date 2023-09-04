@@ -10,6 +10,7 @@ import Box from '@mui/material/Box'
 import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import CardContent from '@mui/material/CardContent'
+import { useRouter } from 'next/router'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -31,6 +32,7 @@ const Form = styled('form')(({ theme }) => ({
 }))
 
 const FormLayoutsAlignment = () => {
+  const router = useRouter()
   const [jobData, setJobData] = useState(null)
   const [sectors, setSectors] = useState([])
   const [jobOptions, setJobOptions] = useState([])
@@ -94,9 +96,15 @@ const FormLayoutsAlignment = () => {
       curJobRole,
       targetJobRole
     }
-    console.log(result)
+    router.push(
+      {
+        pathname: '/pages/technicalskills',
+        query: result
+      },
+      '/pages/technicalskills'
+    )
+    //console.log(result)
   }
-
 
   return (
     <Card>
@@ -167,7 +175,7 @@ const FormLayoutsAlignment = () => {
               </Select>
             </Grid>
             <Grid item xs={12}>
-              <Button size='large' type='submit' onClick ={handleOnClick} variant='contained' sx={{ width: '100%' }}>
+              <Button size='large' type='submit' onClick={handleOnClick} variant='contained' sx={{ width: '100%' }}>
                 Proceed to Skills & Competencies
               </Button>
             </Grid>
