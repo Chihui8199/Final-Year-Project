@@ -16,6 +16,7 @@ const steps = ['No Proficiency', 'Basic', 'Intermediate', 'Advanced', 'Expert', 
 
 
 const HorizontalNonLinearStepper = (props) =>  {
+  // TODO: activeStep should be the current proficiency level for the job - 1 to account for index
   const [activeStep, setActiveStep] = React.useState(0)
   const [textBoxValue, setTextBoxValue] = React.useState([])
 
