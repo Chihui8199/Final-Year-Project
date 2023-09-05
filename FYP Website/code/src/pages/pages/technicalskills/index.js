@@ -84,7 +84,7 @@ const TechnicalSkillsProfile = props => {
   return (
     <div>
       <DatePickerWrapper>
-        <body2>SET UP LEARNER PROFILE</body2>
+      <Typography variant='body2'>SET UP LEARNER PROFILE </Typography>
         <h1 style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '2px' }}>Step 2. Skills and Competencies</h1>
         <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
           <Grid item xs={12}>
