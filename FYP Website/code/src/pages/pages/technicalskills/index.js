@@ -13,6 +13,8 @@ const TechnicalSkillsProfile = props => {
   console.log('QUERY', router.query)
   const [results, setResults] = useState(null)
   const [profFilteringList, setFilteringList] = useState([])
+  const [finalDefinedProf, setFinalDefinedProf] = useState({})
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,7 +23,6 @@ const TechnicalSkillsProfile = props => {
         if (jobProf.ok) {
           const profFilteringList = jobProf.json()
           setFilteringList(profFilteringList)
-          console.log('jobProf', profFilteringList)
         } else {
           console.error('Failed to fetch data from /api/jobs')
         }
@@ -52,6 +53,28 @@ const TechnicalSkillsProfile = props => {
 
     fetchData()
   }, [])
+
+  const getFinalProf = (indvTSCProfSelection) => {
+    // Everything child changes this callback, it will be called and you can add the results/modify the state of the results using useState
+    const { tscKeyId, profLevel: step } = indvTSCProfSelection;
+    setFinalDefinedProf((prevState) => {
+      // Create a copy of the previous state
+      const newState = { ...prevState };
+    
+      // Check if the key exists in the newState
+      if (newState.hasOwnProperty(tscKeyId)) {
+        // If the key exists, update the value
+        newState[tscKeyId] = step;
+      } else {
+        // If the key doesn't exist, create it with the new value
+        newState[tscKeyId] = step;
+      }
+    
+      // Return the updated state
+      return newState;
+    });
+  }
+
   return (
     <div>
       <DatePickerWrapper>
@@ -64,7 +87,7 @@ const TechnicalSkillsProfile = props => {
             </Typography>
             {results && profFilteringList && results.map((item, index) => item && (
               <Paper key={index} elevation={5} style={{ padding: '20px', marginBottom: '20px' }}>
-                <Stepper item={item} filters={profFilteringList}/>
+                <Stepper data={item} filters={profFilteringList} getFinalProf={getFinalProf}/>
               </Paper>
             ))}
           </Grid>

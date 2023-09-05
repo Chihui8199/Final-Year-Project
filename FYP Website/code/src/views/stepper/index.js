@@ -14,30 +14,33 @@ import { TextBox } from 'mdi-material-ui'
 const steps = ['No Proficiency', 'Basic', 'Intermediate', 'Advanced', 'Expert', 'Master']
 import { useState, useEffect } from 'react'
 
+const HorizontalNonLinearStepper = props => {
+  const { data, filters, getFinalProf } = props
+  const tscTitle = data['tscTitle']
+  const tscKeyId = data['tscKeyID']
 
-const HorizontalNonLinearStepper = (props) =>  {
-  const data = props.item
-  const filters = props.filters
-
-  const tscTitle = data["tscTitle"]
-
-  const getProfLevelForTSCKey  = () => {
-    const tscKeyId = data["tscKeyID"]
-    const stepLevel = Object.values(filters).find(filter => filter["TSC Key ID"] === tscKeyId);
-   // const res = filters.find(filter => filter["TSC Key ID"] === tscKeyId);
-    return stepLevel ? stepLevel["Proficiency Level"] : 1;
+  const getProfLevelForTSCKey = () => {
+    const stepLevel = Object.values(filters).find(filter => filter['TSC Key ID'] === tscKeyId)
+    return stepLevel ? stepLevel['Proficiency Level'] : 1
   }
-  
-  const [activeStep, setActiveStep] = React.useState(getProfLevelForTSCKey()-1)
-  console.log("THIS IS THE CURRENT ACTIVE STEP", activeStep)
-  const [textBoxValue, setTextBoxValue] = React.useState([])
-  
 
+  const [activeStep, setActiveStep] = React.useState(getProfLevelForTSCKey() - 1)
+  const [textBoxValue, setTextBoxValue] = React.useState([])
+
+  // TODO: on Mount the array should be populated with the filtered data
+  useEffect(() => {
+    getFinalProf( {tscKeyId: tscKeyId, profLevel: activeStep + 1})
+  }, [activeStep])
+
+  useEffect(() => {
+    getFinalProf( {tscKeyId: tscKeyId, profLevel: activeStep + 1})
+  }, [])
 
   const handleStep = step => () => {
-    setActiveStep(step)
+    setActiveStep(step)  
     // Populate with the data from the database
-    const abilityDesc = (data['proficiencyLevel'].find(item => item['proficiencyLevel'] === step + 1)?.filteredAbility) || ["Not Applicable"];
+    const abilityDesc = data['proficiencyLevel'].find(item => item['proficiencyLevel'] === step + 1)
+      ?.filteredAbility || ['Not Applicable']
     setTextBoxValue(abilityDesc)
   }
 
@@ -56,15 +59,17 @@ const HorizontalNonLinearStepper = (props) =>  {
           </Stepper>
           <div>
             <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1, py: 1 }}>{tscTitle} - Level {activeStep + 1}</Typography>
+              <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
+                {tscTitle} - Level {activeStep + 1}
+              </Typography>
               <Card sx={{ border: 0, boxShadow: 0, color: 'common.white', backgroundColor: 'primary.main' }}>
                 <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5, 4.5)} !important` }}>
                   <Typography variant='body2' sx={{ marginBottom: 3, color: 'common.white' }}></Typography>
-                    <ul>
-                      {textBoxValue.map((value, index) => (
-                        <li key={index}>{value}</li>
-                      ))}
-                    </ul>
+                  <ul>
+                    {textBoxValue.map((value, index) => (
+                      <li key={index}>{value}</li>
+                    ))}
+                  </ul>
                 </CardContent>
               </Card>
             </React.Fragment>
