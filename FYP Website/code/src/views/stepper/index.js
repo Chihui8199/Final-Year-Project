@@ -11,7 +11,15 @@ import CardContent from '@mui/material/CardContent'
 import TextField from '@mui/material/TextField' // Import TextField
 import results from '../../../result.json' // Import the JSON file
 import { TextBox } from 'mdi-material-ui'
-const steps = ['No Proficiency', 'Basic', 'Intermediate', 'Advanced', 'Expert', 'Master']
+const steps = [
+  'Foundational',
+  'Proficient',
+  'Skilled',
+  'Advanced',
+  'Expert',
+  'Master'
+];
+
 import { useState, useEffect } from 'react'
 
 const HorizontalNonLinearStepper = props => {
