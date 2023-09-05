@@ -87,14 +87,19 @@ const FormLayoutsAlignment = () => {
 
   const handleTargetJobRole = e => {
     setTargetRole(e.target.value)
+    const queryTechnicalSkills = [...prevJob, curJobRole];
+    const queryTechnicalSkillsString = queryTechnicalSkills.join(',');
   }
 
   const handleOnClick = e => {
+    const queryTechnicalSkills = [...prevJob, curJobRole];
+    const queryTechnicalSkillsString = queryTechnicalSkills.join(',');
     const result = {
       prevJob,
       curSector,
       curJobRole,
-      targetJobRole
+      targetJobRole, 
+      queryTechnicalSkillsString
     }
     router.push(
       {

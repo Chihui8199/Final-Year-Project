@@ -2,9 +2,10 @@ import { read } from '../../lib/neo4j'
 
 // TODO:takes in all prevJob and curJob of user
 export default async function handler(req, res) {
+  const queryParams = req.query
   const query = `
   MATCH (j:Job)-[:REQUIRE_TECHNICAL_SKILL]->(jt:JobTSC)-[:HAS_TSC_KEY]->(k:TSCKey)
-  WHERE j.jobid IN [1375, 1038, 757]
+  WHERE j.jobid IN [${queryParams['ids']}] 
   WITH jt.\`TSC Key ID\` AS TSCKeyID, k.\`TSC Title\` AS title
   ORDER BY TSCKeyID DESC
   
@@ -22,7 +23,7 @@ export default async function handler(req, res) {
   
   MATCH (t:TSCKey) WHERE t.\`TSC Key ID\` = tscKeyID
   RETURN t, tscKeyID, proficiencyLevels;
-  `;  
+  `
   const result = await read(query)
   const finalRes = result.records
     .map(record => record.toObject())

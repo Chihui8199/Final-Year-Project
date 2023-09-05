@@ -20,7 +20,7 @@ const HorizontalNonLinearStepper = props => {
   const tscKeyId = data['tscKeyID']
 
   const getProfLevelForTSCKey = () => {
-    const stepLevel = Object.values(filters).find(filter => filter['TSC Key ID'] === tscKeyId)
+    const stepLevel = filters.find(filter => filter['TSC Key ID'] === tscKeyId)
     return stepLevel ? stepLevel['Proficiency Level'] : 1
   }
 
@@ -30,18 +30,20 @@ const HorizontalNonLinearStepper = props => {
   // TODO: on Mount the array should be populated with the filtered data
   useEffect(() => {
     getFinalProf( {tscKeyId: tscKeyId, profLevel: activeStep + 1})
+    const abilityDesc = data['proficiencyLevel'].find(item => item['proficiencyLevel'] === activeStep + 1)
+      ?.filteredAbility || ['Not Applicable']
+    setTextBoxValue(abilityDesc)
   }, [activeStep])
 
   useEffect(() => {
     getFinalProf( {tscKeyId: tscKeyId, profLevel: activeStep + 1})
   }, [])
 
+
   const handleStep = step => () => {
     setActiveStep(step)  
     // Populate with the data from the database
-    const abilityDesc = data['proficiencyLevel'].find(item => item['proficiencyLevel'] === step + 1)
-      ?.filteredAbility || ['Not Applicable']
-    setTextBoxValue(abilityDesc)
+    
   }
 
   return (

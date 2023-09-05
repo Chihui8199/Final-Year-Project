@@ -8,9 +8,16 @@ import { Button } from '@mui/material'
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 
-const TechnicalSkillsProfile = props => {
+const TechnicalSkillsProfile = (props) => {
   const router = useRouter()
-  console.log('QUERY', router.query)
+  // TODO: uncomment this when all routing is finished
+  //const { prevJob, curSector, curJobRole, targetJobRole, queryTechnicalSkillsString } = router.query
+  const prevJob = [1,2,3]
+  const curSector = "ABC"
+  const curJobRole = 4
+  const targetJobRole = 10
+  const queryTechnicalSkillsString = "1082, 1251, 1461, 993, 1383"
+  
   const [results, setResults] = useState(null)
   const [profFilteringList, setFilteringList] = useState([])
   const [finalDefinedProf, setFinalDefinedProf] = useState({})
@@ -19,9 +26,13 @@ const TechnicalSkillsProfile = props => {
     const fetchData = async () => {
       try {
         // TODO: fetch get required proficiency based on prev and current job only
-        const jobProf = await fetch('/api/getRequiredProficiency')
+        // find the proficiency that the learner has now 
+        //const queryJobsString = queryJobs.join(',');
+        const jobProf = await fetch(`/api/getRequiredProficiency?ids=${queryTechnicalSkillsString}`,{
+          method: 'GET'
+        })
         if (jobProf.ok) {
-          const profFilteringList = jobProf.json()
+          const profFilteringList = await jobProf.json()
           setFilteringList(profFilteringList)
         } else {
           console.error('Failed to fetch data from /api/jobs')
@@ -37,7 +48,9 @@ const TechnicalSkillsProfile = props => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await fetch('/api/technicalskills')
+        const result = await fetch(`/api/technicalskills?ids=${queryTechnicalSkillsString}`, {
+          method: 'GET'
+        })
         if (result.ok) {
           const data = await result.json()
           setResults(data.data)
@@ -74,17 +87,15 @@ const TechnicalSkillsProfile = props => {
   }
   const handleSubmit = () => {
     // Basically store all details about this learner profile
-    console.log('FINAL DEFINED PROF', finalDefinedProf)
-    const resultList = Object.keys(finalDefinedProf).map((key) => ({
+    const resultList = Object.keys(finalDefinedProf).map(key => ({
       tscKeyID: parseInt(key),
-      profLevel: finalDefinedProf[key],
-    }));
-    console.log('RESULT LIST', resultList)
+      profLevel: finalDefinedProf[key]
+    }))
   }
   return (
     <div>
       <DatePickerWrapper>
-      <Typography variant='body2'>SET UP LEARNER PROFILE </Typography>
+        <Typography variant='body2'>SET UP LEARNER PROFILE </Typography>
         <h1 style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '2px' }}>Step 2. Skills and Competencies</h1>
         <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
           <Grid item xs={12}>
