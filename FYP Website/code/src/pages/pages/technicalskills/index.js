@@ -34,8 +34,6 @@ const TechnicalSkillsProfile = props => {
     fetchData()
   }, [])
 
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -54,27 +52,35 @@ const TechnicalSkillsProfile = props => {
     fetchData()
   }, [])
 
-  const getFinalProf = (indvTSCProfSelection) => {
+  const getFinalProf = indvTSCProfSelection => {
     // Everything child changes this callback, it will be called and you can add the results/modify the state of the results using useState
-    const { tscKeyId, profLevel: step } = indvTSCProfSelection;
-    setFinalDefinedProf((prevState) => {
+    const { tscKeyId, profLevel: step } = indvTSCProfSelection
+    setFinalDefinedProf(prevState => {
       // Create a copy of the previous state
-      const newState = { ...prevState };
-    
+      const newState = { ...prevState }
+
       // Check if the key exists in the newState
       if (newState.hasOwnProperty(tscKeyId)) {
         // If the key exists, update the value
-        newState[tscKeyId] = step;
+        newState[tscKeyId] = step
       } else {
         // If the key doesn't exist, create it with the new value
-        newState[tscKeyId] = step;
+        newState[tscKeyId] = step
       }
-    
-      // Return the updated state
-      return newState;
-    });
-  }
 
+      // Return the updated state
+      return newState
+    })
+  }
+  const handleSubmit = () => {
+    // Basically store all details about this learner profile
+    console.log('FINAL DEFINED PROF', finalDefinedProf)
+    const resultList = Object.keys(finalDefinedProf).map((key) => ({
+      tscKeyID: parseInt(key),
+      profLevel: finalDefinedProf[key],
+    }));
+    console.log('RESULT LIST', resultList)
+  }
   return (
     <div>
       <DatePickerWrapper>
@@ -85,21 +91,26 @@ const TechnicalSkillsProfile = props => {
             <Typography variant='subtitle1' sx={{ marginBottom: '3%' }}>
               Review Your Mastery of Technical Skills You Have
             </Typography>
-            {results && profFilteringList && results.map((item, index) => item && (
-              <Paper key={index} elevation={5} style={{ padding: '20px', marginBottom: '20px' }}>
-                <Stepper data={item} filters={profFilteringList} getFinalProf={getFinalProf}/>
-              </Paper>
-            ))}
+            {results &&
+              profFilteringList &&
+              results.map(
+                (item, index) =>
+                  item && (
+                    <Paper key={index} elevation={5} style={{ padding: '20px', marginBottom: '20px' }}>
+                      <Stepper data={item} filters={profFilteringList} getFinalProf={getFinalProf} />
+                    </Paper>
+                  )
+              )}
           </Grid>
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="contained" color="primary">
+            <Button onClick={handleSubmit} variant='contained' color='primary'>
               Next
             </Button>
           </Grid>
         </Grid>
       </DatePickerWrapper>
     </div>
-  );
+  )
 }
 
 export default TechnicalSkillsProfile
