@@ -12,16 +12,27 @@ import TextField from '@mui/material/TextField' // Import TextField
 import results from '../../../result.json' // Import the JSON file
 import { TextBox } from 'mdi-material-ui'
 const steps = ['No Proficiency', 'Basic', 'Intermediate', 'Advanced', 'Expert', 'Master']
-
+import { useState, useEffect } from 'react'
 
 
 const HorizontalNonLinearStepper = (props) =>  {
-  // TODO: activeStep should be the current proficiency level for the job - 1 to account for index
-  const [activeStep, setActiveStep] = React.useState(0)
-  const [textBoxValue, setTextBoxValue] = React.useState([])
+  const data = props.item
+  const filters = props.filters
 
-  const data = props.item // TODO: fix with dynamically changing data
   const tscTitle = data["tscTitle"]
+
+  const getProfLevelForTSCKey  = () => {
+    const tscKeyId = data["tscKeyID"]
+    const stepLevel = Object.values(filters).find(filter => filter["TSC Key ID"] === tscKeyId);
+   // const res = filters.find(filter => filter["TSC Key ID"] === tscKeyId);
+    return stepLevel ? stepLevel["Proficiency Level"] : 1;
+  }
+  
+  const [activeStep, setActiveStep] = React.useState(getProfLevelForTSCKey()-1)
+  console.log("THIS IS THE CURRENT ACTIVE STEP", activeStep)
+  const [textBoxValue, setTextBoxValue] = React.useState([])
+  
+
 
   const handleStep = step => () => {
     setActiveStep(step)

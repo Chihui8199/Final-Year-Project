@@ -12,13 +12,35 @@ const TechnicalSkillsProfile = props => {
   const router = useRouter()
   console.log('QUERY', router.query)
   const [results, setResults] = useState(null)
+  const [profFilteringList, setFilteringList] = useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // TODO: fetch get required proficiency based on prev and current job only
+        const jobProf = await fetch('/api/getRequiredProficiency')
+        if (jobProf.ok) {
+          const profFilteringList = jobProf.json()
+          setFilteringList(profFilteringList)
+          console.log('jobProf', profFilteringList)
+        } else {
+          console.error('Failed to fetch data from /api/jobs')
+        }
+      } catch (error) {
+        console.error('An error occurred while fetching data:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await fetch('/api/technicalskills')
         if (result.ok) {
           const data = await result.json()
-          console.log('DATA', result)
           setResults(data.data)
         } else {
           console.error('Failed to fetch data from /api/jobs')
@@ -40,9 +62,9 @@ const TechnicalSkillsProfile = props => {
             <Typography variant='subtitle1' sx={{ marginBottom: '3%' }}>
               Review Your Mastery of Technical Skills You Have
             </Typography>
-            {results && results.map((item, index) => item && (
+            {results && profFilteringList && results.map((item, index) => item && (
               <Paper key={index} elevation={5} style={{ padding: '20px', marginBottom: '20px' }}>
-                <Stepper item={item} />
+                <Stepper item={item} filters={profFilteringList}/>
               </Paper>
             ))}
           </Grid>
