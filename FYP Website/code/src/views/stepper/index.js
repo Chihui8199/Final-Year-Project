@@ -11,14 +11,7 @@ import CardContent from '@mui/material/CardContent'
 import TextField from '@mui/material/TextField' // Import TextField
 import results from '../../../result.json' // Import the JSON file
 import { TextBox } from 'mdi-material-ui'
-const steps = [
-  'Foundational',
-  'Proficient',
-  'Skilled',
-  'Advanced',
-  'Expert',
-  'Master'
-];
+const steps = ['Foundational', 'Proficient', 'Skilled', 'Advanced', 'Expert', 'Master', 'No Proficiency']
 
 import { useState, useEffect } from 'react'
 
@@ -27,6 +20,7 @@ const HorizontalNonLinearStepper = props => {
   const tscTitle = data['tscTitle']
   const tscKeyId = data['tscKeyID']
 
+  // Sets the highest level of prof that the user has based on prev jobs
   const getProfLevelForTSCKey = () => {
     const stepLevel = filters.find(filter => filter['TSC Key ID'] === tscKeyId)
     return stepLevel ? stepLevel['Proficiency Level'] : 1
@@ -35,25 +29,29 @@ const HorizontalNonLinearStepper = props => {
   const [activeStep, setActiveStep] = React.useState(getProfLevelForTSCKey() - 1)
   const [textBoxValue, setTextBoxValue] = React.useState([])
 
-  // TODO: on Mount the array should be populated with the filtered data
   useEffect(() => {
-    getFinalProf( {tscKeyId: tscKeyId, profLevel: activeStep + 1})
+    // TODO: remember to convert prof 7 to a no prof in db
+    getFinalProf({ tscKeyId: tscKeyId, profLevel: activeStep + 1 })
     const abilityDesc = data['proficiencyLevel'].find(item => item['proficiencyLevel'] === activeStep + 1)
-      ?.filteredAbility || ['Not Applicable']
+      ?.filteredAbility || ['I have no proficiency']
     setTextBoxValue(abilityDesc)
   }, [activeStep])
 
   useEffect(() => {
-    getFinalProf( {tscKeyId: tscKeyId, profLevel: activeStep + 1})
+    getFinalProf({ tscKeyId: tscKeyId, profLevel: activeStep + 1 })
   }, [])
 
-
   const handleStep = step => () => {
-    setActiveStep(step)  
+    setActiveStep(step)
     // Populate with the data from the database
-    
   }
 
+  const getDisabledSteps = () => {
+    const excludeNumbers = data['proficiencyLevel'].map(item => item['proficiencyLevel'])
+    const values = [1, 2, 3, 4, 5, 6]
+    const filteredIndices = values.filter(value => !excludeNumbers.includes(value)).map(value => value - 1)
+    return filteredIndices
+  }
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
@@ -61,7 +59,7 @@ const HorizontalNonLinearStepper = props => {
           <Stepper nonLinear activeStep={activeStep}>
             {steps.map((label, index) => (
               <Step key={label}>
-                <StepButton color='inherit' onClick={handleStep(index)}>
+                <StepButton color='inherit' onClick={handleStep(index)} disabled={getDisabledSteps().includes(index)}>
                   {label}
                 </StepButton>
               </Step>

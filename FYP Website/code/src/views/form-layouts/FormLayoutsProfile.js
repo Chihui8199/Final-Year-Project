@@ -108,7 +108,6 @@ const FormLayoutsAlignment = () => {
       },
       '/pages/technicalskills'
     )
-    //console.log(result)
   }
 
   return (
