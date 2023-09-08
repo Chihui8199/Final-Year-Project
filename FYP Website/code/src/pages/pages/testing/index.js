@@ -15,16 +15,40 @@ import TimelineOppositeContent, {
 } from '@mui/lab/TimelineOppositeContent';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import ButtonBase from '@mui/material/ButtonBase'; // Added this line
+import ButtonBase from '@mui/material/ButtonBase';
+
+// Custom CSS for expanding the clickable area of the ButtonBase
+const buttonBaseStyles = {
+  width: '24px', // Fixed width for the clickable area
+  height: '24px', // Fixed height for the clickable area
+  borderRadius: '50%', // Makes it circular
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+};
 
 export default function TimelineAccordion() {
+  // State to track which button is clicked and its associated content
+  const [activeButtonIndex, setActiveButtonIndex] = React.useState(null);
+  const [activeCardContent, setActiveCardContent] = React.useState('');
+
   // Event handler for the TimelineDot click event
-  const handleDotClick = () => {
-    console.log('Dot clicked');
+  const handleDotClick = (index, content) => {
+    console.log(`Dot clicked on item ${index}`);
+    setActiveButtonIndex(index);
+    setActiveCardContent(content);
   };
 
+  // Define an array of events with additional data, including cardInfo
+  const events = [
+    { time: '09:30 am', content: 'Eat', cardInfo: 'Breakfast' },
+    { time: '10:00 am', content: 'Code', cardInfo: 'Work on a project' },
+    // Add more events as needed with additional properties
+  ];
+
   return (
-    <Accordion>
+    <Accordion expanded={true}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6">Timeline</Typography>
       </AccordionSummary>
@@ -38,34 +62,28 @@ export default function TimelineAccordion() {
                 },
               }}
             >
-              <TimelineItem>
-                <TimelineOppositeContent color="textSecondary">
-                  09:30 am
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <ButtonBase onClick={handleDotClick}> {/* Wrapped TimelineDot */}
-                    <TimelineDot />
-                  </ButtonBase>
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>Eat</TimelineContent>
-              </TimelineItem>
-              <TimelineItem>
-                <TimelineOppositeContent color="textSecondary">
-                  10:00 am
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <ButtonBase onClick={handleDotClick}> {/* Wrapped TimelineDot */}
-                    <TimelineDot />
-                  </ButtonBase>
-                </TimelineSeparator>
-                <TimelineContent>Code</TimelineContent>
-              </TimelineItem>
+              {events.map((event, index) => (
+                <TimelineItem key={index}>
+                  <TimelineOppositeContent color="textSecondary">
+                    {event.time}
+                  </TimelineOppositeContent>
+                  <TimelineSeparator>
+                    <ButtonBase
+                      onClick={() => handleDotClick(index, event.cardInfo)}
+                      style={buttonBaseStyles} // Apply the custom styles
+                    >
+                      <TimelineDot />
+                    </ButtonBase>
+                    {index !== events.length - 1 && <TimelineConnector />}
+                  </TimelineSeparator>
+                  <TimelineContent>{event.content}</TimelineContent>
+                </TimelineItem>
+              ))}
             </Timeline>
           </CardContent>
           <CardContent style={{ flex: 0.5 }}>
             <Typography variant="body2">
-              Additional information about the timeline events can go here.
+              {activeCardContent || 'Additional information about the timeline events can go here.'}
             </Typography>
           </CardContent>
         </Card>
