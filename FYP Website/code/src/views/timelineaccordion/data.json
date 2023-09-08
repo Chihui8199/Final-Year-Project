@@ -1,0 +1,43 @@
+[{
+    "tscKeyID": 105,
+    "proficiencyLevel": [{
+            "proficiencyLevel": 3,
+            "filteredAbility": [
+                "Basic transfer pricing concepts",
+                "Process of determining and analysing transfer prices",
+                "Market trends and developments in transfer pricing",
+                "Country by country reporting requirements",
+                "Inbound and outbound international tax",
+                "Macroeconomic and microeconomic factors"
+            ]
+        },
+        {
+            "proficiencyLevel": 4,
+            "filteredAbility": [
+                "Transfer pricing risk-based assessments",
+                "Impact of transfer pricing developments on the organisation with the view to avoiding double taxation when operating in multiple tax jurisdictions",
+                "Benchmarking and comparability analysis"
+            ]
+        },
+        {
+            "proficiencyLevel": 5,
+            "filteredAbility": [
+                "New transfer pricing documentation",
+                "Financial instruments relating to transfer pricing and formulate appropriate transfer pricing structures for the organisation",
+                "Tax implications of financing techniques"
+            ]
+        },
+        {
+            "proficiencyLevel": 6,
+            "filteredAbility": [
+                "Transfer pricing risks resulting from cross-border transactions",
+                "Organisation policy and procedures"
+            ]
+        }
+    ],
+    "tscDescrip": "Determine the price for goods and services at which different divisions of a company transact with each other",
+    "tscCategory": "Taxation",
+    "tscTitle": "Transfer Pricing",
+    "jobRequiredProficiency": 4,
+    "userAcquiredProficiency": -1
+}]

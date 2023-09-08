@@ -77,7 +77,6 @@ export default async function handler(req, res) {
 
 // TODO: rename filteredKnowledge to fitleredAbility
 const formatData = result => {
-  console.log('RESULTS', result)
   const finalRes = result.records
     .map(record => record.toObject())
     .map(item => ({
@@ -86,8 +85,8 @@ const formatData = result => {
         return {
           proficiencyLevel: ability.proficiencyLevel.low,
           filteredAbility: ability?.filteredKnowledge.filter(ability => !!ability)
-        }
-      }),
+        };
+      }).sort((a, b) => a.proficiencyLevel - b.proficiencyLevel),
       tscDescrip: item.t.properties['TSC Description'],
       tscCategory: item.t.properties['TSC Category'],
       tscTitle: item.t.properties['TSC Title'],
