@@ -87,7 +87,6 @@ const RegisterPage = () => {
   const handleSubmit = async e => {
     e.preventDefault()
     const { email, password } = values
-    console.log(email, password, 'LOGGING IN')
     try {
       const response = await fetch('/api/user/signup', {
         method: 'POST',
@@ -96,7 +95,6 @@ const RegisterPage = () => {
         },
         body: JSON.stringify({ email, password })
       })
-      console.log(response, 'RESPONSE')
       if (response.ok) {
         // Registration was successful, you can redirect the user to a success page or login page
         router.push('/pages/login') // Example: Redirect to a success page

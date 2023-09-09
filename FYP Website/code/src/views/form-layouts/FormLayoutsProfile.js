@@ -87,11 +87,10 @@ const FormLayoutsAlignment = () => {
 
   const handleTargetJobRole = e => {
     setTargetRole(e.target.value)
-    const queryTechnicalSkills = [...prevJob, curJobRole];
-    const queryTechnicalSkillsString = queryTechnicalSkills.join(',');
   }
 
   const handleOnClick = e => {
+    // TODO: look into why prevJob turns in an string when there's only one element??
     const queryTechnicalSkills = [...prevJob, curJobRole];
     const queryTechnicalSkillsString = queryTechnicalSkills.join(',');
     const result = {

@@ -12,14 +12,14 @@ import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 const TechnicalSkillsProfile = props => {
   const router = useRouter()
   const { user } = useUserContext()
-  const prevJob = [1082]
-  const curSector = 'ABC'
-  const curJobRole = 1461
-  const targetJobRole = 1251
-  const queryTechnicalSkillsString = '1082,1461'
+  // const prevJob = [1082]
+  // const curSector = 'ABC'
+  // const curJobRole = 1461
+  // const targetJobRole = 1251
+  // const queryTechnicalSkillsString = '1082,1461'
   // TODO: uncommend this later
-  //const { prevJob, curSector, curJobRole, targetJobRole, queryTechnicalSkillsString } = router.query
-
+  const { curSector, curJobRole, targetJobRole, queryTechnicalSkillsString } = router.query
+  const { prevJob } = router.query;
   const [results, setResults] = useState(null)
   const [profFilteringList, setFilteringList] = useState([])
   const [finalDefinedProf, setFinalDefinedProf] = useState({})
@@ -97,8 +97,8 @@ const TechnicalSkillsProfile = props => {
 
     const final = {
       data: resultList, 
-      email: user,
-      prevJobs: prevJob,
+      email: user.email,
+      prevJobs:  Array.isArray(prevJob) ? prevJob : [prevJob],
       curJobRole: curJobRole,
       targetJobRole: targetJobRole,
     }
@@ -107,9 +107,8 @@ const TechnicalSkillsProfile = props => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-        // Add any additional headers if required
       },
-      body: JSON.stringify({ data: resultList, email: user })
+      body: JSON.stringify(final)
     })
 
     if (!response.ok) {

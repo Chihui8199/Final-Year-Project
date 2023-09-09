@@ -4,8 +4,6 @@ import bcrypt from 'bcrypt'
 export default async function register(req, res) {
   try {
     const { email, password } = req.body
-    console.log('EMAIL', email, 'PASSWORD', password)
-
     // Check if the user with the same email already exists
     const existingUser = await getUserByEmail(email)
     if (existingUser) {

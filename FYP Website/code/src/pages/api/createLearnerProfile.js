@@ -2,7 +2,16 @@ import { write } from '../../lib/neo4j'
 
 // TODO: change the jobID and the userId to what is being passed in
 export default async function handler(req, res) {
-  const { email, data, prevJobs, curJobRole, targetJobRole } = req.body
+  const { email, data } = req.body
+  let { prevJobs, curJobRole, targetJobRole } = req.body
+
+  // Ensure prevJobs is an array and contains integers
+  prevJobs = Array.isArray(prevJobs) ? prevJobs.map(job => parseInt(job, 10)) : [parseInt(prevJobs, 10)]
+
+  // Convert curJobRole and targetJobRole to integers
+  curJobRole = parseInt(curJobRole, 10)
+  targetJobRole = parseInt(targetJobRole, 10)
+
   const query = `
       MATCH (user:User {email: $email})
       CREATE (learner:LearnerProfile {
@@ -35,5 +44,5 @@ export default async function handler(req, res) {
     targetJobRoleId: targetJobRole,
     proficiencyData: data
   })
-  res.status(200).json({ message: 'Success' })
+  res.status(200).json({ message: 'Success', result })
 }

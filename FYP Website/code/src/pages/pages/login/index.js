@@ -90,7 +90,6 @@ const LoginPage = () => {
   }
 
   const handleLogin = async () => {
-    console.log('Login function called', values)
     try {
       const response = await fetch('/api/user/login', {
         method: 'POST',

@@ -31,7 +31,7 @@ const UserAcquiredProficiency = () => {
 
     fetchData()
   }, [])
-  
+
   return (
     <div>
       <Grid item xs={12}>

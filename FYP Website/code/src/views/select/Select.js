@@ -36,7 +36,6 @@ export default function MultipleSelectChip(props) {
     const {
       target: { value },
     } = event;
-    console.log("THIS IS THE EVENT!", event)
   
     // On autofill, we get a stringified value.
     const newValue = typeof value === 'string' ? value.split(',') : value;
@@ -45,7 +44,6 @@ export default function MultipleSelectChip(props) {
     setPersonName((prevPersonName) => {
       const updatedPersonName = [...prevPersonName];
       updatedPersonName.push(newValue);
-      console.log(updatedPersonName); // Log the updated array
       return updatedPersonName;
     });
   };
