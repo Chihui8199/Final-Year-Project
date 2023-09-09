@@ -109,9 +109,9 @@ const TechnicalSkillsProfile = props => {
         'Content-Type': 'application/json'
         // Add any additional headers if required
       },
-      body: JSON.stringify(final)
+      body: JSON.stringify({ data: resultList, email: user })
     })
-    
+
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }

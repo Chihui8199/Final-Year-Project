@@ -4,18 +4,18 @@ import { useState, useEffect } from 'react'
 import { Grid, Typography } from '@mui/material'
 import DesiredJob from '../../../views/job-description'
 import { useUserContext } from 'src/context/UserContext'
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 const UserAcquiredProficiency = () => {
-
-
-  // TODO: fetch the user acquired proficiency based on the user learner profile id
   const [data, setData] = useState([])
-  const { user } = useUserContext();
-  console.log("user", user)
+  const { user } = useUserContext()
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const results = await fetch(`/api/getAcquiredProficiency`, {
+        const results = await fetch(`/api/getAcquiredProficiency?email=${user.email}`, {
           method: 'GET'
         })
         if (results.ok) {
@@ -31,25 +31,37 @@ const UserAcquiredProficiency = () => {
 
     fetchData()
   }, [])
-
-  // TODO: tehcnical job needes to be redered base on the following factors 
-  // 1. User job created account  -> No learner profile
-  // 2. Fetch the user learner profile id to display it
-  // 3. Everytime the user create a new learner profile, the learner profile id will be updated
-  // TODO: write conditional render when user is just created
+  
   return (
     <div>
       <Grid item xs={12}>
         <Typography variant='h5'>My Skills</Typography>
-        <Typography variant='body2'>Track your progress and be informed of the courses you need to upskill and advance in your career.</Typography>
+        <Typography variant='body2'>
+          Track your progress and be informed of the courses you need to upskill and advance in your career.
+        </Typography>
       </Grid>
       <Grid item xs={12}>
         <Typography variant='h6'>Career Goal</Typography>
       </Grid>
-      <DesiredJob />
-      {data.map((item, index) => (
-        <TimeLineAccordion key={index} data={item} />
-      ))}
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <DesiredJob />
+        </Grid>
+        <Grid item xs={12}>
+          {data.length > 0 && (
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1a-content' id='panel1a-header'>
+                <Typography>View your Required Skills</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {data.map((item, index) => (
+                  <TimeLineAccordion key={index} data={item} />
+                ))}
+              </AccordionDetails>
+            </Accordion>
+          )}
+        </Grid>
+      </Grid>
     </div>
   )
 }
