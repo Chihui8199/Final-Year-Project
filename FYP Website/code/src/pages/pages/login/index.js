@@ -39,6 +39,10 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
+// other
+import { useUserContext } from 'src/context/UserContext'
+
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -57,7 +61,7 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
-// TODO: add model for responding to pass and failed for user
+// TODO: add modal for responding to pass and failed for user
 
 const LoginPage = () => {
   // ** State
@@ -66,6 +70,8 @@ const LoginPage = () => {
     password: '',
     showPassword: false
   })
+  const { setUser } = useUserContext();
+
 
   // ** Hook
   const theme = useTheme()
@@ -100,6 +106,7 @@ const LoginPage = () => {
       if (response.status === 200) {
         // Successful login, handle as needed (e.g., redirect to dashboard)
         router.push('/pages/acquiredtechnical') // Adjust the URL as needed // TODO: change to routing anme once everthing is finalised
+        setUser({ email: values.email });
       } else {
         // Handle login error (e.g., display an error message)
         console.error('Login failed')

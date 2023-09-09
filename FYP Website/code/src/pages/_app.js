@@ -27,6 +27,9 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 // ** Global css styles
 import '../../styles/globals.css'
 
+// ** User Provider
+import { UserProvider } from 'src/context/UserContext'
+
 const clientSideEmotionCache = createEmotionCache()
 
 // ** Pace Loader
@@ -51,6 +54,7 @@ const App = props => {
 
   return (
     <CacheProvider value={emotionCache}>
+      <UserProvider>
       <Head>
         <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
         <meta
@@ -68,6 +72,7 @@ const App = props => {
           }}
         </SettingsConsumer>
       </SettingsProvider>
+      </UserProvider>
     </CacheProvider>
   )
 }

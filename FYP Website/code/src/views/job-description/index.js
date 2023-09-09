@@ -21,7 +21,12 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }))
 
+// Import Routing
+import { useRouter } from 'next/router'
+
 const DesiredJob = () => {
+  const router = useRouter()
+
   return (
     <Card>
       <Grid container spacing={6}>
@@ -82,17 +87,34 @@ const DesiredJob = () => {
           >
             <Box>
               <Box sx={{ mb: 3.5, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Typography variant='h6'>$</Typography>
-                <Typography variant='h6' sx={{ lineHeight: 1, fontWeight: 600, fontSize: '3.75rem !important' }}>
-                  899
+                <Typography variant='h5' sx={{ lineHeight: 1, fontWeight: 600, fontSize: '3.75rem !important' }}>
+                  Have more career goals?
                 </Typography>
-                <Typography variant='h6'>USD</Typography>
               </Box>
               <Typography variant='body2' sx={{ mb: 13.75, display: 'flex', flexDirection: 'column' }}>
-                <span>5 Tips For Offshore</span>
-                <span>Software Development</span>
+                <div>
+                  Create and switch between different
+                  <br />
+                  learner profiles to keep track
+                  <br />
+                  of your career goals
+                </div>
               </Typography>
-              <Button variant='contained'>Contact Now</Button>
+              <Grid container direction='column' spacing={2}>
+                <Grid item>
+                  <Button
+                    variant='contained'
+                    onClick={() => {
+                      router.push('/pages/learner-profile')
+                    }}
+                  >
+                    Create Learner Profile
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button variant='contained'>Switch Learner Profile</Button>
+                </Grid>
+              </Grid>
             </Box>
           </CardContent>
         </Grid>
