@@ -17,8 +17,14 @@ export default async function register(req, res) {
 
     // Create the user in your database
     const user = await createUser(email, hashedPassword)
-
-    return res.status(201).json({ message: 'User registered successfully', data: user })
+    // Extract user properties
+    const userData = user.records[0]._fields[0].properties
+    return res.status(201).json({
+      data: {
+        email: userData.email // Extract the email property
+        // TODO: You can include other properties if needed
+      }
+    })
   } catch (e) {
     console.error(e)
     return res.status(500).json({ message: 'We are experiencing a server error, please try again later' })

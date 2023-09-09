@@ -3,6 +3,8 @@ import { useState, Fragment } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -61,12 +63,14 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const RegisterPage = () => {
   // ** States
   const [values, setValues] = useState({
+    email: '', // Add email field to state
     password: '',
     showPassword: false
   })
 
   // ** Hook
   const theme = useTheme()
+  const router = useRouter()
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
@@ -78,6 +82,32 @@ const RegisterPage = () => {
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    const { email, password } = values
+    console.log(email, password, 'LOGGING IN')
+    try {
+      const response = await fetch('/api/user/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      })
+      console.log(response, 'RESPONSE')
+      if (response.ok) {
+        // Registration was successful, you can redirect the user to a success page or login page
+        router.push('/pages/login') // Example: Redirect to a success page
+      } else {
+        const data = await response.json()
+        // Handle registration error, such as displaying an error message to the user
+        console.error(data.message) // Log the error message
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+    }
   }
 
   return (
@@ -163,9 +193,16 @@ const RegisterPage = () => {
             </Typography>
             <Typography variant='body2'>Make your app management easy and fun!</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} />
-            <FormControl fullWidth  sx={{ marginBottom: 4 }}>
+          <form noValidate autoComplete='off' onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              type='email'
+              label='Email'
+              sx={{ marginBottom: 4 }}
+              value={values.email} // Bind email value to the input
+              onChange={handleChange('email')} // Handle email input change
+            />
+            <FormControl fullWidth sx={{ marginBottom: 4 }}>
               <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
@@ -200,7 +237,6 @@ const RegisterPage = () => {
                 </Link>
               </Typography>
             </Box>
-            
           </form>
         </CardContent>
       </Card>
