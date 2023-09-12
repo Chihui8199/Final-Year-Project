@@ -112,7 +112,14 @@ const DesiredJob = () => {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant='contained'>Switch Learner Profile</Button>
+                  <Button
+                    variant='contained'
+                    onClick={() => {
+                      router.push('/pages/choose-profile')
+                    }}
+                  >
+                    Switch Learner Profile
+                  </Button>
                 </Grid>
               </Grid>
             </Box>

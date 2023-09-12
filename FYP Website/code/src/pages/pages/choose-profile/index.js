@@ -12,40 +12,58 @@ import Button from '@mui/material/Button'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { useUserContext } from 'src/context/UserContext'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router';
 
 const ProfileChoice = () => {
   const [data, setData] = useState([])
   const [activeProfileUUID, setActiveProfileUUID] = useState('')
 
   const { user } = useUserContext()
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // TODO: fix broken login
-        const email = 'inqh8199@gmail.com'
-        const results = await fetch(`/api/getAllLearnerProfiles?email=${email}`, {
-          method: 'GET'
-        })
-        if (results.ok) {
-          const data = await results.json()
-          setActiveProfileUUID(data.user.state)
-          setData(data.learnerProfiles)
-        } else {
-          console.error('Failed to fetch data from /api/jobs')
-        }
-      } catch (error) {
-        console.error('An error occurred while fetching data:', error)
+  const router = useRouter();
+
+  const fetchData = async () => {
+    try {
+      // TODO: fix broken login
+      const email = 'testing@gmail.com';
+      const results = await fetch(`/api/getAllLearnerProfiles?email=${email}`, {
+        method: 'GET'
+      });
+      if (results.ok) {
+        const data = await results.json();
+        setActiveProfileUUID(data.user.state);
+        setData(data.learnerProfiles);
+      } else {
+        console.error('Failed to fetch data from /api/jobs');
       }
+    } catch (error) {
+      console.error('An error occurred while fetching data:', error);
     }
+  };
 
-    fetchData()
-  }, [])
+  useEffect(() => {
+    fetchData();
+  }, []);
 
+ // TODO: handle userProfile shitz
   console.log('User Profile data', data.user)
+  const handleRowClick = async (rowData) => {
+    const response = await fetch(`/api/updateActiveProfile`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email: "testing@gmail.com", uuid: rowData.uuid})
+    })
+    fetchData();
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+  };
+
 
   return (
     <div>
-      <Button variant='text' startIcon={<ArrowBackIosIcon />}>
+      <Button variant='text' startIcon={<ArrowBackIosIcon />} onClick={() => router.back()}>
         Back to My Skills
       </Button>
       <Typography variant='h6'> All Learner Profile</Typography>
@@ -65,7 +83,7 @@ const ProfileChoice = () => {
             </TableHead>
             <TableBody>
               {data.map(row => (
-                <TableRow hover key={row.uuid} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                <TableRow hover key={row.uuid} onClick={() => handleRowClick(row)} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                   <TableCell>{row.desiredJobs[0]?.JobRole}</TableCell>
                   <TableCell>
                     <ul>
