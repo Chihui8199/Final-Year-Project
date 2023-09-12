@@ -92,13 +92,9 @@ const DesiredJob = () => {
                 </Typography>
               </Box>
               <Typography variant='body2' sx={{ mb: 13.75, display: 'flex', flexDirection: 'column' }}>
-                <div>
-                  Create and switch between different
-                  <br />
-                  learner profiles to keep track
-                  <br />
-                  of your career goals
-                </div>
+                <span>Create and switch between different</span>
+                <span>learner profiles to keep track</span>
+                <span>of your career goals</span>
               </Typography>
               <Grid container direction='column' spacing={2}>
                 <Grid item>

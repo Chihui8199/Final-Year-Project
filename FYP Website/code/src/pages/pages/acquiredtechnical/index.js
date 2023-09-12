@@ -45,7 +45,9 @@ const UserAcquiredProficiency = () => {
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12}>
+          <div>
           <DesiredJob />
+          </div>
         </Grid>
         <Grid item xs={12}>
           {data.length > 0 && (
