@@ -1,7 +1,7 @@
 import React from 'react'
 import TimeLineAccordion from '../../../views/timelineaccordion'
 import { useState, useEffect } from 'react'
-import { Grid, Typography } from '@mui/material'
+import { Grid, Typography, Card, CardContent, CircularProgress} from '@mui/material'
 import DesiredJob from '../../../views/job-description'
 import { useUserContext } from 'src/context/UserContext'
 import Accordion from '@mui/material/Accordion'
@@ -13,7 +13,8 @@ const UserAcquiredProficiency = () => {
   const [data, setData] = useState([])
   const [jobTitle, setJobTitle] = useState('')
   const { user } = useUserContext()
-  console.log("user" , user)
+  const [loading, setLoading] = useState(true)
+  console.log('user', user)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -23,14 +24,15 @@ const UserAcquiredProficiency = () => {
         if (results.ok) {
           const data = await results.json()
           setData(data)
-          console.log("DATA", data?.[0])
           setJobTitle(data?.[0]?.jobTitle)
-          console.log("TITLE", jobTitle)
         } else {
           console.error('Failed to fetch data from /api/jobs')
         }
       } catch (error) {
         console.error('An error occurred while fetching data:', error)
+      } finally {
+        // Set loading to false when the fetch operation is done
+        setLoading(false)
       }
     }
 
@@ -52,18 +54,29 @@ const UserAcquiredProficiency = () => {
           Career Goal
         </Typography>
       </Grid>
-      <Grid container spacing={2}>
+      {loading ? (
+        // Render a loading card while fetchData is happening
+        <Card>
+          <CardContent>
+            <CircularProgress />
+            <Typography variant="body2">Loading...</Typography>
+          </CardContent>
+        </Card>
+      ) : (
+        // Render the DesiredJob and Accordion components when loading is false
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <div>
+              <DesiredJob jobTitle={jobTitle} />
+            </div>
+          </Grid>
+          {data.length > 0 && (
             <Grid item xs={12}>
-              <div>
-                <DesiredJob jobTitle={jobTitle} />
-              </div>
-            </Grid>
-            {data.length > 0 && (
-            <Grid item xs={12}>
-              <Accordion   expanded={true} >
+              <Accordion expanded={true} >
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1a-content' id='panel1a-header' sx={{
-    height: "80px"}} >
-                  <Typography variant='h6' sx={{ marginBottom: 2, color: 'primary.main'}}>View your Required Skills</Typography>
+                  height: "80px"
+                }}>
+                  <Typography variant='h6' sx={{ marginBottom: 2, color: 'primary.main' }}>View your Required Skills</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   {data.map((item, index) => (
@@ -72,8 +85,9 @@ const UserAcquiredProficiency = () => {
                 </AccordionDetails>
               </Accordion>
             </Grid>
-        )}
-      </Grid>
+          )}
+        </Grid>
+      )}
     </div>
   )
 }
