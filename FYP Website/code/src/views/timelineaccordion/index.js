@@ -30,7 +30,7 @@ export default function TimelineAccordion(props) {
   // State to track which button is clicked and its associated content
   const [activeButtonIndex, setActiveButtonIndex] = React.useState(null)
   const [activeCardContent, setActiveCardContent] = React.useState([])
-  const [expanded, setExpanded] = React.useState(true)
+  const [expanded, setExpanded] = React.useState(false)
 
   const handleAccordionToggle = () => {
     setExpanded(!expanded)
