@@ -24,18 +24,36 @@ import { useRouter } from 'next/router'
 const DesiredJob = props => {
   const router = useRouter()
   const { jobTitle } = props
+  const doesProfileExists = jobTitle === undefined || jobTitle === '';
+  console.log("FLAG", doesProfileExists)
+
   return (
     <Card>
       <Grid container spacing={6}>
         <Grid container item xs={12} sm={7} direction='column' justifyContent='center' alignItems='center'>
           <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5.75, 6.25)} !important` }}>
-            <Typography variant='h6' sx={{ marginBottom: 1 }}>
-              I want to become a
-            </Typography>
-            <Typography variant='h2' sx={{ color: 'primary.main', marginBottom: 2.5, lineHeight: 1, fontWeight: 600 }}>
-              {jobTitle}
-            </Typography>
-
+            {!doesProfileExists ? (
+              <>
+                <Typography variant='h6' sx={{ marginBottom: 1 }}>
+                  I want to become a
+                </Typography>
+                <Typography
+                  variant='h2'
+                  sx={{ color: 'primary.main', marginBottom: 2.5, lineHeight: 1, fontWeight: 600 }}
+                >
+                  {jobTitle}
+                </Typography>
+              </>
+            ) : (
+              <Typography
+                variant='h2'
+                sx={{ color: 'primary.main', marginBottom: 2.5, lineHeight: 1, fontWeight: 600 }}
+              >
+                <Typography variant='h6' sx={{ marginBottom: 1 }}>
+                 Create Your Profile Now!
+                </Typography>
+              </Typography>
+            )}
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <TrendingUp sx={{ color: 'primary.main', marginRight: 2.75 }} fontSize='small' />
               <Typography variant='body2' sx={{ color: 'primary.main' }}>

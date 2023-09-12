@@ -3,7 +3,7 @@ import { read } from '../../db/neo4j'
 export default async function handler(req, res) {
   const { email } = req.query
   const query = `
-  MATCH (u:User {email: "isabelle@vincere.health"})
+  MATCH (u:User {email: "${email}"})
   WITH u.state AS learnerState
   
   // Fetch the LearnerProfile based on the state property of the User

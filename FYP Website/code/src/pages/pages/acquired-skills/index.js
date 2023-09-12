@@ -13,6 +13,7 @@ const UserAcquiredProficiency = () => {
   const [data, setData] = useState([])
   const [jobTitle, setJobTitle] = useState('')
   const { user } = useUserContext()
+  console.log("user" , user)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -52,13 +53,12 @@ const UserAcquiredProficiency = () => {
         </Typography>
       </Grid>
       <Grid container spacing={2}>
-        {data.length > 0 && (
-          <>
             <Grid item xs={12}>
               <div>
                 <DesiredJob jobTitle={jobTitle} />
               </div>
             </Grid>
+            {data.length > 0 && (
             <Grid item xs={12}>
               <Accordion   expanded={true} >
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1a-content' id='panel1a-header' sx={{
@@ -72,7 +72,6 @@ const UserAcquiredProficiency = () => {
                 </AccordionDetails>
               </Accordion>
             </Grid>
-          </>
         )}
       </Grid>
     </div>
