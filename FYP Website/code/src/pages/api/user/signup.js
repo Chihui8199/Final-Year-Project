@@ -1,4 +1,4 @@
-import { write, read } from '../../../lib/neo4j' // Import necessary functions for read and write operations
+import { write, read } from '../../../db/neo4j' // Import necessary functions for read and write operations
 import bcrypt from 'bcrypt'
 
 export default async function register(req, res) {

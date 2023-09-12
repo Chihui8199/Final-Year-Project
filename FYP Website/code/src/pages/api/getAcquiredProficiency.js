@@ -1,4 +1,4 @@
-import { read } from '../../lib/neo4j'
+import { read } from '../../db/neo4j'
 
 export default async function handler(req, res) {
   const { email } = req.query
@@ -78,10 +78,10 @@ export default async function handler(req, res) {
       userProficiency, 
       proficiencyLevels,
       jobRole;
-  `;
-  
+  `
+
   // Now you can use the 'query' constant in your JavaScript program
-  
+
   const result = await read(query, { email })
   const finalData = formatData(result)
 

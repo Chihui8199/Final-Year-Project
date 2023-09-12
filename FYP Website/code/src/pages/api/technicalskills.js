@@ -1,4 +1,4 @@
-import { read } from '../../lib/neo4j'
+import { read } from '../../db/neo4j'
 
 // TODO:takes in all prevJob and curJob of user
 export default async function handler(req, res) {

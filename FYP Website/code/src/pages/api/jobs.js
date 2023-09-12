@@ -1,4 +1,4 @@
-import { read } from '../../lib/neo4j'
+import { read } from '../../db/neo4j'
 
 export default async function handler(req, res) {
   const query = `
@@ -16,5 +16,5 @@ export default async function handler(req, res) {
     Track: item.n.properties.Track,
     ElementID: item.n.elementId
   }))
-  res.status(200).json({data: reformattedData})
+  res.status(200).json({ data: reformattedData })
 }

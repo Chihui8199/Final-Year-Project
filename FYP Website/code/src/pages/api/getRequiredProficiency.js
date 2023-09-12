@@ -1,4 +1,4 @@
-import { read } from '../../lib/neo4j'
+import { read } from '../../db/neo4j'
 
 export default async function handler(req, res) {
   const queryParams = req.query
@@ -19,13 +19,13 @@ export default async function handler(req, res) {
 
   const reducedArray = Object.values(
     data.reduce((accumulator, current) => {
-      const keyId = current["TSC Key ID"];
-      if (!accumulator[keyId] || current["Proficiency Level"] > accumulator[keyId]["Proficiency Level"]) {
-        accumulator[keyId] = current;
+      const keyId = current['TSC Key ID']
+      if (!accumulator[keyId] || current['Proficiency Level'] > accumulator[keyId]['Proficiency Level']) {
+        accumulator[keyId] = current
       }
-      return accumulator;
+      return accumulator
     }, {})
-  );
-  
+  )
+
   res.status(200).json(reducedArray)
 }

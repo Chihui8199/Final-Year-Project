@@ -3,6 +3,7 @@
     "baseUrl": "."
   },
   "include": [
-    "src"
+    "src",
+    "src/db"
   ]
 }
