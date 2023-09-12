@@ -24,7 +24,6 @@ import { useRouter } from 'next/router'
 const DesiredJob = props => {
   const router = useRouter()
   const { jobTitle } = props
-  console.log('AAAAA', jobTitle)
   return (
     <Card>
       <Grid container spacing={6}>

@@ -61,8 +61,9 @@ const UserAcquiredProficiency = () => {
             </Grid>
             <Grid item xs={12}>
               <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1a-content' id='panel1a-header'>
-                  <Typography>View your Required Skills</Typography>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1a-content' id='panel1a-header' sx={{
+    height: "80px"}} >
+                  <Typography variant='h6' sx={{ marginBottom: 2 }}>View your Required Skills</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   {data.map((item, index) => (
