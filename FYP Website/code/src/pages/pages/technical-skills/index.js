@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import Stepper from '../../../views/stepper/'
+import Stepper from '../../../views/stepper'
 import { useRouter } from 'next/router'
 import { Paper, Grid, Typography } from '@mui/material'
 import { Button } from '@mui/material'
@@ -114,7 +114,7 @@ const TechnicalSkillsProfile = props => {
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
-    router.push('/pages/acquiredtechnical')
+    router.push('/pages/acquired-skills')
   }
 
   return (

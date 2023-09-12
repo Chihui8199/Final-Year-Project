@@ -102,10 +102,10 @@ const FormLayoutsAlignment = () => {
     }
     router.push(
       {
-        pathname: '/pages/technicalskills',
+        pathname: '/pages/technical-skills',
         query: result
       },
-      '/pages/technicalskills'
+      '/pages/technical-skills'
     )
   }
 

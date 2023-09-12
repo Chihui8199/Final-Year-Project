@@ -8,7 +8,7 @@ const navigation = () => {
     {
       title: 'My Skills',
       icon: HomeOutline,
-      path: '/pages/acquiredtechnical',
+      path: '/pages/acquired-skills',
       openInNewTab: false
     },
     {

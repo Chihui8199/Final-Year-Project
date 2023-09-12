@@ -104,7 +104,7 @@ const LoginPage = () => {
 
       if (response.status === 200) {
         // Successful login, handle as needed (e.g., redirect to dashboard)
-        router.push('/pages/acquiredtechnical') // Adjust the URL as needed // TODO: change to routing anme once everthing is finalised
+        router.push('/pages/acquired-skills') // Adjust the URL as needed // TODO: change to routing anme once everthing is finalised
         setUser({ email: values.email });
       } else {
         // Handle login error (e.g., display an error message)
