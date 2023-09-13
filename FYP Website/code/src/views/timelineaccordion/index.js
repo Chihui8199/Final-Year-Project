@@ -1,19 +1,25 @@
-import * as React from 'react'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import Typography from '@mui/material/Typography'
-import Timeline from '@mui/lab/Timeline'
-import TimelineItem from '@mui/lab/TimelineItem'
-import TimelineSeparator from '@mui/lab/TimelineSeparator'
-import TimelineConnector from '@mui/lab/TimelineConnector'
-import TimelineContent from '@mui/lab/TimelineContent'
-import TimelineDot from '@mui/lab/TimelineDot'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import TimelineOppositeContent, { timelineOppositeContentClasses } from '@mui/lab/TimelineOppositeContent'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import ButtonBase from '@mui/material/ButtonBase'
+import React, { useState } from 'react';
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Card,
+  CardContent,
+  ButtonBase
+} from '@mui/material';
+import {
+  Timeline,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineOppositeContent,
+  timelineOppositeContentClasses
+} from '@mui/lab';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 
 const buttonBaseStyles = {
   width: '24px',
@@ -27,35 +33,19 @@ const buttonBaseStyles = {
 
 export default function TimelineAccordion(props) {
   const item = props.data
-  // Find proficiency level to set intial card conten
-  const getInitialAbilityCardContent = () => {
-    // if userProficiency is -1 then set to the lowest proficiency
-    // else set to the lowest proficiency level in the list
-    const userProficiency = item.userAcquiredProficiency
+  const getInitialContent = (data, key) => {
+    const userProficiency = data.userAcquiredProficiency;
     if (userProficiency > 0) {
-      const abilityDesc = item['proficiencyDetails'].find(item => item['proficiencyLevel'] === userProficiency)
-        ?.filteredAbility || ['Description not available']
-      return abilityDesc
-    } else {
-      return item.proficiencyDetails[0].filteredAbility
+        return data.proficiencyDetails.find(item => item.proficiencyLevel === userProficiency)
+            ?.[key] || ['Description not available'];
     }
-  }
-  const getInitialKnowCardContent = () => {
-    // if userProficiency is -1 then set to the lowest proficiency
-    // else set to the lowest proficiency level in the list
-    const userProficiency = item.userAcquiredProficiency
-    if (userProficiency > 0) {
-      const knowDesc = item['proficiencyDetails'].find(item => item['proficiencyLevel'] === userProficiency)
-      ?.filteredKnowledge || ['Description not available']
-      return knowDesc
-    } else {
-      return item.proficiencyDetails[0].filteredKnowledge
-    }
-  }
+    return data.proficiencyDetails[0][key];
+};
+
   // State to track which button is clicked and its associated content
-  const [abilityCardContent, setAbilityCardContent] = React.useState(getInitialAbilityCardContent())
-  const [knowCardContent, setKnowCardContent] = React.useState(getInitialKnowCardContent())
-  const [expanded, setExpanded] = React.useState(false)
+  const [abilityCardContent, setAbilityCardContent] = useState(() => getInitialContent(item, 'filteredAbility'));
+  const [knowCardContent, setKnowCardContent] = useState(() => getInitialContent(item, 'filteredKnowledge'));
+  const [expanded, setExpanded] = useState(false)
 
   const handleAccordionToggle = () => {
     setExpanded(!expanded)
@@ -78,10 +68,7 @@ export default function TimelineAccordion(props) {
     setAbilityCardContent(abilityDesc)
   }
 
-  // TODO: make further improvements to the colour of the dots
-  // Base on certain conditions return the dot colour
   const getDotColour = index => {
-    console.log('item', item)
     const userProficiency = item.userAcquiredProficiency
     const userProficiencyIndex = findProficiencyLevel(userProficiency)
     const jobProficiency = item.jobRequiredProficiency
