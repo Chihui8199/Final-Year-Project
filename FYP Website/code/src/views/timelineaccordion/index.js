@@ -70,6 +70,7 @@ export default function TimelineAccordion(props) {
   // TODO: make further improvements to the colour of the dots
   // Base on certain conditions return the dot colour
   const getDotColour = index => {
+    console.log("item", item)
     const userProficiency = item.userAcquiredProficiency
     const userProficiencyIndex = findProficiencyLevel(userProficiency)
     const jobProficiency = item.jobRequiredProficiency
@@ -79,20 +80,19 @@ export default function TimelineAccordion(props) {
       if (index <= jobRequiredProficiencyIndex) {
         return 'error'
       }
-      
     }
-    if (userProficiencyIndex === jobRequiredProficiencyIndex && index == userProficiencyIndex) {
-      
+    if (userProficiencyIndex < jobRequiredProficiencyIndex) {
+      if (index <= userProficiencyIndex) {
+        return 'success'
+      }
+      if (userProficiencyIndex < index < jobRequiredProficiencyIndex){
+        return 'error'
+      }
+    }
+    if (userProficiency == jobProficiency) {
+      if (index <= jobRequiredProficiencyIndex) {
       return 'success'
-    }
-    if (index == userProficiencyIndex && userProficiencyIndex > jobRequiredProficiencyIndex) {
-      return 'success'
-    }
-    if (index == userProficiencyIndex && userProficiencyIndex < jobRequiredProficiencyIndex) {
-      return 'error'
-    }
-    if (index == jobRequiredProficiencyIndex && userProficiencyIndex < jobRequiredProficiencyIndex) {
-      return 'success'
+      }
     }
     
     return 'secondary'
