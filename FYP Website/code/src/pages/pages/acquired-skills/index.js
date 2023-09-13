@@ -1,78 +1,97 @@
-import React from 'react'
-import TimeLineAccordion from '../../../views/timelineaccordion'
-import { useState, useEffect } from 'react'
-import { Grid, Typography, Card, CardContent, CircularProgress } from '@mui/material'
-import DesiredJob from '../../../views/job-description'
-import { useUserContext } from 'src/context/UserContext'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import React from 'react';
+import TimeLineAccordion from '../../../views/timelineaccordion';
+import { useState, useEffect } from 'react';
+import {
+  Grid,
+  Typography,
+  Card,
+  CardContent,
+  CircularProgress,
+} from '@mui/material';
+import DesiredJob from '../../../views/job-description';
+import { useUserContext } from 'src/context/UserContext';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const UserAcquiredProficiency = () => {
-  const [data, setData] = useState([])
-  const [jobTitle, setJobTitle] = useState('')
-  const { user } = useUserContext()
-  console.log('user from acquired skills page', user?.email)
-  const [loading, setLoading] = useState(true)
-  const [userLoading, setUserLoading] = useState(true)
-  const [accordionExpanded, setAccordionExpanded] = useState(true)
+  const [data, setData] = useState([]);
+  const [jobTitle, setJobTitle] = useState('');
+  const { user } = useUserContext();
+  console.log('user from acquired skills page', user?.email);
+  const [loading, setLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(true);
+  const [accordionExpanded, setAccordionExpanded] = useState(true);
   useEffect(() => {
     if (user) {
-      setUserLoading(false)
+      setUserLoading(false);
     }
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!user) return
+      if (!user) return;
       try {
-        const results = await fetch(`/api/getAcquiredProficiency?email=${user.email}`, {
-          method: 'GET'
-        })
+        const results = await fetch(
+          `/api/getAcquiredProficiency?email=${user.email}`,
+          {
+            method: 'GET',
+          },
+        );
         if (results.ok) {
-          const data = await results.json()
-          setData(data)
-          setJobTitle(data?.[0]?.jobTitle)
+          const data = await results.json();
+          setData(data);
+          setJobTitle(data?.[0]?.jobTitle);
         } else {
-          console.error('Failed to fetch data from /api/jobs')
+          console.error('Failed to fetch data from /api/jobs');
         }
       } catch (error) {
-        console.error('An error occurred while fetching data:', error)
+        console.error('An error occurred while fetching data:', error);
       } finally {
         // Set loading to false when the fetch operation is done
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [user])
+    fetchData();
+  }, [user]);
 
   return (
     <div>
       <Grid item xs={12}>
-        <Typography variant='h4' sx={{ marginBottom: 2 }}>
+        <Typography variant="h4" sx={{ marginBottom: 2 }}>
           My Skills
         </Typography>
-        <Typography variant='body2' sx={{ marginBottom: 2 }}>
-          Track your progress and be informed of the courses you need to upskill and advance in your career.
+        <Typography variant="body2" sx={{ marginBottom: 2 }}>
+          Track your progress and be informed of the courses you need to upskill
+          and advance in your career.
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant='h6' component='div' sx={{ marginBottom: 2 }}>
+        <Typography variant="h6" component="div" sx={{ marginBottom: 2 }}>
           Career Goal
         </Typography>
       </Grid>
       {userLoading || loading ? (
+
         // Render a loading card while fetchData is happening
 
-        <Card style={{ minHeight: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Card
+          style={{
+            minHeight: '20%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <CardContent style={{ textAlign: 'center', width: '100%' }}>
-            <CircularProgress size='10%' style={{ marginBottom: '2%' }} />
-            <Typography variant='body2'>Loading...</Typography>
+            <CircularProgress size="10%" style={{ marginBottom: '2%' }} />
+            <Typography variant="body2">Loading...</Typography>
           </CardContent>
         </Card>
       ) : (
+
         // Render the DesiredJob and Accordion components when loading is false
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -82,16 +101,23 @@ const UserAcquiredProficiency = () => {
           </Grid>
           {data.length > 0 && (
             <Grid item xs={12}>
-              <Accordion expanded={accordionExpanded} onChange={() => setAccordionExpanded(!accordionExpanded)}>
+              <Accordion
+                expanded={accordionExpanded}
+                onChange={() => setAccordionExpanded(!accordionExpanded)}
+              >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
-                  aria-controls='panel1a-content'
-                  id='panel1a-header'
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
                   sx={{
-                    height: '80px'
+                    height: '80px',
                   }}
                 >
-                  <Typography variant='h6' component='div' sx={{ marginBottom: 2, color: 'primary.main' }}>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ marginBottom: 2, color: 'primary.main' }}
+                  >
                     View your Required Skills
                   </Typography>
                 </AccordionSummary>
@@ -106,7 +132,7 @@ const UserAcquiredProficiency = () => {
         </Grid>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default UserAcquiredProficiency
+export default UserAcquiredProficiency;

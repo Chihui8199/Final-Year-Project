@@ -3,6 +3,7 @@ import { read } from '../../db/neo4j'
 // TODO: fix timestamp field
 export default async function handler(req, res) {
   const { email } = req.query
+
   const query = `
   MATCH (user:User {email: "${email}"})-[:HAS_LEARNER_PROFILE]->(learner:LearnerProfile)
   OPTIONAL MATCH (learner)-[:HAS_TARGET_JOB_ROLE]->(desiredJob:Job)
@@ -29,6 +30,7 @@ export default async function handler(req, res) {
 const formatData = result => {
   return result.records.map(record => {
     const user = record.get('user')
+
     const learnerProfiles = record.get('learnerProfiles').map(profile => {
       return {
         uuid: profile.learnerProfiles.uuid,
@@ -49,6 +51,7 @@ const formatData = result => {
         }))
       }
     })
-    return { user, learnerProfiles }
+    
+return { user, learnerProfiles }
   })
 }

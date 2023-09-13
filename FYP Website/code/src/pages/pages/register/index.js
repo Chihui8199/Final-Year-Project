@@ -100,6 +100,7 @@ const RegisterPage = () => {
         router.push('/pages/login') // Example: Redirect to a success page
       } else {
         const data = await response.json()
+
         // Handle registration error, such as displaying an error message to the user
         console.error(data.message) // Log the error message
       }

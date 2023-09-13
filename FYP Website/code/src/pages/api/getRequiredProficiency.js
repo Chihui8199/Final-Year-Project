@@ -2,6 +2,7 @@ import { read } from '../../db/neo4j'
 
 export default async function handler(req, res) {
   const queryParams = req.query
+
   const query = `
   MATCH (n:JobTSC)
   WHERE n.jobid IN  [${queryParams['ids']}] 
@@ -10,6 +11,7 @@ export default async function handler(req, res) {
   RETURN COLLECT({\`TSC Key ID\`: n.\`TSC Key ID\`, \`Proficiency Level\`: n.\`Proficiency Level\`}) AS result`
   const result = await read(query)
   const values = result.records[0]._fields[0]
+
   const data = values.map(item => {
     return {
       'TSC Key ID': item['TSC Key ID'].low,
@@ -23,7 +25,8 @@ export default async function handler(req, res) {
       if (!accumulator[keyId] || current['Proficiency Level'] > accumulator[keyId]['Proficiency Level']) {
         accumulator[keyId] = current
       }
-      return accumulator
+      
+return accumulator
     }, {})
   )
 

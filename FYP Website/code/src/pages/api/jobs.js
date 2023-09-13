@@ -6,6 +6,7 @@ export default async function handler(req, res) {
     `
   const result = await read(query)
   const values = await result.records.map(record => record.toObject())
+
   // clean up the data values
 
   // Create a new array with reformatted data

@@ -1,24 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-
-import {
-    Card,
-    CardContent,
-    Chip,
-    Table,
-    TableRow,
-    TableHead,
-    TableBody,
-    TableCell,
-    Typography,
-    TableContainer,
-    Button,
-    CircularProgress
-} from '@mui/material';
-
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useUserContext } from 'src/context/UserContext';
-
+import React from 'react'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Chip from '@mui/material/Chip'
+import Table from '@mui/material/Table'
+import TableRow from '@mui/material/TableRow'
+import TableHead from '@mui/material/TableHead'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import Typography from '@mui/material/Typography'
+import TableContainer from '@mui/material/TableContainer'
+import Button from '@mui/material/Button'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import CircularProgress from '@mui/material/CircularProgress' // Import CircularProgress for loading state
+import { useUserContext } from 'src/context/UserContext'
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter } from 'next/router'
 
 const ProfileChoice = () => {
   const [data, setData] = useState([])
@@ -28,31 +24,32 @@ const ProfileChoice = () => {
   console.log('user from choose profile page', user?.email)
   const router = useRouter()
 
-  useEffect(() => {
-    if (user) {
-      // Check if user is not null
-      fetchData()
-    }
-  }, [user]) // Make the effect depend on user
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    if (!user || !user.email) return;  // Guard clause
+  
     try {
       const results = await fetch(`/api/getAllLearnerProfiles?email=${user.email}`, {
         method: 'GET'
-      })
+      });
       if (results.ok) {
-        const data = await results.json()
-        setActiveProfileUUID(data.user.state)
-        setData(data.learnerProfiles)
+        const data = await results.json();
+        setActiveProfileUUID(data.user.state);
+        setData(data.learnerProfiles);
       } else {
-        console.error('Failed to fetch data from /api/jobs')
+        console.error('Failed to fetch data from /api/jobs');
       }
     } catch (error) {
-      console.error('An error occurred while fetching data:', error)
+      console.error('An error occurred while fetching data:', error);
     } finally {
-      setLoading(false) // Set loading to false when the fetch operation is done
+      setLoading(false);
     }
-  }
+  }, [user]);
+  
+  useEffect(() => {
+    if (user) {
+      fetchData();
+    }
+  }, [user, fetchData]);
 
   const handleRowClick = async rowData => {
     const response = await fetch(`/api/updateActiveProfile`, {
@@ -61,12 +58,15 @@ const ProfileChoice = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ email: user.email, uuid: rowData.uuid })
-    })
-    fetchData()
+    });
+  
     if (!response.ok) {
-      throw new Error('Network response was not ok')
+      throw new Error('Network response was not ok');
     }
+  
+    fetchData();
   }
+  
 
   return (
     <div>

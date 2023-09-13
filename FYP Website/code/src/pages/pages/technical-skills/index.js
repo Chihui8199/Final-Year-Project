@@ -12,12 +12,6 @@ import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 const TechnicalSkillsProfile = props => {
   const router = useRouter()
   const { user } = useUserContext()
-  // const prevJob = [1082]
-  // const curSector = 'ABC'
-  // const curJobRole = 1461
-  // const targetJobRole = 1251
-  // const queryTechnicalSkillsString = '1082,1461'
-  // TODO: uncommend this later
   const { curJobRole, targetJobRole, queryTechnicalSkillsString } = router.query
   const { prevJob } = router.query
   const [results, setResults] = useState(null)
@@ -88,6 +82,7 @@ const TechnicalSkillsProfile = props => {
       return newState
     })
   }
+
   const handleSubmit = async () => {
     // Basically store all details about this learner profile
     const resultList = Object.keys(finalDefinedProf).map(key => ({

@@ -2,6 +2,7 @@ import { write } from '../../db/neo4j'
 
 export default async function handler(req, res) {
   const { email, uuid } = req.body
+
   const query = `
     MATCH (u:User {email: "${email}"})
     SET u.state = "${uuid}"

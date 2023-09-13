@@ -2,6 +2,7 @@ import { read } from '../../db/neo4j'
 
 export default async function handler(req, res) {
   const { email } = req.query
+
   const query = `
 MATCH (u:User {email: "${email}"})
 WITH u.state AS learnerState
@@ -143,6 +144,7 @@ const formatData = result => {
       jobRequiredProficiency: item.jobProficiency.low,
       userAcquiredProficiency: item.userProficiency.low
     }))
-  return finalRes;
+  
+return finalRes;
 }
 

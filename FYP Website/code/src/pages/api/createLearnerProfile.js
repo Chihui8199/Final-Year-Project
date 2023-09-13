@@ -6,9 +6,11 @@ export default async function handler(req, res) {
 
   // Ensure prevJobs is an array and contains integers
   prevJobs = Array.isArray(prevJobs) ? prevJobs.map(job => parseInt(job, 10)) : [parseInt(prevJobs, 10)]
+
   // Convert curJobRole and targetJobRole to integers
   curJobRole = parseInt(curJobRole, 10)
   targetJobRole = parseInt(targetJobRole, 10)
+
   const query = `
       MATCH (user:User {email: $email})
       CREATE (learner:LearnerProfile {
@@ -34,6 +36,7 @@ export default async function handler(req, res) {
       MERGE (learner)-[:HAS_PROFICIENCY]->(proficiency)
       RETURN learner
 `
+
   const result = await write(query, {
     email: email,
     prevJobs: prevJobs,

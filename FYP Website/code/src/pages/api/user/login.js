@@ -19,13 +19,15 @@ export default async function login(req, res) {
     }
   } catch (e) {
     console.error(e)
-    return res.status(500).json({ message: 'We are experiencing a server error, please try again later' })
+    
+return res.status(500).json({ message: 'We are experiencing a server error, please try again later' })
   }
 }
 
 const getUserDetails = async email => {
   // TODO: Format the query with the user
   const query = `MATCH (user:User { email: $email }) RETURN user`
+
   const parameters = {
     email: email
   }
@@ -34,7 +36,8 @@ const getUserDetails = async email => {
   if (result && result.records.length > 0) {
     const userRecord = result.records[0].get('user')
     const userData = userRecord.properties
-    return userData
+    
+return userData
   } else {
     return null
   }
@@ -43,7 +46,8 @@ const getUserDetails = async email => {
 const comparePassword = async (userProvidedPassword, hashedPassword) => {
   try {
     const isMatch = await bcrypt.compare(userProvidedPassword, hashedPassword)
-    return isMatch
+    
+return isMatch
   } catch (error) {
     throw error // Handle any errors that occur during comparison
   }
