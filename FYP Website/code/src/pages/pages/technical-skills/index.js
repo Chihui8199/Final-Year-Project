@@ -20,11 +20,8 @@ const TechnicalSkillsProfile = props => {
 
   // TODO: can combine this two api calls into one
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchRequiredProficiency = async () => {
       try {
-        // TODO: fetch get required proficiency based on prev and current job only
-        // find the proficiency that the learner has now
-        //const queryJobsString = queryJobs.join(',');
         const jobProf = await fetch(`/api/getRequiredProficiency?ids=${queryTechnicalSkillsString}`, {
           method: 'GET'
         })
@@ -38,12 +35,8 @@ const TechnicalSkillsProfile = props => {
         console.error('An error occurred while fetching data:', error)
       }
     }
-
-    fetchData()
-  }, [])
-
-  useEffect(() => {
-    const fetchData = async () => {
+  
+    const fetchTechnicalSkills = async () => {
       try {
         const result = await fetch(`/api/technicalskills?ids=${queryTechnicalSkillsString}`, {
           method: 'GET'
@@ -58,10 +51,12 @@ const TechnicalSkillsProfile = props => {
         console.error('An error occurred while fetching data:', error)
       }
     }
-
-    fetchData()
-  }, [])
-
+  
+    // Calling both fetch functions
+    fetchRequiredProficiency()
+    fetchTechnicalSkills()
+  }, [queryTechnicalSkillsString]);
+  
   const getFinalProf = indvTSCProfSelection => {
     // Everything child changes this callback, it will be called and you can add the results/modify the state of the results using useState
     const { tscKeyId, profLevel: step } = indvTSCProfSelection
