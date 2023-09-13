@@ -1,4 +1,4 @@
-// ** MUI Imports
+import React from 'react'
 import Card from '@mui/material/Card'
 import Chip from '@mui/material/Chip'
 import Table from '@mui/material/Table'
@@ -10,17 +10,26 @@ import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
 import Button from '@mui/material/Button'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import CircularProgress from '@mui/material/CircularProgress' // Import CircularProgress for loading state
 import { useUserContext } from 'src/context/UserContext'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 
 const ProfileChoice = () => {
   const [data, setData] = useState([])
   const [activeProfileUUID, setActiveProfileUUID] = useState('')
-
+  const [loading, setLoading] = useState(true) // Loading state
   const { user } = useUserContext()
   console.log("user from choose profile page", user?.email)
-  const router = useRouter();
+  const router = useRouter()
+
+
+
+  useEffect(() => {
+    if (user) { // Check if user is not null
+      fetchData();
+    }
+  }, [user]); // Make the effect depend on user
 
   const fetchData = async () => {
     try {
@@ -36,13 +45,11 @@ const ProfileChoice = () => {
       }
     } catch (error) {
       console.error('An error occurred while fetching data:', error);
+    } finally {
+      setLoading(false); // Set loading to false when the fetch operation is done
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+  
   const handleRowClick = async (rowData) => {
     const response = await fetch(`/api/updateActiveProfile`, {
       method: 'POST',
@@ -57,7 +64,6 @@ const ProfileChoice = () => {
     }
   };
 
-
   return (
     <div>
       <Button variant='text' startIcon={<ArrowBackIosIcon />} onClick={() => router.back()}>
@@ -68,47 +74,51 @@ const ProfileChoice = () => {
         Based on your primary learner profile, we will curate course and job recommendations for you.
       </Typography>
       <Card>
-        <TableContainer>
-          <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
-            <TableHead>
-              <TableRow>
-                <TableCell>Career Goal</TableCell>
-                <TableCell>Previous Job Roles</TableCell>
-                <TableCell>Current Job Role</TableCell>
-                <TableCell>Current Active</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map(row => (
-                <TableRow hover key={row.uuid} onClick={() => handleRowClick(row)} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                  <TableCell>{row.desiredJobs[0]?.JobRole}</TableCell>
-                  <TableCell>
-                    <ul>
-                      {row.previousJobs.map((job, index) => (
-                        <li key={index}>{job.JobRole}</li>
-                      ))}
-                    </ul>
-                  </TableCell>
-                  <TableCell>{row.currentJobs[0]?.JobRole}</TableCell>
-                  <TableCell>
-                    {activeProfileUUID === row.uuid && (
-                      <Chip
-                        label='Active'
-                        color='success'
-                        sx={{
-                          height: 24,
-                          fontSize: '0.75rem',
-                          textTransform: 'capitalize',
-                          '& .MuiChip-label': { fontWeight: 500 }
-                        }}
-                      />
-                    )}
-                  </TableCell>
+        {loading ? ( // Show loading card if loading is true
+          <CircularProgress />
+        ) : (
+          <TableContainer>
+            <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Career Goal</TableCell>
+                  <TableCell>Previous Job Roles</TableCell>
+                  <TableCell>Current Job Role</TableCell>
+                  <TableCell>Current Active</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {data.map(row => (
+                  <TableRow hover key={row.uuid} onClick={() => handleRowClick(row)} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                    <TableCell>{row.desiredJobs[0]?.JobRole}</TableCell>
+                    <TableCell>
+                      <ul>
+                        {row.previousJobs.map((job, index) => (
+                          <li key={index}>{job.JobRole}</li>
+                        ))}
+                      </ul>
+                    </TableCell>
+                    <TableCell>{row.currentJobs[0]?.JobRole}</TableCell>
+                    <TableCell>
+                      {activeProfileUUID === row.uuid && (
+                        <Chip
+                          label='Active'
+                          color='success'
+                          sx={{
+                            height: 24,
+                            fontSize: '0.75rem',
+                            textTransform: 'capitalize',
+                            '& .MuiChip-label': { fontWeight: 500 }
+                          }}
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Card>
     </div>
   )
