@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   // Convert curJobRole and targetJobRole to integers
   curJobRole = parseInt(curJobRole, 10)
   targetJobRole = parseInt(targetJobRole, 10)
-
+  console.log("HITTING API CREATE", 'prevJobs', prevJobs, 'curJobRole', curJobRole, 'targetJobRole', targetJobRole, email)
   const query = `
       MATCH (user:User {email: $email})
       CREATE (learner:LearnerProfile {

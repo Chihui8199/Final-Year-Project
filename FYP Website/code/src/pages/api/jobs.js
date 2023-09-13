@@ -14,7 +14,8 @@ export default async function handler(req, res) {
     'Job Role': item.n.properties['Job Role'],
     Sector: item.n.properties.Sector,
     Track: item.n.properties.Track,
-    ElementID: item.n.elementId
+    ElementID: item.n.elementId, 
+    DisplayName: `${item.n.properties['Job Role']} - ${item.n.properties.Sector} - ${item.n.properties.Track}`
   }))
   res.status(200).json({ data: reformattedData })
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import TimeLineAccordion from '../../../views/timelineaccordion'
 import { useState, useEffect } from 'react'
-import { Grid, Typography, Card, CardContent, CircularProgress} from '@mui/material'
+import { Grid, Typography, Card, CardContent, CircularProgress } from '@mui/material'
 import DesiredJob from '../../../views/job-description'
 import { useUserContext } from 'src/context/UserContext'
 import Accordion from '@mui/material/Accordion'
@@ -50,7 +50,7 @@ const UserAcquiredProficiency = () => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant='h6' sx={{ marginBottom: 2 }}>
+        <Typography variant='h6' component='div' sx={{ marginBottom: 2 }}>
           Career Goal
         </Typography>
       </Grid>
@@ -59,7 +59,7 @@ const UserAcquiredProficiency = () => {
         <Card>
           <CardContent>
             <CircularProgress />
-            <Typography variant="body2">Loading...</Typography>
+            <Typography variant='body2'>Loading...</Typography>
           </CardContent>
         </Card>
       ) : (
@@ -72,11 +72,18 @@ const UserAcquiredProficiency = () => {
           </Grid>
           {data.length > 0 && (
             <Grid item xs={12}>
-              <Accordion expanded={true} >
-                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1a-content' id='panel1a-header' sx={{
-                  height: "80px"
-                }}>
-                  <Typography variant='h6' sx={{ marginBottom: 2, color: 'primary.main' }}>View your Required Skills</Typography>
+              <Accordion expanded={true}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls='panel1a-content'
+                  id='panel1a-header'
+                  sx={{
+                    height: '80px'
+                  }}
+                >
+                  <Typography variant='h6' component="div" sx={{ marginBottom: 2, color: 'primary.main' }}>
+                    View your Required Skills
+                  </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   {data.map((item, index) => (

@@ -34,7 +34,7 @@ const DesiredJob = props => {
           <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5.75, 6.25)} !important` }}>
             {!doesProfileExists ? (
               <>
-                <Typography variant='h6' sx={{ marginBottom: 1 }}>
+                <Typography component="div" variant='h6' sx={{ marginBottom: 1 }}>
                   I want to become a
                 </Typography>
                 <Typography
@@ -46,10 +46,11 @@ const DesiredJob = props => {
               </>
             ) : (
               <Typography
+                component="div"
                 variant='h2'
                 sx={{ color: 'primary.main', marginBottom: 2.5, lineHeight: 1, fontWeight: 600 }}
               >
-                <Typography variant='h6' sx={{ marginBottom: 1 }}>
+                <Typography  component="div" variant='h6' sx={{ marginBottom: 1 }}>
                  Create Your Profile Now!
                 </Typography>
               </Typography>
@@ -85,7 +86,7 @@ const DesiredJob = props => {
           >
             <Box>
               <Box sx={{ mb: 3.5, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Typography variant='h6' sx={{ lineHeight: 1, fontWeight: 600 }}>
+                <Typography component="div" variant='h6' sx={{ lineHeight: 1, fontWeight: 600 }}>
                   Have more career goals?
                 </Typography>
               </Box>

@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button'
-import Chip from '@mui/material/Chip'
-import InputLabel from '@mui/material/InputLabel'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import Select from '@mui/material/Select'
-import Box from '@mui/material/Box'
-import MenuItem from '@mui/material/MenuItem'
-import { styled } from '@mui/material/styles'
-import CardContent from '@mui/material/CardContent'
 import { useRouter } from 'next/router'
+
+import {
+  Card,
+  Grid,
+  Button,
+  Chip,
+  InputLabel,
+  OutlinedInput,
+  Select,
+  Box,
+  MenuItem,
+  CardContent,
+  Autocomplete,
+  TextField
+} from '@mui/material'
+
+import { styled } from '@mui/material/styles'
+import { createFilterOptions } from '@mui/material/Autocomplete'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -33,28 +40,27 @@ const Form = styled('form')(({ theme }) => ({
 
 const FormLayoutsAlignment = () => {
   const router = useRouter()
-  const [jobData, setJobData] = useState(null)
-  const [sectors, setSectors] = useState([])
-  const [jobOptions, setJobOptions] = useState([])
-  const [curSector, setCurSector] = useState('')
+  const [jobData, setJobData] = useState([])
   const [curJobRole, setCurRole] = useState('')
   const [targetJobRole, setTargetRole] = useState('')
-  const [prevJob, setPrevJobName] = useState([])
+  const [prevJob, setPrevJobIds] = useState([])
 
-  const handlePreviousJobs = event => {
-    setPrevJobName(event.target.value)
+  const handlePreviousJobs = (event, values) => {
+    const ids = values.map(item => item.JobId)
+    console.log('ids', ids)
+    setPrevJobIds(ids)
   }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // TODO: job list does not need to continously
-        const result = await fetch('/api/jobs',  { cache: 'force-cache' })
+        const result = await fetch('/api/jobs')
+        //const result = await fetch('/api/jobs', { cache: 'force-cache', next: { revalidate: 3600 } })
+
         if (result.ok) {
           const data = await result.json()
-          const sectors = [...new Set(data.data.map(item => item.Sector).filter(sector => sector !== null))]
+          //const sectors = [...new Set(data.data.map(item => item.Sector).filter(sector => sector !== null))]
           setJobData(data.data)
-          setSectors(sectors)
         } else {
           console.error('Failed to fetch data from /api/jobs')
         }
@@ -62,45 +68,32 @@ const FormLayoutsAlignment = () => {
         console.error('An error occurred while fetching data:', error)
       }
     }
-    console.log('calling fetchData')
     fetchData()
   }, [])
 
-  useEffect(() => {
-    let jobOptions = null
-    if (jobData) {
-      jobOptions = Object.entries(jobData).map(([idx, job]) => (
-        <MenuItem key={idx} value={job.JobId}>
-          {job['Job Role']}
-        </MenuItem>
-      ))
-    }
-    setJobOptions(jobOptions)
-  }, [jobData])
-
-  const handleSelectCurSector = e => {
-    setCurSector(e.target.value)
+  const handleCurJobRole = (event, value) => {
+    const curJobID = value.JobId
+    console.log("curJobID", curJobID)
+    setCurRole(curJobID)
   }
 
-  const handleCurJobRole = e => {
-    setCurRole(e.target.value)
-  }
-
-  const handleTargetJobRole = e => {
-    setTargetRole(e.target.value)
+  const handleTargetJobRole = (event, value) => {
+    const targetJobID = value.JobId
+    console.log("targetJobID", targetJobID)
+    setTargetRole(targetJobID)
   }
 
   const handleOnClick = e => {
     // TODO: look into why prevJob turns in an string when there's only one element??
-    const queryTechnicalSkills = [...prevJob, curJobRole];
-    const queryTechnicalSkillsString = queryTechnicalSkills.join(',');
+    const queryTechnicalSkills = [...prevJob, curJobRole]
+    const queryTechnicalSkillsString = queryTechnicalSkills.join(',')
     const result = {
       prevJob,
-      curSector,
       curJobRole,
-      targetJobRole, 
+      targetJobRole,
       queryTechnicalSkillsString
     }
+    console.log("PUSHING THESE STUFF TO NEXT", result)
     router.push(
       {
         pathname: '/pages/technical-skills',
@@ -110,6 +103,11 @@ const FormLayoutsAlignment = () => {
     )
   }
 
+  const filterOptions = createFilterOptions({
+    matchFrom: 'any',
+    limit: 500
+  })
+
   return (
     <Card>
       <CardContent sx={{ minHeight: 500, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -117,70 +115,59 @@ const FormLayoutsAlignment = () => {
           <Grid container spacing={10}>
             <Grid item xs={12}>
               <InputLabel id='demo-multiple-chip-label'>Previous Job Role(s)</InputLabel>
-              <Select
-                labelId='demo-multiple-chip-label'
-                id='demo-multiple-chip'
+              <Autocomplete
                 multiple
-                value={prevJob}
-                onChange={handlePreviousJobs}
-                input={<OutlinedInput id='select-multiple-chip' label='Chip' />}
-                renderValue={selected => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map(id => {
-                      const job = jobData.find(item => item.JobId === id)
-                      const label = job ? job['Job Role'] : ''
-                      return <Chip key={id} label={label} />
-                    })}
+                id='tags-standard'
+                options={jobData}
+                getOptionLabel={option => option.DisplayName}
+                renderOption={(props, option) => (
+                  <Box component='li' key={option.JobId} {...props}>
+                    {option.DisplayName}
                   </Box>
                 )}
-                MenuProps={MenuProps}
-                sx={{ width: '100%' }}
-              >
-                {jobOptions}
-              </Select>
-            </Grid>
-            <Grid item xs={12}>
-              <InputLabel id='demo-multiple-chip-label'>Current Sector</InputLabel>
-              <Select
-                labelId='demo-simple-select-label'
-                id='demo-simple-select'
-                value={curSector}
-                label='Age'
-                onChange={handleSelectCurSector}
-                sx={{ width: '100%' }}
-              >
-                {sectors.map((q, index) => (
-                  <MenuItem key={index} value={q}>
-                    {q}
-                  </MenuItem>
-                ))}
-              </Select>
+                onChange={handlePreviousJobs}
+                filterOptions={filterOptions}
+                isOptionEqualToValue={(option, value) => option['Job Role'] === value['Job Role']}
+                renderInput={params => <TextField {...params} variant='standard' placeholder='Enter your previous jobs ' />}
+              />
             </Grid>
             <Grid item xs={12}>
               <InputLabel id='demo-multiple-chip-label'>Current Job Role</InputLabel>
-              <Select
-                labelId='demo-simple-select-label'
-                id='demo-simple-select'
-                value={curJobRole}
-                label='Age'
-                onChange={handleCurJobRole}
+              <Autocomplete
+                disablePortal
+                id='combo-box-demo'
+                options={jobData}
+                getOptionLabel={option => option.DisplayName}
+                filterOptions={filterOptions}
+                isOptionEqualToValue={(option, value) => option['Job Role'] === value['Job Role']}
+                renderOption={(props, option) => (
+                  <Box component='li' key={option.JobId} {...props}>
+                    {option.DisplayName}
+                  </Box>
+                )}
                 sx={{ width: '100%' }}
-              >
-                {jobOptions}
-              </Select>
+                onChange={handleCurJobRole}
+                renderInput={params => <TextField {...params}/>}
+              />
             </Grid>
             <Grid item xs={12}>
               <InputLabel id='demo-multiple-chip-label'>Desired Job Role</InputLabel>
-              <Select
-                labelId='demo-simple-select-label'
-                id='demo-simple-select'
-                value={targetJobRole}
-                label='Age'
-                onChange={handleTargetJobRole}
+              <Autocomplete
+                disablePortal
+                id='combo-box-demo'
+                options={jobData}
+                getOptionLabel={option => option.DisplayName}
+                filterOptions={filterOptions}
+                isOptionEqualToValue={(option, value) => option['Job Role'] === value['Job Role']}
+                renderOption={(props, option) => (
+                  <Box component='li' key={option.JobId} {...props}>
+                    {option.DisplayName}
+                  </Box>
+                )}
                 sx={{ width: '100%' }}
-              >
-                {jobOptions}
-              </Select>
+                onChange={handleTargetJobRole}
+                renderInput={params => <TextField {...params}/>}
+              />
             </Grid>
             <Grid item xs={12}>
               <Button size='large' type='submit' onClick={handleOnClick} variant='contained' sx={{ width: '100%' }}>

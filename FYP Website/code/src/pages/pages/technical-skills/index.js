@@ -18,7 +18,8 @@ const TechnicalSkillsProfile = props => {
   // const targetJobRole = 1251
   // const queryTechnicalSkillsString = '1082,1461'
   // TODO: uncommend this later
-  const { curSector, curJobRole, targetJobRole, queryTechnicalSkillsString } = router.query
+  const { curJobRole, targetJobRole, queryTechnicalSkillsString } = router.query
+  console.log("PASSED HERE", curJobRole, "targetJob", targetJobRole, "string", queryTechnicalSkillsString)
   const { prevJob } = router.query;
   const [results, setResults] = useState(null)
   const [profFilteringList, setFilteringList] = useState([])
@@ -102,6 +103,8 @@ const TechnicalSkillsProfile = props => {
       curJobRole: curJobRole,
       targetJobRole: targetJobRole,
     }
+
+    console.log("HITTING SUBMIT API", final)
 
     const response = await fetch(`/api/createLearnerProfile`, {
       method: 'POST',
