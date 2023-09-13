@@ -18,7 +18,7 @@ import ButtonBase from '@mui/material/ButtonBase'
 const buttonBaseStyles = {
   width: '24px',
   height: '24px',
-  borderRadius: '50%', 
+  borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -36,13 +36,11 @@ export default function TimelineAccordion(props) {
     setExpanded(!expanded)
   }
   // Find index for that proficiency level
-  const findProficiencyLevel = (proficiencyLevel) => {
-
+  const findProficiencyLevel = proficiencyLevel => {
     const levels = item.proficiencyLevel.map(item => item.proficiencyLevel)
     const index = levels.findIndex(item => item === proficiencyLevel)
     return index // TODO: adds error handing: return -1 if prof level not inside
   }
-
 
   // Event handler for the TimelineDot click event
   const handleDotClick = (index, proficiencyLevel) => {
@@ -55,24 +53,24 @@ export default function TimelineAccordion(props) {
 
   // TODO: make further improvements to the colour of the dots
   // Base on certain conditions return the dot colour
-  const getDotColour = (index) =>{ 
+  const getDotColour = index => {
     const userProficiency = item.userAcquiredProficiency
     const userProficiencyIndex = findProficiencyLevel(userProficiency)
     const jobProficiency = item.jobRequiredProficiency
     const jobRequiredProficiencyIndex = findProficiencyLevel(jobProficiency)
-    if (userProficiencyIndex === jobRequiredProficiencyIndex && index == userProficiencyIndex){
-      return "success"
+    if (userProficiencyIndex === jobRequiredProficiencyIndex && index == userProficiencyIndex) {
+      return 'success'
     }
     if (index == jobRequiredProficiencyIndex && userProficiencyIndex > jobRequiredProficiencyIndex) {
-      return "success"
-    } 
+      return 'success'
+    }
     if (index == userProficiencyIndex && userProficiencyIndex < jobRequiredProficiencyIndex) {
-      return "error"
-    } 
+      return 'error'
+    }
     if (index == jobRequiredProficiencyIndex && userProficiencyIndex < jobRequiredProficiencyIndex) {
-      return "success"
-    } 
-    return "secondary"
+      return 'success'
+    }
+    return 'secondary'
   }
 
   return (
@@ -110,13 +108,13 @@ export default function TimelineAccordion(props) {
             </Timeline>
           </CardContent>
           <CardContent style={{ flex: 0.8, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Typography variant='body2'>
-              <ul>
+            <ul>
+              <Typography variant='body2'>
                 {activeCardContent.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
-              </ul>
-            </Typography>
+              </Typography>
+            </ul>
           </CardContent>
         </Card>
       </AccordionDetails>

@@ -49,7 +49,7 @@ const ProfileChoice = () => {
       setLoading(false); // Set loading to false when the fetch operation is done
     }
   };
-  
+
   const handleRowClick = async (rowData) => {
     const response = await fetch(`/api/updateActiveProfile`, {
       method: 'POST',
@@ -92,11 +92,13 @@ const ProfileChoice = () => {
                   <TableRow hover key={row.uuid} onClick={() => handleRowClick(row)} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                     <TableCell>{row.desiredJobs[0]?.JobRole}</TableCell>
                     <TableCell>
+                    <div>
                       <ul>
                         {row.previousJobs.map((job, index) => (
                           <li key={index}>{job.JobRole}</li>
                         ))}
                       </ul>
+                      </div>
                     </TableCell>
                     <TableCell>{row.currentJobs[0]?.JobRole}</TableCell>
                     <TableCell>
