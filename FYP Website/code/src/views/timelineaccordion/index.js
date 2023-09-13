@@ -25,11 +25,27 @@ const buttonBaseStyles = {
   cursor: 'pointer'
 }
 
+
+
 export default function TimelineAccordion(props) {
   const item = props.data
+
+    // Find proficiency level to set intial card conten
+  const getInitialCardContent = () => {
+      // if userProficiency is -1 then set to the lowest proficiency 
+      // else set to the lowest proficiency level in the list
+      const userProficiency = item.userAcquiredProficiency
+      if (userProficiency > 0) {
+      const abilityDesc = item['proficiencyLevel'].find(item => item['proficiencyLevel'] === userProficiency)
+        ?.filteredAbility || ['Description not available']
+        return abilityDesc
+      } else {
+        return item.proficiencyLevel[0].filteredAbility
+      }
+    }
   // State to track which button is clicked and its associated content
   const [activeButtonIndex, setActiveButtonIndex] = React.useState(null)
-  const [activeCardContent, setActiveCardContent] = React.useState([])
+  const [activeCardContent, setActiveCardContent] = React.useState(getInitialCardContent())
   const [expanded, setExpanded] = React.useState(false)
 
   const handleAccordionToggle = () => {
@@ -58,10 +74,18 @@ export default function TimelineAccordion(props) {
     const userProficiencyIndex = findProficiencyLevel(userProficiency)
     const jobProficiency = item.jobRequiredProficiency
     const jobRequiredProficiencyIndex = findProficiencyLevel(jobProficiency)
+    if (userProficiency === -1){
+      // Make all dots till job required proficiency level red
+      if (index <= jobRequiredProficiencyIndex) {
+        return 'error'
+      }
+      
+    }
     if (userProficiencyIndex === jobRequiredProficiencyIndex && index == userProficiencyIndex) {
+      
       return 'success'
     }
-    if (index == jobRequiredProficiencyIndex && userProficiencyIndex > jobRequiredProficiencyIndex) {
+    if (index == userProficiencyIndex && userProficiencyIndex > jobRequiredProficiencyIndex) {
       return 'success'
     }
     if (index == userProficiencyIndex && userProficiencyIndex < jobRequiredProficiencyIndex) {
@@ -70,8 +94,10 @@ export default function TimelineAccordion(props) {
     if (index == jobRequiredProficiencyIndex && userProficiencyIndex < jobRequiredProficiencyIndex) {
       return 'success'
     }
+    
     return 'secondary'
   }
+
 
   return (
     <Accordion expanded={expanded} onChange={handleAccordionToggle}>
