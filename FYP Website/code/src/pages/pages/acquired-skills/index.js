@@ -16,6 +16,7 @@ const UserAcquiredProficiency = () => {
   console.log("user from acquired skills page", user?.email)
   const [loading, setLoading] = useState(true)
   const [userLoading, setUserLoading] = useState(true)
+  const [accordionExpanded, setAccordionExpanded] = useState(true);
   useEffect(() => {
     if(user) {
       setUserLoading(false)
@@ -81,7 +82,7 @@ const UserAcquiredProficiency = () => {
           </Grid>
           {data.length > 0 && (
             <Grid item xs={12}>
-              <Accordion expanded={true}>
+                <Accordion expanded={accordionExpanded} onChange={() => setAccordionExpanded(!accordionExpanded)}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls='panel1a-content'
