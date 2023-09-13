@@ -47,7 +47,6 @@ const FormLayoutsAlignment = () => {
 
   const handlePreviousJobs = (event, values) => {
     const ids = values.map(item => item.JobId)
-    console.log('ids', ids)
     setPrevJobIds(ids)
   }
 
@@ -73,13 +72,11 @@ const FormLayoutsAlignment = () => {
 
   const handleCurJobRole = (event, value) => {
     const curJobID = value.JobId
-    console.log("curJobID", curJobID)
     setCurRole(curJobID)
   }
 
   const handleTargetJobRole = (event, value) => {
     const targetJobID = value.JobId
-    console.log("targetJobID", targetJobID)
     setTargetRole(targetJobID)
   }
 
@@ -93,7 +90,6 @@ const FormLayoutsAlignment = () => {
       targetJobRole,
       queryTechnicalSkillsString
     }
-    console.log("PUSHING THESE STUFF TO NEXT", result)
     router.push(
       {
         pathname: '/pages/technical-skills',

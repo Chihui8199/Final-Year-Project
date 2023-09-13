@@ -14,7 +14,6 @@ const UserAcquiredProficiency = () => {
   const [jobTitle, setJobTitle] = useState('')
   const { user } = useUserContext()
   const [loading, setLoading] = useState(true)
-  console.log('user', user)
   useEffect(() => {
     const fetchData = async () => {
       try {

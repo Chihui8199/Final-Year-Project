@@ -25,7 +25,6 @@ const DesiredJob = props => {
   const router = useRouter()
   const { jobTitle } = props
   const doesProfileExists = jobTitle === undefined || jobTitle === '';
-  console.log("FLAG", doesProfileExists)
 
   return (
     <Card>

@@ -23,9 +23,7 @@ const ProfileChoice = () => {
 
   const fetchData = async () => {
     try {
-      // TODO: fix broken login
-      const email = 'testing@gmail.com';
-      const results = await fetch(`/api/getAllLearnerProfiles?email=${email}`, {
+      const results = await fetch(`/api/getAllLearnerProfiles?email=${user.email}`, {
         method: 'GET'
       });
       if (results.ok) {
@@ -44,15 +42,13 @@ const ProfileChoice = () => {
     fetchData();
   }, []);
 
- // TODO: handle userProfile shitz
-  console.log('User Profile data', data.user)
   const handleRowClick = async (rowData) => {
     const response = await fetch(`/api/updateActiveProfile`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({email: "testing@gmail.com", uuid: rowData.uuid})
+      body: JSON.stringify({email: user.email, uuid: rowData.uuid})
     })
     fetchData();
     if (!response.ok) {
