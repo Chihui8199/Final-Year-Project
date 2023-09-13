@@ -48,7 +48,8 @@ const FormLayoutsAlignment = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await fetch('/api/jobs')
+        // TODO: job list does not need to continously
+        const result = await fetch('/api/jobs',  { cache: 'force-cache' })
         if (result.ok) {
           const data = await result.json()
           const sectors = [...new Set(data.data.map(item => item.Sector).filter(sector => sector !== null))]
@@ -61,7 +62,7 @@ const FormLayoutsAlignment = () => {
         console.error('An error occurred while fetching data:', error)
       }
     }
-
+    console.log('calling fetchData')
     fetchData()
   }, [])
 
