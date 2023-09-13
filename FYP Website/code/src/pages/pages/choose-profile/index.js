@@ -1,68 +1,72 @@
-import React from 'react'
-import Card from '@mui/material/Card'
-import Chip from '@mui/material/Chip'
-import Table from '@mui/material/Table'
-import TableRow from '@mui/material/TableRow'
-import TableHead from '@mui/material/TableHead'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import Typography from '@mui/material/Typography'
-import TableContainer from '@mui/material/TableContainer'
-import Button from '@mui/material/Button'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import CircularProgress from '@mui/material/CircularProgress' // Import CircularProgress for loading state
-import { useUserContext } from 'src/context/UserContext'
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+
+import {
+    Card,
+    CardContent,
+    Chip,
+    Table,
+    TableRow,
+    TableHead,
+    TableBody,
+    TableCell,
+    Typography,
+    TableContainer,
+    Button,
+    CircularProgress
+} from '@mui/material';
+
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { useUserContext } from 'src/context/UserContext';
+
 
 const ProfileChoice = () => {
   const [data, setData] = useState([])
   const [activeProfileUUID, setActiveProfileUUID] = useState('')
   const [loading, setLoading] = useState(true) // Loading state
   const { user } = useUserContext()
-  console.log("user from choose profile page", user?.email)
+  console.log('user from choose profile page', user?.email)
   const router = useRouter()
 
-
-
   useEffect(() => {
-    if (user) { // Check if user is not null
-      fetchData();
+    if (user) {
+      // Check if user is not null
+      fetchData()
     }
-  }, [user]); // Make the effect depend on user
+  }, [user]) // Make the effect depend on user
 
   const fetchData = async () => {
     try {
       const results = await fetch(`/api/getAllLearnerProfiles?email=${user.email}`, {
         method: 'GET'
-      });
+      })
       if (results.ok) {
-        const data = await results.json();
-        setActiveProfileUUID(data.user.state);
-        setData(data.learnerProfiles);
+        const data = await results.json()
+        setActiveProfileUUID(data.user.state)
+        setData(data.learnerProfiles)
       } else {
-        console.error('Failed to fetch data from /api/jobs');
+        console.error('Failed to fetch data from /api/jobs')
       }
     } catch (error) {
-      console.error('An error occurred while fetching data:', error);
+      console.error('An error occurred while fetching data:', error)
     } finally {
-      setLoading(false); // Set loading to false when the fetch operation is done
+      setLoading(false) // Set loading to false when the fetch operation is done
     }
-  };
+  }
 
-  const handleRowClick = async (rowData) => {
+  const handleRowClick = async rowData => {
     const response = await fetch(`/api/updateActiveProfile`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({email: user.email, uuid: rowData.uuid})
+      body: JSON.stringify({ email: user.email, uuid: rowData.uuid })
     })
-    fetchData();
+    fetchData()
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
-  };
+  }
 
   return (
     <div>
@@ -75,7 +79,12 @@ const ProfileChoice = () => {
       </Typography>
       <Card>
         {loading ? ( // Show loading card if loading is true
-          <CircularProgress />
+          <Card style={{ minHeight: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <CardContent style={{ textAlign: 'center', width: '100%' }}>
+              <CircularProgress size='10%' style={{ marginBottom: '2%' }} />
+              <Typography variant='body2'>Loading...</Typography>
+            </CardContent>
+          </Card>
         ) : (
           <TableContainer>
             <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
@@ -89,15 +98,20 @@ const ProfileChoice = () => {
               </TableHead>
               <TableBody>
                 {data.map(row => (
-                  <TableRow hover key={row.uuid} onClick={() => handleRowClick(row)} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                  <TableRow
+                    hover
+                    key={row.uuid}
+                    onClick={() => handleRowClick(row)}
+                    sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}
+                  >
                     <TableCell>{row.desiredJobs[0]?.JobRole}</TableCell>
                     <TableCell>
-                    <div>
-                      <ul>
-                        {row.previousJobs.map((job, index) => (
-                          <li key={index}>{job.JobRole}</li>
-                        ))}
-                      </ul>
+                      <div>
+                        <ul>
+                          {row.previousJobs.map((job, index) => (
+                            <li key={index}>{job.JobRole}</li>
+                          ))}
+                        </ul>
                       </div>
                     </TableCell>
                     <TableCell>{row.currentJobs[0]?.JobRole}</TableCell>

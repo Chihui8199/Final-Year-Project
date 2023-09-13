@@ -13,20 +13,19 @@ const UserAcquiredProficiency = () => {
   const [data, setData] = useState([])
   const [jobTitle, setJobTitle] = useState('')
   const { user } = useUserContext()
-  console.log("user from acquired skills page", user?.email)
+  console.log('user from acquired skills page', user?.email)
   const [loading, setLoading] = useState(true)
   const [userLoading, setUserLoading] = useState(true)
-  const [accordionExpanded, setAccordionExpanded] = useState(true);
+  const [accordionExpanded, setAccordionExpanded] = useState(true)
   useEffect(() => {
-    if(user) {
+    if (user) {
       setUserLoading(false)
     }
   }, [user])
-  
-  
+
   useEffect(() => {
     const fetchData = async () => {
-      if (!user) return; 
+      if (!user) return
       try {
         const results = await fetch(`/api/getAcquiredProficiency?email=${user.email}`, {
           method: 'GET'
@@ -66,9 +65,10 @@ const UserAcquiredProficiency = () => {
       </Grid>
       {userLoading || loading ? (
         // Render a loading card while fetchData is happening
-        <Card>
-          <CardContent>
-            <CircularProgress />
+
+        <Card style={{ minHeight: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <CardContent style={{ textAlign: 'center', width: '100%' }}>
+            <CircularProgress size='10%' style={{ marginBottom: '2%' }} />
             <Typography variant='body2'>Loading...</Typography>
           </CardContent>
         </Card>
@@ -82,7 +82,7 @@ const UserAcquiredProficiency = () => {
           </Grid>
           {data.length > 0 && (
             <Grid item xs={12}>
-                <Accordion expanded={accordionExpanded} onChange={() => setAccordionExpanded(!accordionExpanded)}>
+              <Accordion expanded={accordionExpanded} onChange={() => setAccordionExpanded(!accordionExpanded)}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls='panel1a-content'
@@ -91,7 +91,7 @@ const UserAcquiredProficiency = () => {
                     height: '80px'
                   }}
                 >
-                  <Typography variant='h6' component="div" sx={{ marginBottom: 2, color: 'primary.main' }}>
+                  <Typography variant='h6' component='div' sx={{ marginBottom: 2, color: 'primary.main' }}>
                     View your Required Skills
                   </Typography>
                 </AccordionSummary>
