@@ -81,12 +81,17 @@ export default function TimelineAccordion(props) {
         return 'error'
       }
     }
-    if (userProficiencyIndex < jobRequiredProficiencyIndex) {
+    if (userProficiency < jobProficiency) {
       if (index <= userProficiencyIndex) {
         return 'success'
       }
-      if (userProficiencyIndex < index < jobRequiredProficiencyIndex){
+      if (userProficiencyIndex < index && index <= jobRequiredProficiencyIndex){
         return 'error'
+      }
+    }
+    if (userProficiency > jobProficiency) {
+      if (index <= userProficiencyIndex) {
+        return 'success'
       }
     }
     if (userProficiency == jobProficiency) {
