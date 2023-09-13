@@ -1,13 +1,5 @@
-import React, { useState } from 'react';
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  Card,
-  CardContent,
-  ButtonBase
-} from '@mui/material';
+import React, { useState } from 'react'
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Card, CardContent, ButtonBase } from '@mui/material'
 import {
   Timeline,
   TimelineItem,
@@ -17,9 +9,8 @@ import {
   TimelineDot,
   TimelineOppositeContent,
   timelineOppositeContentClasses
-} from '@mui/lab';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+} from '@mui/lab'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 const buttonBaseStyles = {
   width: '24px',
@@ -33,18 +24,27 @@ const buttonBaseStyles = {
 
 export default function TimelineAccordion(props) {
   const item = props.data
+  const { userAcquiredProficiency, jobRequiredProficiency, tscTitle } = item
+
+
+  const getDescription = (proficiencyLevel, key) => {
+    return (
+      item.proficiencyDetails.find(details => details.proficiencyLevel === proficiencyLevel)?.[key] || [
+        'Description not available'
+      ]
+    )
+  }
+
   const getInitialContent = (data, key) => {
-    const userProficiency = data.userAcquiredProficiency;
-    if (userProficiency > 0) {
-        return data.proficiencyDetails.find(item => item.proficiencyLevel === userProficiency)
-            ?.[key] || ['Description not available'];
+    if (userAcquiredProficiency > 0) {
+      return getDescription(userAcquiredProficiency, key);
     }
-    return data.proficiencyDetails[0][key];
-};
+    return data.proficiencyDetails[0][key]
+  }
 
   // State to track which button is clicked and its associated content
-  const [abilityCardContent, setAbilityCardContent] = useState(() => getInitialContent(item, 'filteredAbility'));
-  const [knowCardContent, setKnowCardContent] = useState(() => getInitialContent(item, 'filteredKnowledge'));
+  const [abilityCardContent, setAbilityCardContent] = useState(() => getInitialContent(item, 'filteredAbility'))
+  const [knowCardContent, setKnowCardContent] = useState(() => getInitialContent(item, 'filteredKnowledge'))
   const [expanded, setExpanded] = useState(false)
 
   const handleAccordionToggle = () => {
@@ -59,27 +59,21 @@ export default function TimelineAccordion(props) {
 
   // Event handler for the TimelineDot click event
   const handleDotClick = (index, proficiencyLevel) => {
-    // TODO: maybe you want to set the proficiency level here
-    const abilityDesc = item['proficiencyDetails'].find(item => item['proficiencyLevel'] === proficiencyLevel)
-      ?.filteredAbility || ['Description not available']
-      const knowDesc = item['proficiencyDetails'].find(item => item['proficiencyLevel'] === proficiencyLevel)
-      ?.filteredKnowledge || ['Description not available']
-    setKnowCardContent(knowDesc)
-    setAbilityCardContent(abilityDesc)
+    setAbilityCardContent(getDescription(proficiencyLevel, 'filteredAbility'))
+    setKnowCardContent(getDescription(proficiencyLevel, 'filteredKnowledge'))
   }
 
+
   const getDotColour = index => {
-    const userProficiency = item.userAcquiredProficiency
-    const userProficiencyIndex = findProficiencyLevel(userProficiency)
-    const jobProficiency = item.jobRequiredProficiency
-    const jobRequiredProficiencyIndex = findProficiencyLevel(jobProficiency)
-    if (userProficiency === -1) {
+    const userProficiencyIndex = findProficiencyLevel(userAcquiredProficiency)
+    const jobRequiredProficiencyIndex = findProficiencyLevel(jobRequiredProficiency)
+    if (userAcquiredProficiency === -1) {
       // Make all dots till job required proficiency level red
       if (index <= jobRequiredProficiencyIndex) {
         return 'error'
       }
     }
-    if (userProficiency < jobProficiency) {
+    if (userAcquiredProficiency < jobRequiredProficiency) {
       if (index <= userProficiencyIndex) {
         return 'success'
       }
@@ -87,12 +81,12 @@ export default function TimelineAccordion(props) {
         return 'error'
       }
     }
-    if (userProficiency > jobProficiency) {
+    if (userAcquiredProficiency > jobRequiredProficiency) {
       if (index <= userProficiencyIndex) {
         return 'success'
       }
     }
-    if (userProficiency == jobProficiency) {
+    if (userAcquiredProficiency == jobRequiredProficiency) {
       if (index <= jobRequiredProficiencyIndex) {
         return 'success'
       }
@@ -104,7 +98,7 @@ export default function TimelineAccordion(props) {
   return (
     <Accordion expanded={expanded} onChange={handleAccordionToggle}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant='h6'>{item.tscTitle}</Typography>
+        <Typography variant='h6'>{tscTitle}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Card style={{ display: 'flex', width: '100%' }}>
@@ -139,21 +133,21 @@ export default function TimelineAccordion(props) {
           </CardContent>
           <CardContent style={{ flex: 0.8, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <ul>
-               <Typography variant='h6'>Ability Required</Typography>
+              <Typography variant='h6'>Ability Required</Typography>
               <Typography variant='body2'>
                 {abilityCardContent.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
-        
               </Typography>
-              <Typography variant='h6' style={{ marginTop: '20px' }}>Knowledge Required</Typography>
+              <Typography variant='h6' style={{ marginTop: '20px' }}>
+                Knowledge Required
+              </Typography>
               <Typography variant='body2'>
                 {knowCardContent.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
               </Typography>
             </ul>
-            
           </CardContent>
         </Card>
       </AccordionDetails>
