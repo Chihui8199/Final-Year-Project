@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     WITH 
         TSCKeyID, 
         CASE 
-            WHEN SIZE(otherJobProficiencies) > 0 THEN REDUCE(maxProf = 7, p IN otherJobProficiencies | CASE WHEN p > maxProf THEN p ELSE maxProf END)
+            WHEN SIZE(otherJobProficiencies) > 0 THEN REDUCE(maxProf = 0, p IN otherJobProficiencies | CASE WHEN p > maxProf THEN p ELSE maxProf END)
             ELSE 7
         END AS newProficiencyLevel
 
