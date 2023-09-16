@@ -12,6 +12,7 @@ import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
 const TechnicalSkillsProfile = (props) => {
   const router = useRouter();
   const { user } = useUserContext();
+
   const { curJobRole, targetJobRole, queryTechnicalSkillsString } =
     router.query;
   const { prevJob } = router.query;

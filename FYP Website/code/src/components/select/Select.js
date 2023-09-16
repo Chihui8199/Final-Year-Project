@@ -10,6 +10,7 @@ import Chip from '@mui/material/Chip';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+
 const MenuProps = {
   PaperProps: {
     style: {
@@ -44,13 +45,15 @@ export default function MultipleSelectChip(props) {
     setPersonName((prevPersonName) => {
       const updatedPersonName = [...prevPersonName];
       updatedPersonName.push(newValue);
-      return updatedPersonName;
+      
+return updatedPersonName;
     });
   };
 
   const selection = props.choices
   const label = props.label
-  return (
+  
+return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
         

@@ -11,7 +11,8 @@ export async function read(cypher, params = {}) {
   try {
     // 2. Execute a Cypher Statement
     const res = await session.executeRead(tx => tx.run(cypher, params))
-    return res
+    
+return res
   } finally {
     // 4. Close the session
     await session.close()
@@ -22,7 +23,8 @@ export async function write(cypher, params = {}) {
   const session = driver.session()
   try {
     const res = await session.executeWrite(tx => tx.run(cypher, params))
-    return res
+    
+return res
   } finally {
     await session.close()
   }

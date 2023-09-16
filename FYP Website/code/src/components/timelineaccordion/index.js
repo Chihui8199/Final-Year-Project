@@ -39,7 +39,8 @@ export default function TimelineAccordion(props) {
     if (userAcquiredProficiency > 0) {
       return getDescription(userAcquiredProficiency, key);
     }
-    return data.proficiencyDetails[0][key]
+    
+return data.proficiencyDetails[0][key]
   }
 
   // State to track which button is clicked and its associated content
@@ -50,11 +51,14 @@ export default function TimelineAccordion(props) {
   const handleAccordionToggle = () => {
     setExpanded(!expanded)
   }
+
+
   // Find index for that proficiency level
   const findProficiencyLevel = proficiencyLevel => {
     const levels = item.proficiencyDetails.map(item => item.proficiencyLevel)
     const index = levels.findIndex(item => item === proficiencyLevel)
-    return index // TODO: adds error handing: return -1 if prof level not inside
+    
+return index // TODO: adds error handing: return -1 if prof level not inside
   }
 
   // Event handler for the TimelineDot click event

@@ -11,6 +11,7 @@ import CardContent from '@mui/material/CardContent'
 import TextField from '@mui/material/TextField' // Import TextField
 import results from '../../../result.json' // Import the JSON file
 import { TextBox } from 'mdi-material-ui'
+
 const steps = ['Foundational', 'Proficient', 'Skilled', 'Advanced', 'Expert', 'Master', 'No Proficiency']
 
 import { useState, useEffect } from 'react'
@@ -23,7 +24,8 @@ const HorizontalNonLinearStepper = props => {
   // Sets the highest level of prof that the user has based on prev jobs
   const getProfLevelForTSCKey = () => {
     const stepLevel = filters.find(filter => filter['TSC Key ID'] === tscKeyId)
-    return stepLevel ? stepLevel['Proficiency Level'] : 1
+    
+return stepLevel ? stepLevel['Proficiency Level'] : 1
   }
 
   const [activeStep, setActiveStep] = React.useState(getProfLevelForTSCKey() - 1)
@@ -32,6 +34,7 @@ const HorizontalNonLinearStepper = props => {
   useEffect(() => {
     // TODO: remember to convert prof 7 to a no prof in db
     getFinalProf({ tscKeyId: tscKeyId, profLevel: activeStep + 1 })
+
     const abilityDesc = data['proficiencyLevel'].find(item => item['proficiencyLevel'] === activeStep + 1)
       ?.filteredAbility || ['I have no proficiency']
     setTextBoxValue(abilityDesc)
@@ -43,6 +46,7 @@ const HorizontalNonLinearStepper = props => {
 
   const handleStep = step => () => {
     setActiveStep(step)
+
     // Populate with the data from the database
   }
 
@@ -50,9 +54,11 @@ const HorizontalNonLinearStepper = props => {
     const excludeNumbers = data['proficiencyLevel'].map(item => item['proficiencyLevel'])
     const values = [1, 2, 3, 4, 5, 6]
     const filteredIndices = values.filter(value => !excludeNumbers.includes(value)).map(value => value - 1)
-    return filteredIndices
+    
+return filteredIndices
   }
-  return (
+  
+return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Box sx={{ width: '100%' }}>
@@ -87,4 +93,5 @@ const HorizontalNonLinearStepper = props => {
     </Grid>
   )
 }
+
 export default HorizontalNonLinearStepper
