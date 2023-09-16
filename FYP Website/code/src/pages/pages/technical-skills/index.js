@@ -17,6 +17,8 @@ const TechnicalSkillsProfile = props => {
   const [results, setResults] = useState(null)
   const [profFilteringList, setFilteringList] = useState([])
   const [finalDefinedProf, setFinalDefinedProf] = useState({})
+  const [isDisabled, setIsDisabled] = useState(false);
+
 
   // TODO: can combine this two api calls into one
   useEffect(() => {
@@ -80,6 +82,8 @@ const TechnicalSkillsProfile = props => {
 
   const handleSubmit = async () => {
     // Basically store all details about this learner profile
+    setIsDisabled(true);
+    
     const resultList = Object.keys(finalDefinedProf).map(key => ({
       tscKeyID: parseInt(key),
       profLevel: finalDefinedProf[key]
@@ -129,7 +133,7 @@ const TechnicalSkillsProfile = props => {
               )}
           </Grid>
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button onClick={handleSubmit} variant='contained' color='primary'>
+            <Button disabled={isDisabled} type="submit" onClick={handleSubmit} variant='contained' color='primary'>
               Next
             </Button>
           </Grid>
