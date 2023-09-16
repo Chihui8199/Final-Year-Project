@@ -8,8 +8,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import TextField from '@mui/material/TextField' // Import TextField
-import results from '../../../result.json' // Import the JSON file
+import TextField from '@mui/material/TextField'
 import { TextBox } from 'mdi-material-ui'
 
 const steps = ['Foundational', 'Proficient', 'Skilled', 'Advanced', 'Expert', 'Master', 'No Proficiency']
