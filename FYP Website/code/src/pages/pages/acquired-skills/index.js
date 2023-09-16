@@ -34,7 +34,7 @@ const UserAcquiredProficiency = () => {
       if (!user) return;
       try {
         const results = await fetch(
-          `/api/getAcquiredProficiency?email=${user.email}`,
+          `/api/technical-skills/getAcquiredProficiency?email=${user.email}`,
           {
             method: 'GET',
           },

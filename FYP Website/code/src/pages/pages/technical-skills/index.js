@@ -24,7 +24,7 @@ const TechnicalSkillsProfile = props => {
   useEffect(() => {
     const fetchRequiredProficiency = async () => {
       try {
-        const jobProf = await fetch(`/api/getRequiredProficiency?ids=${queryTechnicalSkillsString}`, {
+        const jobProf = await fetch(`/api/technical-skills/getRequiredProficiency?ids=${queryTechnicalSkillsString}`, {
           method: 'GET'
         })
         if (jobProf.ok) {
@@ -40,7 +40,7 @@ const TechnicalSkillsProfile = props => {
   
     const fetchTechnicalSkills = async () => {
       try {
-        const result = await fetch(`/api/technicalskills?ids=${queryTechnicalSkillsString}`, {
+        const result = await fetch(`/api/technical-skills/technicalskills?ids=${queryTechnicalSkillsString}`, {
           method: 'GET'
         })
         if (result.ok) {
@@ -97,7 +97,7 @@ const TechnicalSkillsProfile = props => {
       targetJobRole: targetJobRole
     }
 
-    const response = await fetch(`/api/createLearnerProfile`, {
+    const response = await fetch(`/api/learner-profile/createLearnerProfile`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -53,12 +53,9 @@ const FormLayoutsAlignment = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await fetch('/api/jobs')
-        //const result = await fetch('/api/jobs', { cache: 'force-cache', next: { revalidate: 3600 } })
-
+        const result = await fetch('/api/jobs/getAllJobs')
         if (result.ok) {
           const data = await result.json()
-          //const sectors = [...new Set(data.data.map(item => item.Sector).filter(sector => sector !== null))]
           setJobData(data.data)
         } else {
           console.error('Failed to fetch data from /api/jobs')
