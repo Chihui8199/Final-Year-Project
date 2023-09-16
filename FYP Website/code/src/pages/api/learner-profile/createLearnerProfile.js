@@ -30,10 +30,10 @@ export default async function handler(req, res) {
 
       WITH learner
       UNWIND $proficiencyData AS data
-      OPTIONAL MATCH (proficiency:TSCProficiency {\`TSC Key ID\`: data.tscKey, \`Proficiency Level\`: data.profLevel})
+      OPTIONAL MATCH (proficiency:TSCProficiency {\`TSC Key ID\`: data.tscKeyID, \`Proficiency Level\`: data.profLevel})
       WITH learner, proficiency
       WHERE proficiency IS NOT NULL
-      MERGE (learner)-[:HAS_PROFICIENCY]->(proficiency)
+      MERGE (learner)-[:HAS_TECHNICAL_SKILLS]->(proficiency)
       RETURN learner
 `
 
@@ -44,5 +44,6 @@ export default async function handler(req, res) {
     targetJobRoleId: targetJobRole,
     proficiencyData: data
   })
+
   res.status(200).json({ message: 'Success', result })
 }

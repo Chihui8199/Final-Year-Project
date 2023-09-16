@@ -17,27 +17,25 @@ const steps = ['Foundational', 'Proficient', 'Skilled', 'Advanced', 'Expert', 'M
 import { useState, useEffect } from 'react'
 
 const HorizontalNonLinearStepper = props => {
-  const { data, filters, getFinalProf } = props
-  const tscTitle = data['tscTitle']
-  const tscKeyId = data['tscKeyID']
+  const { item, getFinalProf } = props
+  console.log('item', item)
 
-  // Sets the highest level of prof that the user has based on prev jobs
+  const tscTitle = item['TSCKeyDetails']['TSC Title']
+  const tscKeyId = item['TSCKeyID']
+
+  // set the level of skills that the user is suppose to have
   const getProfLevelForTSCKey = () => {
-    const stepLevel = filters.find(filter => filter['TSC Key ID'] === tscKeyId)
-    
-return stepLevel ? stepLevel['Proficiency Level'] : 1
+    // subtract one because it's based on index
+    return item?.jobProficiency ? item.jobProficiency - 1 : 6;
   }
 
-  const [activeStep, setActiveStep] = React.useState(getProfLevelForTSCKey() - 1)
+  const [activeStep, setActiveStep] = React.useState(getProfLevelForTSCKey())
   const [textBoxValue, setTextBoxValue] = React.useState([])
 
   useEffect(() => {
-    // TODO: remember to convert prof 7 to a no prof in db
     getFinalProf({ tscKeyId: tscKeyId, profLevel: activeStep + 1 })
-
-    const abilityDesc = data['proficiencyLevel'].find(item => item['proficiencyLevel'] === activeStep + 1)
-      ?.filteredAbility || ['I have no proficiency']
-    setTextBoxValue(abilityDesc)
+    const filteredAbility = item['proficiencyDetails'].find(item => item['proficiencyLevel'] === activeStep + 1)?.['filteredAbility'] || ['NA'];
+    setTextBoxValue([filteredAbility])
   }, [activeStep])
 
   useEffect(() => {
@@ -46,16 +44,14 @@ return stepLevel ? stepLevel['Proficiency Level'] : 1
 
   const handleStep = step => () => {
     setActiveStep(step)
-
-    // Populate with the data from the database
   }
 
   const getDisabledSteps = () => {
-    const excludeNumbers = data['proficiencyLevel'].map(item => item['proficiencyLevel'])
+    const excludeNumbers = item['proficiencyDetails'].map(item => item['proficiencyLevel'])
     const values = [1, 2, 3, 4, 5, 6]
     const filteredIndices = values.filter(value => !excludeNumbers.includes(value)).map(value => value - 1)
     
-return filteredIndices
+    return filteredIndices
   }
   
 return (
