@@ -1,5 +1,5 @@
 import React from 'react';
-import TimeLineAccordion from '../../../views/timelineaccordion';
+import TimeLineAccordion from '../../../components/timelineaccordion';
 import { useState, useEffect } from 'react';
 import {
   Grid,
@@ -8,7 +8,7 @@ import {
   CardContent,
   CircularProgress,
 } from '@mui/material';
-import DesiredJob from '../../../views/job-description';
+import DesiredJob from '../../../components/job-description';
 import { useUserContext } from 'src/context/UserContext';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -74,7 +74,6 @@ const UserAcquiredProficiency = () => {
         </Typography>
       </Grid>
       {userLoading || loading ? (
-
         // Render a loading card while fetchData is happening
 
         <Card
@@ -91,7 +90,6 @@ const UserAcquiredProficiency = () => {
           </CardContent>
         </Card>
       ) : (
-
         // Render the DesiredJob and Accordion components when loading is false
         <Grid container spacing={2}>
           <Grid item xs={12}>

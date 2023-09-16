@@ -37,7 +37,7 @@ import themeConfig from 'src/configs/themeConfig';
 import BlankLayout from 'src/@core/layouts/BlankLayout';
 
 // ** Demo Imports
-import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration';
+import FooterIllustrationsV1 from 'src/components/pages/auth/FooterIllustration';
 
 // other
 import { useUserContext } from 'src/context/UserContext';
@@ -101,7 +101,7 @@ const LoginPage = () => {
       });
       if (response.status === 200) {
         // Successful login, handle as needed (e.g., redirect to dashboard)
-        const res = await response.json();   
+        const res = await response.json();
         setUser({ email: res.data.email, name: res.data.name });
         router.push('/pages/acquired-skills'); // Adjust the URL as needed // TODO: change to routing anme once everthing is finalised
       } else {
@@ -207,7 +207,8 @@ const LoginPage = () => {
               Welcome to {themeConfig.templateName}! 👋🏻
             </Typography>
             <Typography variant="body2">
-              Please sign-in to your account and let us guide you to your next high in your career
+              Please sign-in to your account and let us guide you to your next
+              high in your career
             </Typography>
           </Box>
           <form

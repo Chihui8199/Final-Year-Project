@@ -1,13 +1,13 @@
 // ** MUI Imports
-import Grid from '@mui/material/Grid'
-import { useState, useEffect } from "react";
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import Grid from '@mui/material/Grid';
+import { useState, useEffect } from 'react';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 // ** Styled Component
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
 
 // ** Demo Components Imports
-import FormLayoutsProfile from 'src/views/form-layouts/FormLayoutsProfile'
+import FormLayoutsProfile from 'src/components/form-layouts/FormLayoutsProfile';
 
 const LearnerProfile = () => {
   return (
@@ -16,12 +16,12 @@ const LearnerProfile = () => {
       <DatePickerWrapper>
         <Grid container spacing={6}>
           <Grid item xs={12}>
-            <FormLayoutsProfile/>
+            <FormLayoutsProfile />
           </Grid>
         </Grid>
       </DatePickerWrapper>
     </div>
-  )
-}
+  );
+};
 
-export default LearnerProfile
+export default LearnerProfile;

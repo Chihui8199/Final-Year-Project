@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import BlankLayout from 'src/@core/layouts/BlankLayout';
 
 // ** Demo Imports
-import FooterIllustrations from 'src/views/pages/misc/FooterIllustrations';
+import FooterIllustrations from 'src/components/pages/misc/FooterIllustrations';
 
 const Img = styled('img')(({ theme }) => ({
   marginBottom: theme.spacing(10),
