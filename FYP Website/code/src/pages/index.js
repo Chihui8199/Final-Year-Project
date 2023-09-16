@@ -1,101 +1,161 @@
-// ** MUI Imports
-import Grid from '@mui/material/Grid'
+// ** Next Import
+import Link from 'next/link';
 
-// ** Icons Imports
-import Poll from 'mdi-material-ui/Poll'
-import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
-import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import BriefcaseVariantOutline from 'mdi-material-ui/BriefcaseVariantOutline'
+// ** MUI Components
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import { CardContent } from '@mui/material';
 
-// ** Custom Components Imports
-import CardStatisticsVerticalComponent from 'src/@core/components/card-statistics/card-stats-vertical'
+// ** Router Import
+import { useRouter } from 'next/router';
 
-// ** Styled Component Import
-import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
+// ** Layout Import
+import BlankLayout from 'src/@core/layouts/BlankLayout';
 
-// ** Demo Components Imports
-import Table from 'src/views/dashboard/Table'
-import Trophy from 'src/views/dashboard/Trophy'
-import TotalEarning from 'src/views/dashboard/TotalEarning'
-import StatisticsCard from 'src/views/dashboard/StatisticsCard'
-import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
-import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
-import SalesByCountries from 'src/views/dashboard/SalesByCountries'
+// ** Demo Imports
+import FooterIllustrations from 'src/views/pages/misc/FooterIllustrations';
 
-const Dashboard = () => {
+const Img = styled('img')(({ theme }) => ({
+  marginBottom: theme.spacing(10),
+  [theme.breakpoints.down('lg')]: {
+    height: 450,
+    marginTop: theme.spacing(10),
+  },
+  [theme.breakpoints.down('md')]: {
+    height: 400,
+  },
+  [theme.breakpoints.up('lg')]: {
+    marginTop: theme.spacing(13),
+  },
+}));
+
+const TreeIllustration = styled('img')(({ theme }) => ({
+  left: 0,
+  bottom: '5rem',
+  position: 'absolute',
+  [theme.breakpoints.down('lg')]: {
+    bottom: 0,
+  },
+}));
+
+const LandingPage = () => {
+  const router = useRouter();
+
+  const handleClick = async () => {
+    router.push('/pages/login'); // Example: Redirect to a success page
+  };
+
   return (
-    <ApexChartWrapper>
+    <Card>
       <Grid container spacing={6}>
-        <Grid item xs={12} md={4}>
-          <Trophy />
+        <Grid
+          container
+          item
+          xs={12}
+          sm={7}
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <CardContent
+            sx={{
+              padding: (theme) =>
+                `${theme.spacing(3.25, 5.75, 6.25)} !important`,
+            }}
+          >
+            <>
+              <Typography
+                variant="h2"
+                sx={{
+                  color: 'primary.main',
+                  marginBottom: 3,
+                  lineHeight: 1,
+                  fontWeight: 600,
+                }}
+              >
+                Chart your path to a successful career with a simple quiz
+              </Typography>
+            </>
+            <Button
+              fullWidth
+              size="large"
+              onClick={handleClick}
+              variant="contained"
+              sx={{ marginBottom: 7 }}
+            >
+              Login to take quiz
+            </Button>
+          </CardContent>
         </Grid>
-        <Grid item xs={12} md={8}>
-          <StatisticsCard />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <WeeklyOverview />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <TotalEarning />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <Grid container spacing={6}>
-            <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='$25.6k'
-                icon={<Poll />}
-                color='success'
-                trendNumber='+42%'
-                title='Total Profit'
-                subtitle='Weekly Profit'
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='$78'
-                title='Refunds'
-                trend='negative'
-                color='secondary'
-                trendNumber='-15%'
-                subtitle='Past Month'
-                icon={<CurrencyUsd />}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='862'
-                trend='negative'
-                trendNumber='-18%'
-                title='New Project'
-                subtitle='Yearly Project'
-                icon={<BriefcaseVariantOutline />}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <CardStatisticsVerticalComponent
-                stats='15'
-                color='warning'
-                trend='negative'
-                trendNumber='-18%'
-                subtitle='Last Week'
-                title='Sales Queries'
-                icon={<HelpCircleOutline />}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <SalesByCountries />
-        </Grid>
-        <Grid item xs={12} md={12} lg={8}>
-          <DepositWithdraw />
-        </Grid>
-        <Grid item xs={12}>
-          <Table />
+        <Grid
+          item
+          sm={5}
+          xs={12}
+          sx={{
+            paddingTop: ['0 !important', '1.5rem !important'],
+            paddingLeft: ['1.5rem !important', '0 !important'],
+          }}
+        >
+          <CardContent
+            sx={{
+              height: '100%',
+              display: 'flex',
+              textAlign: 'center',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'action.hover',
+              padding: (theme) => `${theme.spacing(18, 5, 16)} !important`,
+            }}
+          >
+            <Box>
+              <Box
+                sx={{
+                  mb: 3.5,
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography
+                  component="div"
+                  variant="h6"
+                  sx={{ lineHeight: 1, fontWeight: 600 }}
+                >
+                  Unsure of the steps to grow your career?
+                </Typography>
+              </Box>
+              <Typography
+                variant="body2"
+                sx={{ mb: 13.75, display: 'flex', flexDirection: 'column' }}
+              >
+                <span>
+                  Skills Passport provides personalized upskilling and
+                </span>
+                <span>career recommendations by analysing your unique</span>
+                <span>profile.</span>
+              </Typography>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Img
+                    height="487"
+                    alt="error-illustration"
+                    src="/images/pages/404.png"
+                  />
+                </Grid>
+                <Grid item></Grid>
+              </Grid>
+            </Box>
+          </CardContent>
         </Grid>
       </Grid>
-    </ApexChartWrapper>
-  )
-}
+      <FooterIllustrations />
+    </Card>
+  );
+};
+LandingPage.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
-export default Dashboard
+export default LandingPage;

@@ -9,6 +9,7 @@ export const useUserContext = () => {
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
+
   // Load user data from local storage on component initialization
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
