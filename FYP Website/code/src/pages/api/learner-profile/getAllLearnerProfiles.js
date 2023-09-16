@@ -1,4 +1,4 @@
-import { read } from '../../db/neo4j'
+import { read } from '../../../db/neo4j'
 
 // TODO: fix timestamp field
 export default async function handler(req, res) {

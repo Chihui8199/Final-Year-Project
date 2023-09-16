@@ -1,4 +1,4 @@
-import { write } from '../../db/neo4j'
+import { write } from '../../../db/neo4j'
 
 export default async function handler(req, res) {
   const { email, uuid } = req.body

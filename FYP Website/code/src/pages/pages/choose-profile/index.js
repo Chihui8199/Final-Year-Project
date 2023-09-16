@@ -28,7 +28,7 @@ const ProfileChoice = () => {
     if (!user || !user.email) return;  // Guard clause
   
     try {
-      const results = await fetch(`/api/getAllLearnerProfiles?email=${user.email}`, {
+      const results = await fetch(`/api/learner-profile/getAllLearnerProfiles?email=${user.email}`, {
         method: 'GET'
       });
       if (results.ok) {
@@ -52,7 +52,7 @@ const ProfileChoice = () => {
   }, [user, fetchData]);
 
   const handleRowClick = async rowData => {
-    const response = await fetch(`/api/updateActiveProfile`, {
+    const response = await fetch(`/api/learner-profile/updateActiveProfile`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
