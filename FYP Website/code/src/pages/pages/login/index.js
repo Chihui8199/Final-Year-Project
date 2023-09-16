@@ -207,7 +207,7 @@ const LoginPage = () => {
               Welcome to {themeConfig.templateName}! 👋🏻
             </Typography>
             <Typography variant="body2">
-              Please sign-in to your account and start the adventure
+              Please sign-in to your account and let us guide you to your next high in your career
             </Typography>
           </Box>
           <form

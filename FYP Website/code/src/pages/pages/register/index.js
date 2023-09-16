@@ -193,7 +193,7 @@ const RegisterPage = () => {
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Chart your Career Journey 🚀
             </Typography>
-            <Typography variant='body2'>Let us guide you to your next set in your career</Typography>
+            <Typography variant='body2'>Let us guide you to your next high in your career</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={handleSubmit}>
           <TextField
