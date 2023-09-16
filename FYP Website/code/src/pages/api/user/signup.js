@@ -3,8 +3,8 @@ import bcrypt from 'bcrypt'
 
 export default async function register(req, res) {
   try {
-    const { email, password } = req.body
-
+    const { name, email, password } = req.body
+    
     // Check if the user with the same email already exists
     const existingUser = await getUserByEmail(email)
     if (existingUser) {
@@ -15,15 +15,15 @@ export default async function register(req, res) {
     const hashedPassword = await bcrypt.hash(password, 10) // Hash the password
 
     // Create the user in your database
-    const user = await createUser(email, hashedPassword)
+    const user = await createUser(name, email, hashedPassword)
 
     // Extract user properties
     const userData = user.records[0]._fields[0].properties
     
 return res.status(201).json({
       data: {
-        email: userData.email // Extract the email property
-        // TODO: You can include other properties if needed
+        email: userData.email,  // Extract the email property
+        name: userData.name // Extract the name property
       }
     })
   } catch (e) {
@@ -55,18 +55,20 @@ return userData
   }
 }
 
-const createUser = async (email, hashedPassword) => {
+const createUser = async (name, email, hashedPassword) => {
   const query = `
     CREATE (user:User {
         email: $email,
-        password: $hashedPassword
+        password: $hashedPassword,
+        name: $name
     })
     RETURN user;
-  `
+  `;
 
   const parameters = {
     email: email,
-    hashedPassword: hashedPassword
+    hashedPassword: hashedPassword, 
+    name: name,
   }
 
   const user = await write(query, parameters) // Pass the parameters to your write function

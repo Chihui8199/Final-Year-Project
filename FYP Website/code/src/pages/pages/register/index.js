@@ -63,6 +63,7 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const RegisterPage = () => {
   // ** States
   const [values, setValues] = useState({
+    name: '',
     email: '', // Add email field to state
     password: '',
     showPassword: false
@@ -86,14 +87,16 @@ const RegisterPage = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    const { email, password } = values
+    const { email, password, name } = values
     try {
+      console.log("email", email, "password", password, "name", name)
+
       const response = await fetch('/api/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ name, email, password })
       })
       if (response.ok) {
         // Registration was successful, you can redirect the user to a success page or login page
@@ -188,12 +191,22 @@ const RegisterPage = () => {
           </Box>
           <Box sx={{ mb: 6 }}>
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
-              Adventure starts here 🚀
+              Chart your Career Journey 🚀
             </Typography>
-            <Typography variant='body2'>Make your app management easy and fun!</Typography>
+            <Typography variant='body2'>Let us guide you to your next set in your career</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={handleSubmit}>
+          <TextField
+              required
+              fullWidth
+              type='name'
+              label='Name'
+              sx={{ marginBottom: 4 }}
+              value={values.name} // Bind email value to the input
+              onChange={handleChange('name')} // Handle email input change
+            />
             <TextField
+              required
               fullWidth
               type='email'
               label='Email'
@@ -202,7 +215,7 @@ const RegisterPage = () => {
               onChange={handleChange('email')} // Handle email input change
             />
             <FormControl fullWidth sx={{ marginBottom: 4 }}>
-              <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
+              <InputLabel required htmlFor='auth-register-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
                 value={values.password}
