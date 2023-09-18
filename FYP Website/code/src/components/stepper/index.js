@@ -17,8 +17,6 @@ import { useState, useEffect } from 'react'
 
 const HorizontalNonLinearStepper = props => {
   const { item, getFinalProf } = props
-  console.log('item', item)
-
   const tscTitle = item['TSCKeyDetails']['TSC Title']
   const tscKeyId = item['TSCKeyID']
 
