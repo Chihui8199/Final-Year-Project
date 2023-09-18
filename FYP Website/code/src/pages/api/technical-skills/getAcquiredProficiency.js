@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const { email } = req.query
 
   const query = `
-  MATCH (u:User {email: ${email}})
+  MATCH (u:User {email: "${email}"})
   WITH u.state AS learnerState
   
   MATCH (lp:LearnerProfile) WHERE lp.uuid = learnerState
