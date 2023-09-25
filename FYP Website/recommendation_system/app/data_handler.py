@@ -15,13 +15,13 @@ def connect_db():
 driver = connect_db()
 
 def fetch_user_data(user_id):
+    print("FETCHING USER DATA", user_id)
     if not driver:
         print("Driver not initialized")
         return None
-    # TODO: change to fetching from userIds instead
     query = """
-    // Obtained Learner Profile Information
-    MATCH (u:LearnerProfile {uuid: "2023-09-18T03:21:21.024Z-meow@gmail.com"})
+    MATCH (Us:User{email: $user_id})-[k:HAS_LEARNER_PROFILE]->(u:LearnerProfile)
+    WHERE u.uuid = Us.state
 
     // Gather all job nodes associated with the learner
     OPTIONAL MATCH (u)-[:HAS_PREV_JOB|:HAS_CUR_JOB]->(j:Job)
@@ -42,16 +42,8 @@ def fetch_user_data(user_id):
     
     with driver.session() as session:
         try:
-            user_skills_data = list(session.run(query))
+            user_skills_data = list(session.run(query, user_id=user_id))
             return user_skills_data[0] # Format [data:{keyID: x, proficiency: y}, jobids: [a,b,c]]
         except Exception as e:
             print(f"Error fetching user data: {e}")
             return None
-
-def preprocess_user_data(user_data):
-    # Implement your preprocessing logic here
-    pass
-
-user_data = fetch_user_data("some_user_id")
-if user_data:
-    processed_data = preprocess_user_data(user_data)
