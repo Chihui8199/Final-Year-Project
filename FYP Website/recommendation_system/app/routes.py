@@ -2,6 +2,7 @@ from flask import request, jsonify
 from .context import Context
 from .strategies.content_based import ContentBasedRecommender
 from .strategies.collaborative_based import CollaborativeFilteringRecommender
+from .strategies.embedding_based import EmbeddingBasedRecommender
 from .data_handler import fetch_user_data
 
 context = Context(ContentBasedRecommender())
@@ -17,6 +18,8 @@ def configure_routes(app):
             context.set_strategy(CollaborativeFilteringRecommender())
         elif strategy_type == 'content':
             context.set_strategy(ContentBasedRecommender())
+        elif strategy_type == 'embedding':
+            context.set_strategy(EmbeddingBasedRecommender())
         
         recommendations = context.execute_strategy(user_data)
         return jsonify({"recommendations": recommendations})
