@@ -1,10 +1,15 @@
 import neo4j
 from neo4j import GraphDatabase
+from dotenv import load_dotenv
+import os
+
+# Load the .env file
+load_dotenv()
 
 def connect_db(): 
-    AURA_CONNECTION_URI = "neo4j+s://5a980a50.databases.neo4j.io"
-    AURA_USERNAME = "neo4j"
-    AURA_PASSWORD = "Fat4vMlGTgvjEJGwkRl24DE9BYgKeQtYjvUGgo8p2R4"
+    AURA_CONNECTION_URI = os.getenv('AURA_CONNECTION_URI')
+    AURA_USERNAME = os.getenv('AURA_USERNAME')
+    AURA_PASSWORD = os.getenv('AURA_PASSWORD')
     try:
         driver = GraphDatabase.driver(AURA_CONNECTION_URI, auth=(AURA_USERNAME, AURA_PASSWORD))
         return driver
