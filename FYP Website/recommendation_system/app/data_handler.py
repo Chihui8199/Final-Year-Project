@@ -14,15 +14,12 @@ def connect_db():
         driver = GraphDatabase.driver(AURA_CONNECTION_URI, auth=(AURA_USERNAME, AURA_PASSWORD))
         return driver
     except Exception as e:
-        print(f"Error connecting to db: {e}")
         return None
 
 driver = connect_db()
 
 def fetch_user_data(user_id):
-    print("FETCHING USER DATA", user_id)
     if not driver:
-        print("Driver not initialized")
         return None
     query = """
     MATCH (Us:User{email: $user_id})-[k:HAS_LEARNER_PROFILE]->(u:LearnerProfile)
@@ -50,5 +47,4 @@ def fetch_user_data(user_id):
             user_skills_data = list(session.run(query, user_id=user_id))
             return user_skills_data[0] # Format [data:{keyID: x, proficiency: y}, jobids: [a,b,c]]
         except Exception as e:
-            print(f"Error fetching user data: {e}")
             return None

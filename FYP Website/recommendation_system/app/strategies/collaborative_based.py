@@ -14,7 +14,7 @@ class CollaborativeFilteringRecommender(RecommenderStrategy):
         current_user_row = self.construct_matrix(user_df)
         recommended_job_ids = self.get_top_recc(current_user_row)
         # Implement the logic for collaborative filtering recommendation
-        return f"Collaborative filtering recommendations for user {recommended_job_ids}"
+        return recommended_job_ids
 
     def preprocess_user_data(self, user_data):
         data = user_data['data']
@@ -138,6 +138,9 @@ class CollaborativeFilteringRecommender(RecommenderStrategy):
 
         # Map the indices directly to job IDs using the switched jobs_index_map
         recommended_job_ids = [jobs_index_map[idx] for idx in recommended_job_indices]
+
+        # convert to python native int type
+        recommended_job_ids = [int(id) for id in recommended_job_ids]
 
         # Now, you have a list of recommended job IDs
         return recommended_job_ids

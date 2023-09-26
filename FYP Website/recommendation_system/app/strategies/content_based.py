@@ -45,7 +45,6 @@ class ContentBasedRecommender(RecommenderStrategy):
         # Get the top 10 job IDs based on similarity scores
         top_10_indices = np.argsort(similarities)[-10:][::-1]  # -10: gets the last 10 values, [::-1] reverses the array
         top_10_job_ids = [list(jobs_dict.keys())[i] for i in top_10_indices]
-        print(top_10_job_ids)
         return top_10_job_ids
 
     
