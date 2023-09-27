@@ -77,16 +77,13 @@ const EditTechnicalSkillsProfile = (props) => {
     const final = {
       data: resultList,
       email: user.email,
-      prevJobs: Array.isArray(prevJob) ? prevJob : [prevJob],
-      curJobRole: curJobRole,
-      targetJobRole: targetJobRole,
     };
     console.log(
       'This is the final object that will be sent to the backend',
       final,
     );
 
-    const response = await fetch(`/api/learner-profile/createLearnerProfile`, {
+    const response = await fetch(`/api/learner-profile/editLearnerProfile`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

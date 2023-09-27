@@ -30,13 +30,13 @@ const HorizontalNonLinearStepper = props => {
   const [textBoxValue, setTextBoxValue] = React.useState([])
 
   useEffect(() => {
-    // getFinalProf({ tscKeyId: tscKeyId, profLevel: activeStep + 1 })
+    getFinalProf({ tscKeyId: tscKeyId, profLevel: activeStep + 1 })
     const filteredAbility = item['proficiencyDetails'].find(item => item['proficiencyLevel'] === activeStep + 1)?.['filteredAbility'] || ['NA'];
     setTextBoxValue([filteredAbility])
   }, [activeStep])
 
   useEffect(() => {
-    // getFinalProf({ tscKeyId: tscKeyId, profLevel: activeStep + 1 })
+    getFinalProf({ tscKeyId: tscKeyId, profLevel: activeStep + 1 })
   }, [])
 
   const handleStep = step => () => {
