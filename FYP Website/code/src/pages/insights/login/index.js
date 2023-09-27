@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
 
 // ** Next Imports
 import Link from 'next/link';
@@ -11,8 +11,8 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import InputLabel from '@mui/material/InputLabel';
+import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CardContent from '@mui/material/CardContent';
 import FormControl from '@mui/material/FormControl';
@@ -39,6 +39,9 @@ import BlankLayout from 'src/@core/layouts/BlankLayout';
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/components/pages/auth/FooterIllustration';
 
+// other
+import { useUserContext } from 'src/context/UserContext';
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' },
@@ -51,22 +54,22 @@ const LinkStyled = styled('a')(({ theme }) => ({
 }));
 
 const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
-  marginTop: theme.spacing(1.5),
-  marginBottom: theme.spacing(4),
   '& .MuiFormControlLabel-label': {
     fontSize: '0.875rem',
     color: theme.palette.text.secondary,
   },
 }));
 
-const RegisterPage = () => {
-  // ** States
+// TODO: add modal for responding to pass and failed for user
+
+const LoginPage = () => {
+  // ** State
   const [values, setValues] = useState({
-    name: '',
-    email: '', // Add email field to state
+    email: '',
     password: '',
     showPassword: false,
   });
+  const { setUser } = useUserContext();
 
   // ** Hook
   const theme = useTheme();
@@ -84,30 +87,29 @@ const RegisterPage = () => {
     event.preventDefault();
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { email, password, name } = values;
+  const handleLogin = async () => {
     try {
-      console.log('email', email, 'password', password, 'name', name);
-
-      const response = await fetch('/api/user/signup', {
+      const response = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
       });
-      if (response.ok) {
-        // Registration was successful, you can redirect the user to a success page or login page
-        router.push('/pages/login'); // Example: Redirect to a success page
+      if (response.status === 200) {
+        // Successful login, handle as needed (e.g., redirect to dashboard)
+        const res = await response.json();
+        setUser({ email: res.data.email, name: res.data.name });
+        router.push('/insights/acquired-skills'); // Adjust the URL as needed // TODO: change to routing anme once everthing is finalised
       } else {
-        const data = await response.json();
-
-        // Handle registration error, such as displaying an error message to the user
-        console.error(data.message); // Log the error message
+        // Handle login error (e.g., display an error message)
+        console.error('Login failed');
       }
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error('Login error:', error);
     }
   };
 
@@ -202,39 +204,34 @@ const RegisterPage = () => {
               variant="h5"
               sx={{ fontWeight: 600, marginBottom: 1.5 }}
             >
-              Chart your Career Journey 🚀
+              Welcome to {themeConfig.templateName}! 👋🏻
             </Typography>
             <Typography variant="body2">
-              Let us guide you to your next high in your career
+              Please sign-in to your account and let us guide you to your next
+              high in your career
             </Typography>
           </Box>
-          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <form
+            noValidate
+            autoComplete="off"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <TextField
-              required
+              autoFocus
               fullWidth
-              type="name"
-              label="Name"
-              sx={{ marginBottom: 4 }}
-              value={values.name} // Bind email value to the input
-              onChange={handleChange('name')} // Handle email input change
-            />
-            <TextField
-              required
-              fullWidth
-              type="email"
+              id="email"
               label="Email"
               sx={{ marginBottom: 4 }}
-              value={values.email} // Bind email value to the input
-              onChange={handleChange('email')} // Handle email input change
+              value={values.email}
+              onChange={handleChange('email')} // Add this line to handle the email field
             />
-            <FormControl fullWidth sx={{ marginBottom: 4 }}>
-              <InputLabel required htmlFor="auth-register-password">
-                Password
-              </InputLabel>
+
+            <FormControl fullWidth>
+              <InputLabel htmlFor="auth-login-password">Password</InputLabel>
               <OutlinedInput
                 label="Password"
                 value={values.password}
-                id="auth-register-password"
+                id="auth-login-password"
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
@@ -245,24 +242,35 @@ const RegisterPage = () => {
                       onMouseDown={handleMouseDownPassword}
                       aria-label="toggle password visibility"
                     >
-                      {values.showPassword ? (
-                        <EyeOutline fontSize="small" />
-                      ) : (
-                        <EyeOffOutline fontSize="small" />
-                      )}
+                      {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
                     </IconButton>
                   </InputAdornment>
                 }
               />
             </FormControl>
+            <Box
+              sx={{
+                mb: 4,
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Link passHref href="/">
+                <LinkStyled onClick={(e) => e.preventDefault()}>
+                  Forgot Password?
+                </LinkStyled>
+              </Link>
+            </Box>
             <Button
               fullWidth
               size="large"
-              type="submit"
               variant="contained"
               sx={{ marginBottom: 7 }}
+              onClick={handleLogin}
             >
-              Sign up
+              Login
             </Button>
             <Box
               sx={{
@@ -273,11 +281,11 @@ const RegisterPage = () => {
               }}
             >
               <Typography variant="body2" sx={{ marginRight: 2 }}>
-                Already have an account?
+                New on our platform?
               </Typography>
               <Typography variant="body2">
-                <Link passHref href="/pages/login">
-                  <LinkStyled>Sign in instead</LinkStyled>
+                <Link passHref href="/pages/register">
+                  <LinkStyled>Create an account</LinkStyled>
                 </Link>
               </Typography>
             </Box>
@@ -288,6 +296,6 @@ const RegisterPage = () => {
     </Box>
   );
 };
-RegisterPage.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+LoginPage.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
-export default RegisterPage;
+export default LoginPage;

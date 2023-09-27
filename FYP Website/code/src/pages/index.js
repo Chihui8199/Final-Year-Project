@@ -46,7 +46,7 @@ const LandingPage = () => {
   const router = useRouter();
 
   const handleClick = async () => {
-    router.push('/pages/login'); // Example: Redirect to a success page
+    router.push('/insights/login'); // Example: Redirect to a success page
   };
 
   return (

@@ -28,12 +28,7 @@ export default function TextMobileStepper() {
   const maxSteps = jobs.length;
   const [recc, setAlgo] = React.useState('content');
 
-
-  //TODO: uncomment this later
-
-
   const { user } = useUserContext();
-  //const user = { email: 'isabelle@vincere.health' };
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -132,7 +127,7 @@ export default function TextMobileStepper() {
                   bgcolor: 'background.default',
                 }}
               >
-                <Typography variant="h5">{jobs[activeStep].jobRole}</Typography>
+                <Typography variant="h5">{jobs[activeStep]?.jobRole}</Typography>
               </Paper>
               <Box sx={{ p: 2 }}>
                 <Typography variant="subtitle1" color="primary">

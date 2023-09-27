@@ -99,7 +99,7 @@ const DesiredJob = props => {
                   <Button
                     variant='contained'
                     onClick={() => {
-                      router.push('/pages/learner-profile')
+                      router.push('/insights/learner-profile')
                     }}
                   >
                     Create Learner Profile
@@ -109,7 +109,7 @@ const DesiredJob = props => {
                   <Button
                     variant='contained'
                     onClick={() => {
-                      router.push('/pages/choose-profile')
+                      router.push('/insights/choose-profile')
                     }}
                   >
                     Switch Learner Profile

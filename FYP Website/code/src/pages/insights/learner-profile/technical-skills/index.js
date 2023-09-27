@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import Stepper from '../../../components/stepper';
+import Stepper from '../../../../components/stepper';
 import { useRouter } from 'next/router';
 import { Paper, Grid, Typography } from '@mui/material';
 import { Button } from '@mui/material';
 import { useUserContext } from 'src/context/UserContext';
+import LoadingCard from 'src/components/loading';
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
@@ -13,58 +14,36 @@ const TechnicalSkillsProfile = (props) => {
   const router = useRouter();
   const { user } = useUserContext();
 
-  const { curJobRole, targetJobRole, queryTechnicalSkillsString } =
+  const { prevJob, curJobRole, targetJobRole, queryTechnicalSkillsString } =
     router.query;
-  const { prevJob } = router.query;
-  const [results, setResults] = useState(null);
-  const [profFilteringList, setFilteringList] = useState([]);
+console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole', curJobRole, 'targetJobROle', targetJobRole, 'joined', queryTechnicalSkillsString)
+  const [data, setData] = useState([]);
   const [finalDefinedProf, setFinalDefinedProf] = useState({});
   const [isDisabled, setIsDisabled] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // TODO: can combine this two api calls into one
   useEffect(() => {
-    const fetchRequiredProficiency = async () => {
-      try {
-        const jobProf = await fetch(
-          `/api/technical-skills/getRequiredProficiency?ids=${queryTechnicalSkillsString}`,
+    try {
+      const fetchData = async () => {
+        const response = await fetch(
+          `/api/technical-skills/getFormProficiency?pastJobIDs=${queryTechnicalSkillsString}&desiredJobIDs=${targetJobRole}`,
           {
             method: 'GET',
           },
         );
-        if (jobProf.ok) {
-          const profFilteringList = await jobProf.json();
-          setFilteringList(profFilteringList);
+        if (response.ok) {
+          const data = await response.json();
+          setData(data);
+          setLoading(false);
         } else {
           console.error('Failed to fetch data from /api/jobs');
         }
-      } catch (error) {
-        console.error('An error occurred while fetching data:', error);
-      }
-    };
-
-    const fetchTechnicalSkills = async () => {
-      try {
-        const result = await fetch(
-          `/api/technical-skills/technicalskills?ids=${queryTechnicalSkillsString}`,
-          {
-            method: 'GET',
-          },
-        );
-        if (result.ok) {
-          const data = await result.json();
-          setResults(data.data);
-        } else {
-          console.error('Failed to fetch data from /api/jobs');
-        }
-      } catch (error) {
-        console.error('An error occurred while fetching data:', error);
-      }
-    };
-
-    // Calling both fetch functions
-    fetchRequiredProficiency();
-    fetchTechnicalSkills();
-  }, [queryTechnicalSkillsString]);
+      };
+      fetchData();
+    } catch (error) {
+      console.error('An error occurred while fetching data:', error);
+    }
+  }, [queryTechnicalSkillsString, targetJobRole]);
 
   const getFinalProf = (indvTSCProfSelection) => {
     // Everything child changes this callback, it will be called and you can add the results/modify the state of the results using useState
@@ -85,6 +64,7 @@ const TechnicalSkillsProfile = (props) => {
       // Return the updated state
       return newState;
     });
+    console.log('Updating final prof', finalDefinedProf);
   };
 
   const handleSubmit = async () => {
@@ -103,6 +83,10 @@ const TechnicalSkillsProfile = (props) => {
       curJobRole: curJobRole,
       targetJobRole: targetJobRole,
     };
+    console.log(
+      'This is the final object that will be sent to the backend',
+      final,
+    );
 
     const response = await fetch(`/api/learner-profile/createLearnerProfile`, {
       method: 'POST',
@@ -115,7 +99,7 @@ const TechnicalSkillsProfile = (props) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    router.push('/pages/acquired-skills');
+    router.push('/insights/acquired-skills');
   };
 
   return (
@@ -130,9 +114,10 @@ const TechnicalSkillsProfile = (props) => {
             <Typography variant="subtitle1" sx={{ marginBottom: '3%' }}>
               Review Your Mastery of Technical Skills You Have
             </Typography>
-            {results &&
-              profFilteringList &&
-              results.map(
+            {loading ? (
+              <LoadingCard />
+            ) : (
+              data.map(
                 (item, index) =>
                   item && (
                     <Paper
@@ -140,14 +125,11 @@ const TechnicalSkillsProfile = (props) => {
                       elevation={5}
                       style={{ padding: '20px', marginBottom: '20px' }}
                     >
-                      <Stepper
-                        data={item}
-                        filters={profFilteringList}
-                        getFinalProf={getFinalProf}
-                      />
+                      <Stepper item={item} getFinalProf={getFinalProf} />
                     </Paper>
                   ),
-              )}
+              )
+            )}
           </Grid>
           <Grid
             item
@@ -161,7 +143,7 @@ const TechnicalSkillsProfile = (props) => {
               variant="contained"
               color="primary"
             >
-              Next
+              Submit
             </Button>
           </Grid>
         </Grid>

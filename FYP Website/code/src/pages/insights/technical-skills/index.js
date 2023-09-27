@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import Stepper from '../../../../components/stepper';
+import Stepper from '../../../components/stepper';
 import { useRouter } from 'next/router';
 import { Paper, Grid, Typography } from '@mui/material';
 import { Button } from '@mui/material';
 import { useUserContext } from 'src/context/UserContext';
-import LoadingCard from 'src/components/loading';
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
@@ -14,36 +13,58 @@ const TechnicalSkillsProfile = (props) => {
   const router = useRouter();
   const { user } = useUserContext();
 
-  const { prevJob, curJobRole, targetJobRole, queryTechnicalSkillsString } =
+  const { curJobRole, targetJobRole, queryTechnicalSkillsString } =
     router.query;
-console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole', curJobRole, 'targetJobROle', targetJobRole, 'joined', queryTechnicalSkillsString)
-  const [data, setData] = useState([]);
+  const { prevJob } = router.query;
+  const [results, setResults] = useState(null);
+  const [profFilteringList, setFilteringList] = useState([]);
   const [finalDefinedProf, setFinalDefinedProf] = useState({});
   const [isDisabled, setIsDisabled] = useState(false);
-  const [loading, setLoading] = useState(true);
 
+  // TODO: can combine this two api calls into one
   useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const response = await fetch(
-          `/api/technical-skills/getFormProficiency?pastJobIDs=${queryTechnicalSkillsString}&desiredJobIDs=${targetJobRole}`,
+    const fetchRequiredProficiency = async () => {
+      try {
+        const jobProf = await fetch(
+          `/api/technical-skills/getRequiredProficiency?ids=${queryTechnicalSkillsString}`,
           {
             method: 'GET',
           },
         );
-        if (response.ok) {
-          const data = await response.json();
-          setData(data);
-          setLoading(false);
+        if (jobProf.ok) {
+          const profFilteringList = await jobProf.json();
+          setFilteringList(profFilteringList);
         } else {
           console.error('Failed to fetch data from /api/jobs');
         }
-      };
-      fetchData();
-    } catch (error) {
-      console.error('An error occurred while fetching data:', error);
-    }
-  }, [queryTechnicalSkillsString, targetJobRole]);
+      } catch (error) {
+        console.error('An error occurred while fetching data:', error);
+      }
+    };
+
+    const fetchTechnicalSkills = async () => {
+      try {
+        const result = await fetch(
+          `/api/technical-skills/technicalskills?ids=${queryTechnicalSkillsString}`,
+          {
+            method: 'GET',
+          },
+        );
+        if (result.ok) {
+          const data = await result.json();
+          setResults(data.data);
+        } else {
+          console.error('Failed to fetch data from /api/jobs');
+        }
+      } catch (error) {
+        console.error('An error occurred while fetching data:', error);
+      }
+    };
+
+    // Calling both fetch functions
+    fetchRequiredProficiency();
+    fetchTechnicalSkills();
+  }, [queryTechnicalSkillsString]);
 
   const getFinalProf = (indvTSCProfSelection) => {
     // Everything child changes this callback, it will be called and you can add the results/modify the state of the results using useState
@@ -64,7 +85,6 @@ console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole',
       // Return the updated state
       return newState;
     });
-    console.log('Updating final prof', finalDefinedProf);
   };
 
   const handleSubmit = async () => {
@@ -83,10 +103,6 @@ console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole',
       curJobRole: curJobRole,
       targetJobRole: targetJobRole,
     };
-    console.log(
-      'This is the final object that will be sent to the backend',
-      final,
-    );
 
     const response = await fetch(`/api/learner-profile/createLearnerProfile`, {
       method: 'POST',
@@ -99,7 +115,7 @@ console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole',
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    router.push('/pages/acquired-skills');
+    router.push('/insights/acquired-skills');
   };
 
   return (
@@ -114,10 +130,9 @@ console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole',
             <Typography variant="subtitle1" sx={{ marginBottom: '3%' }}>
               Review Your Mastery of Technical Skills You Have
             </Typography>
-            {loading ? (
-              <LoadingCard />
-            ) : (
-              data.map(
+            {results &&
+              profFilteringList &&
+              results.map(
                 (item, index) =>
                   item && (
                     <Paper
@@ -125,11 +140,14 @@ console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole',
                       elevation={5}
                       style={{ padding: '20px', marginBottom: '20px' }}
                     >
-                      <Stepper item={item} getFinalProf={getFinalProf} />
+                      <Stepper
+                        data={item}
+                        filters={profFilteringList}
+                        getFinalProf={getFinalProf}
+                      />
                     </Paper>
                   ),
-              )
-            )}
+              )}
           </Grid>
           <Grid
             item
@@ -143,7 +161,7 @@ console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole',
               variant="contained"
               color="primary"
             >
-              Submit
+              Next
             </Button>
           </Grid>
         </Grid>

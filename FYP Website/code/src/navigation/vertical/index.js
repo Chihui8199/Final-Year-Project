@@ -6,15 +6,18 @@ import HomeOutline from 'mdi-material-ui/HomeOutline'
 const navigation = () => {
   return [
     {
+      sectionTitle: 'Insights'
+    },
+    {
       title: 'My Skills',
       icon: HomeOutline,
-      path: '/pages/acquired-skills',
+      path: '/insights/acquired-skills',
       openInNewTab: false
     },
     {
       title: 'Recommendations',
       icon: CubeOutline,
-      path: '/pages/recommendations', // TODO: route to recommendations
+      path: '/insights/recommendations',
       openInNewTab: false
     },
   ]
