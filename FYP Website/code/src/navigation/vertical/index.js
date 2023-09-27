@@ -14,7 +14,7 @@ const navigation = () => {
     {
       title: 'Recommendations',
       icon: CubeOutline,
-      path: '/pages/error', // TODO: route to recommendations
+      path: '/pages/recommendations', // TODO: route to recommendations
       openInNewTab: false
     },
   ]
