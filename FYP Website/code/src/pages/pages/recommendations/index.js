@@ -7,32 +7,44 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-
-const steps = [
-  {
-    label: 'Select campaign settings',
-    description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
-  },
-  {
-    label: 'Create an ad group',
-    description:
-      'An ad group contains one or more ads which target a shared set of keywords.',
-  },
-  {
-    label: 'Create an ad',
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-  },
-];
+import { useUserContext } from 'src/context/UserContext';
+import LoadingCard from 'src/components/loading';
+import { useState, useEffect } from 'react';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import { FixedSizeList } from 'react-window';
 
 export default function TextMobileStepper() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = steps.length;
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const maxSteps = jobs.length;
+
+  //TODO: uncomment this later
+
+  function renderRow(props) {
+    const { index, style } = props;
+    const task = jobs[activeStep].keyTasksList[index];
+
+    return (
+      <ListItem style={style} key={index} component="div" disablePadding>
+        <ListItemButton>
+          <ListItemText
+            primary={`${index + 1} ${task}`}
+            primaryTypographyProps={{
+              variant: 'caption', //
+              textAlign: 'left',
+            }}
+          />
+        </ListItemButton>
+      </ListItem>
+    );
+  }
+
+  //const { user } = useUserContext();
+  const user = { email: 'isabelle@vincere.health' };
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -42,10 +54,37 @@ export default function TextMobileStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  useEffect(() => {
+    const fetchJobs = async () => {
+      if (!user) return;
+      try {
+        // TODO: all for dropdown to choose strategy type
+        const response = await fetch(
+          `/api/recommendation/getJobsRecc?user_id=${user.email}&strategy_type=embedding`,
+          {
+            method: 'GET',
+          },
+        );
+        const data = await response.json();
+        setJobs(data);
+      } catch (error) {
+        console.error('Error fetching jobs', error);
+        setLoading(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, [user]);
+
   return (
     <div>
-        <Paper sx = {{elevation: 3}}>
-          <Box sx={{p: 2,  mx: 'auto' }}>
+      {loading ? (
+        <LoadingCard />
+      ) : (
+        <Paper sx={{ elevation: 3 }}>
+          <Box sx={{ p: 2, mx: 'auto' }}>
             <Paper
               square
               sx={{
@@ -56,11 +95,43 @@ export default function TextMobileStepper() {
                 bgcolor: 'background.default',
               }}
             >
-              <Typography>{steps[activeStep].label}</Typography>
+              <Typography variant="h5">{jobs[activeStep].jobRole}</Typography>
             </Paper>
-            <Box sx={{ height: 300, width: '85%', p: 2 }}>
-              {steps[activeStep].description}
+            <Box sx={{ p: 2 }}>
+              <Typography variant="subtitle1" color="primary">
+                Job Description
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{ marginTop: 3, textAlign: 'justify' }}
+              >
+                {jobs[activeStep].jobRoleDescription}
+              </Typography>
             </Box>
+            <Box sx={{ p: 2 }}>
+              <Typography variant="subtitle1" color="primary" sx={{ px: 2 }}>
+                Job Tasks
+              </Typography>
+              <Box
+                sx={{
+                  width: '100%',
+                  maxWidth: '100%',
+                  bgcolor: 'background.paper',
+                  mb: 10,
+                }}
+              >
+                <FixedSizeList
+                  height={250}
+                  width={'100%'}
+                  itemSize={46}
+                  itemCount={jobs[activeStep].keyTasksList.length}
+                  overscanCount={5}
+                >
+                  {renderRow}
+                </FixedSizeList>
+              </Box>
+            </Box>
+
             <MobileStepper
               variant="text"
               steps={maxSteps}
@@ -96,7 +167,8 @@ export default function TextMobileStepper() {
               }
             />
           </Box>
-          </Paper>
+        </Paper>
+      )}
     </div>
   );
 }
