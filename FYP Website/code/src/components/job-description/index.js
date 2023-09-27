@@ -179,7 +179,7 @@ const DesiredJob = (props) => {
                   style={{width: '100%'}}
                     variant="contained"
                     onClick={() => {
-                      router.push('/insights/choose-profile');
+                      router.push('/insights/learner-profile/edit-profile');
                     }}
                   >
                     Edit Learner Profile
