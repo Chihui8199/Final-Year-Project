@@ -14,6 +14,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ShortLineWithDot from 'src/components/shortline-dot';
 
 const UserAcquiredProficiency = () => {
   const [data, setData] = useState([]);
@@ -74,7 +75,6 @@ const UserAcquiredProficiency = () => {
         </Typography>
       </Grid>
       {userLoading || loading ? (
-
         // Render a loading card while fetchData is happening
 
         <Card
@@ -91,7 +91,6 @@ const UserAcquiredProficiency = () => {
           </CardContent>
         </Card>
       ) : (
-
         // Render the DesiredJob and Accordion components when loading is false
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -109,18 +108,47 @@ const UserAcquiredProficiency = () => {
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
                   id="panel1a-header"
-                  sx={{
-                    height: '80px',
-                  }}
+                  sx={{ height: '125px' }}
                 >
-                  <Typography
-                    variant="h6"
-                    component="div"
-                    sx={{ marginBottom: 2, color: 'primary.main' }}
+                  <Grid
+                    container
+                    spacing={3}
+                    direction="row"
+                    alignItems="center"
+                    wrap="nowrap"
                   >
-                    View your Required Skills
-                  </Typography>
+                    <Grid item xs={8} sx={{ marginRight: 4 }}>
+                      <Typography
+                        variant="h5"
+                        component="div"
+                        sx={{ color: 'primary.main' }}
+                      >
+                        View your Required Skills
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <ShortLineWithDot dotColor="success.main" />
+                      <Typography
+                        variant="caption"
+                        component="div"
+                        sx={{ marginLeft: 2 }} // Adjust as needed
+                      >
+                        Acquired Skills
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <ShortLineWithDot dotColor="error.main" />
+                      <Typography
+                        variant="caption"
+                        component="div"
+                        sx={{ marginLeft: 2 }} // Adjust as needed
+                      >
+                        Not Acquired
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 </AccordionSummary>
+
                 <AccordionDetails>
                   {data.map((item, index) => (
                     <TimeLineAccordion key={index} data={item} />
