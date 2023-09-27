@@ -1,44 +1,66 @@
 // ** MUI Imports
-import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button'
-import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import CardContent from '@mui/material/CardContent'
-import Paper from '@mui/material/Paper'
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import CardContent from '@mui/material/CardContent';
+import Paper from '@mui/material/Paper';
 
 // ** Icons Imports
-import TrendingUp from 'mdi-material-ui/TrendingUp'
+import TrendingUp from 'mdi-material-ui/TrendingUp';
 
 // Styled Box component
 const StyledBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
-    borderRight: `1px solid ${theme.palette.divider}`
-  }
-}))
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+}));
 
 // Import Routing
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
-const DesiredJob = props => {
-  const router = useRouter()
-  const { jobTitle } = props
+const DesiredJob = (props) => {
+  const router = useRouter();
+  const { jobTitle } = props;
   const doesProfileExists = jobTitle === undefined || jobTitle === '';
 
   return (
     <Card>
       <Grid container spacing={6}>
-        <Grid container item xs={12} sm={7} direction='column' justifyContent='center' alignItems='center'>
-          <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5.75, 6.25)} !important` }}>
+        <Grid
+          container
+          item
+          xs={12}
+          sm={7}
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <CardContent
+            sx={{
+              padding: (theme) =>
+                `${theme.spacing(3.25, 5.75, 6.25)} !important`,
+            }}
+          >
             {!doesProfileExists ? (
               <>
-                <Typography component="div" variant='h6' sx={{ marginBottom: 1 }}>
+                <Typography
+                  component="div"
+                  variant="h6"
+                  sx={{ marginBottom: 1 }}
+                >
                   I want to become a
                 </Typography>
                 <Typography
-                  variant='h2'
-                  sx={{ color: 'primary.main', marginBottom: 2.5, lineHeight: 1, fontWeight: 600 }}
+                  variant="h2"
+                  sx={{
+                    color: 'primary.main',
+                    marginBottom: 2.5,
+                    lineHeight: 1,
+                    fontWeight: 600,
+                  }}
                 >
                   {jobTitle}
                 </Typography>
@@ -46,23 +68,36 @@ const DesiredJob = props => {
             ) : (
               <Typography
                 component="div"
-                variant='h2'
-                sx={{ color: 'primary.main', marginBottom: 2.5, lineHeight: 1, fontWeight: 600 }}
+                variant="h2"
+                sx={{
+                  color: 'primary.main',
+                  marginBottom: 2.5,
+                  lineHeight: 1,
+                  fontWeight: 600,
+                }}
               >
-                <Typography  component="div" variant='h6' sx={{ marginBottom: 1 }}>
-                 Create Your Profile Now!
+                <Typography
+                  component="div"
+                  variant="h6"
+                  sx={{ marginBottom: 1 }}
+                >
+                  Create Your Profile Now!
                 </Typography>
               </Typography>
             )}
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <TrendingUp sx={{ color: 'primary.main', marginRight: 2.75 }} fontSize='small' />
-              <Typography variant='body2' sx={{ color: 'primary.main' }}>
+              <TrendingUp
+                sx={{ color: 'primary.main', marginRight: 2.75 }}
+                fontSize="small"
+              />
+              <Typography variant="body2" sx={{ color: 'primary.main' }}>
                 Adopt a Growth Mindset and Keep Learning
               </Typography>
             </Box>
-            <Typography variant='body2'>
+            <Typography variant="body2">
               {' '}
-              Understand the technical skills needed well and take courses to upskill
+              Understand the technical skills needed well and take courses to
+              upskill
             </Typography>
           </CardContent>
         </Grid>
@@ -70,7 +105,10 @@ const DesiredJob = props => {
           item
           sm={5}
           xs={12}
-          sx={{ paddingTop: ['0 !important', '1.5rem !important'], paddingLeft: ['1.5rem !important', '0 !important'] }}
+          sx={{
+            paddingTop: ['0 !important', '1.5rem !important'],
+            paddingLeft: ['1.5rem !important', '0 !important'],
+          }}
         >
           <CardContent
             sx={{
@@ -80,26 +118,46 @@ const DesiredJob = props => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: 'action.hover',
-              padding: theme => `${theme.spacing(18, 5, 16)} !important`
+              padding: (theme) => `${theme.spacing(18, 5, 16)} !important`,
             }}
           >
             <Box>
-              <Box sx={{ mb: 3.5, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Typography component="div" variant='h6' sx={{ lineHeight: 1, fontWeight: 600 }}>
+              <Box
+                sx={{
+                  mb: 3.5,
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography
+                  component="div"
+                  variant="h6"
+                  sx={{ lineHeight: 1, fontWeight: 600 }}
+                >
                   Have more career goals?
                 </Typography>
               </Box>
-              <Typography variant='body2' sx={{ mb: 13.75, display: 'flex', flexDirection: 'column' }}>
+              <Typography
+                variant="body2"
+                sx={{ mb: 13.75, display: 'flex', flexDirection: 'column' }}
+              >
                 <span>Create and switch between different</span>
                 <span>learner profiles to keep track</span>
                 <span>of your career goals</span>
               </Typography>
-              <Grid container direction='column' spacing={2}>
+              <Grid
+                container
+                direction="column"
+                spacing={3}
+                alignItems="stretch"
+              >
                 <Grid item>
                   <Button
-                    variant='contained'
+                  style={{width: '100%'}}
+                    variant="contained"
                     onClick={() => {
-                      router.push('/insights/learner-profile')
+                      router.push('/insights/learner-profile');
                     }}
                   >
                     Create Learner Profile
@@ -107,12 +165,24 @@ const DesiredJob = props => {
                 </Grid>
                 <Grid item>
                   <Button
-                    variant='contained'
+                  style={{width: '100%'}}
+                    variant="contained"
                     onClick={() => {
-                      router.push('/insights/choose-profile')
+                      router.push('/insights/choose-profile');
                     }}
                   >
                     Switch Learner Profile
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                  style={{width: '100%'}}
+                    variant="contained"
+                    onClick={() => {
+                      router.push('/insights/choose-profile');
+                    }}
+                  >
+                    Edit Learner Profile
                   </Button>
                 </Grid>
               </Grid>
@@ -121,7 +191,7 @@ const DesiredJob = props => {
         </Grid>
       </Grid>
     </Card>
-  )
-}
+  );
+};
 
-export default DesiredJob
+export default DesiredJob;

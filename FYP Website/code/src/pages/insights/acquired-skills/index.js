@@ -75,8 +75,8 @@ const UserAcquiredProficiency = () => {
         </Typography>
       </Grid>
       {userLoading || loading ? (
-        // Render a loading card while fetchData is happening
 
+        // Render a loading card while fetchData is happening
         <Card
           style={{
             minHeight: '20%',
@@ -91,6 +91,7 @@ const UserAcquiredProficiency = () => {
           </CardContent>
         </Card>
       ) : (
+        
         // Render the DesiredJob and Accordion components when loading is false
         <Grid container spacing={2}>
           <Grid item xs={12}>
