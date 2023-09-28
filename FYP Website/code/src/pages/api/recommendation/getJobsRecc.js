@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default async function handler(req, res) {
   try {
-    const reccURL = 'http://127.0.0.1:8000/recommend';
+    const reccURL = 'https://recommendation-ml-400402.de.r.appspot.com/recommend';
 
     const { user_id, strategy_type } = req.query;
 
