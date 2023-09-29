@@ -15,6 +15,7 @@ import CircularProgress from '@mui/material/CircularProgress' // Import Circular
 import { useUserContext } from 'src/context/UserContext'
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
+import Layout from '../../../components/layout'
 
 const ProfileChoice = () => {
   const [data, setData] = useState([])
@@ -68,6 +69,7 @@ const ProfileChoice = () => {
   
 
   return (
+    <Layout>
     <div>
       <Button variant='text' startIcon={<ArrowBackIosIcon />} onClick={() => router.back()}>
         Back to My Skills
@@ -136,6 +138,7 @@ const ProfileChoice = () => {
         )}
       </Card>
     </div>
+    </Layout>
   )
 }
 
