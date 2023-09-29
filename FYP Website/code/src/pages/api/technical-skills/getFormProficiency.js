@@ -2,8 +2,7 @@ import { read } from '../../../db/neo4j';
 
 export default async function handler(req, res) {
   const { desiredJobIDs, pastJobIDs } = req.query;
-  console.log('LOGGING', 'desiredJob', desiredJobIDs, 'pastJobID', pastJobIDs);
-
+  
   const query = `
     // Start with your desired job
     MATCH (j)-[:REQUIRE_TECHNICAL_SKILL]->(jt:JobTSC)-[:HAS_TSC_KEY]->(k:TSCKey)

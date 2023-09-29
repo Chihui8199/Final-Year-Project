@@ -21,6 +21,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import MuiCard from '@mui/material/Card';
 import InputAdornment from '@mui/material/InputAdornment';
 import MuiFormControlLabel from '@mui/material/FormControlLabel';
+import Cookies from 'js-cookie';
 
 // ** Icons Imports
 import Google from 'mdi-material-ui/Google';
@@ -102,8 +103,8 @@ const LoginPage = () => {
       if (response.status === 200) {
         // Successful login, handle as needed (e.g., redirect to dashboard)
         const res = await response.json();
-        setUser({ email: res.data.email, name: res.data.name });
-        router.push('/insights/acquired-skills'); // Adjust the URL as needed // TODO: change to routing anme once everthing is finalised
+        setUser({ email: res.data.email, name: res.data.name, token: res.token});
+        router.push('/insights/acquired-skills');
       } else {
         // Handle login error (e.g., display an error message)
         console.error('Login failed');

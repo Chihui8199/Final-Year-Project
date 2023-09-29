@@ -16,7 +16,6 @@ const TechnicalSkillsProfile = (props) => {
 
   const { prevJob, curJobRole, targetJobRole, queryTechnicalSkillsString } =
     router.query;
-console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole', curJobRole, 'targetJobROle', targetJobRole, 'joined', queryTechnicalSkillsString)
   const [data, setData] = useState([]);
   const [finalDefinedProf, setFinalDefinedProf] = useState({});
   const [isDisabled, setIsDisabled] = useState(false);
@@ -64,7 +63,6 @@ console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole',
       // Return the updated state
       return newState;
     });
-    console.log('Updating final prof', finalDefinedProf);
   };
 
   const handleSubmit = async () => {
@@ -83,10 +81,6 @@ console.log('Passed to technical skills page', 'prevJob', prevJob, 'curJobRole',
       curJobRole: curJobRole,
       targetJobRole: targetJobRole,
     };
-    console.log(
-      'This is the final object that will be sent to the backend',
-      final,
-    );
 
     const response = await fetch(`/api/learner-profile/createLearnerProfile`, {
       method: 'POST',

@@ -21,7 +21,6 @@ const ProfileChoice = () => {
   const [activeProfileUUID, setActiveProfileUUID] = useState('')
   const [loading, setLoading] = useState(true) // Loading state
   const { user } = useUserContext()
-  console.log('user from choose profile page', user?.email)
   const router = useRouter()
 
   const fetchData = useCallback(async () => {

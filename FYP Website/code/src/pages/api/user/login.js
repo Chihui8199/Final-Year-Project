@@ -1,5 +1,6 @@
 import { read } from '../../../db/neo4j'; // Import necessary functions for read and write operations
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export default async function login(req, res) {
   try {
@@ -15,16 +16,21 @@ export default async function login(req, res) {
     if (!isMatch) {
       return res.status(401).json({ message: 'Incorrect email or password' });
     } else {
-      return res.status(200).json({ data: user });
+      
+      const token = jwt.sign(
+        { email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '3h' },
+      );
+
+      return res.status(200).json({ data: user, token});
     }
   } catch (e) {
     console.error(e);
 
-    return res
-      .status(500)
-      .json({
-        message: 'We are experiencing a server error, please try again later',
-      });
+    return res.status(500).json({
+      message: 'We are experiencing a server error, please try again later',
+    });
   }
 }
 

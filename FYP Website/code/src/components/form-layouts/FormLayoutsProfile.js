@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { useUserContext } from 'src/context/UserContext'
 
 import {
   Card,
@@ -44,6 +45,7 @@ const FormLayoutsAlignment = () => {
   const [curJobRole, setCurRole] = useState('')
   const [targetJobRole, setTargetRole] = useState('')
   const [prevJob, setPrevJobIds] = useState([])
+  const { user } = useUserContext();
 
   const handlePreviousJobs = (event, values) => {
     const ids = values.map(item => item.JobId)
@@ -53,7 +55,14 @@ const FormLayoutsAlignment = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await fetch('/api/jobs/getAllJobs')
+        const result = await fetch('/api/jobs/getAllJobs', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user?.token}`,
+          },
+        });
+  
         if (result.ok) {
           const data = await result.json()
           setJobData(data.data)
@@ -66,6 +75,8 @@ const FormLayoutsAlignment = () => {
     }
     fetchData()
   }, [])
+  
+
 
   const handleCurJobRole = (event, value) => {
     const curJobID = value.JobId
@@ -175,4 +186,4 @@ const FormLayoutsAlignment = () => {
   )
 }
 
-export default FormLayoutsAlignment
+export default FormLayoutsAlignment;

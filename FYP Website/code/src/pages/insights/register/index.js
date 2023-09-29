@@ -88,8 +88,7 @@ const RegisterPage = () => {
     e.preventDefault();
     const { email, password, name } = values;
     try {
-      console.log('email', email, 'password', password, 'name', name);
-
+      
       const response = await fetch('/api/user/signup', {
         method: 'POST',
         headers: {

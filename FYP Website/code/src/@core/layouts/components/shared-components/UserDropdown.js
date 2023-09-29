@@ -38,7 +38,6 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 
 const UserDropdown = () => {
   const { user } = useUserContext();
-  console.log('user', user);
 
   // ** States
   const [anchorEl, setAnchorEl] = useState(null);
@@ -137,7 +136,7 @@ const UserDropdown = () => {
         <Divider sx={{ mt: 0, mb: 1 }} />
         <MenuItem
           sx={{ py: 2 }}
-          onClick={() => handleDropdownClose('/pages/login')}
+          onClick={() => handleDropdownClose('/insights/login')}
         >
           <LogoutVariant
             sx={{

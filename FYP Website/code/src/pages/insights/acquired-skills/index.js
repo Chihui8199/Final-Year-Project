@@ -20,7 +20,6 @@ const UserAcquiredProficiency = () => {
   const [data, setData] = useState([]);
   const [jobTitle, setJobTitle] = useState('');
   const { user } = useUserContext();
-  console.log('user from acquired skills page', user?.email);
   const [loading, setLoading] = useState(true);
   const [userLoading, setUserLoading] = useState(true);
   const [accordionExpanded, setAccordionExpanded] = useState(true);

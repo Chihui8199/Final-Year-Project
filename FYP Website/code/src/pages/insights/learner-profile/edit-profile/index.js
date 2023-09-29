@@ -31,7 +31,6 @@ const EditTechnicalSkillsProfile = (props) => {
         if (response.ok) {
           const data = await response.json();
           setData(data);
-          console.log('data', data);
           setLoading(false);
         } else {
           console.error('Failed to fetch data from /api/jobs');
@@ -62,7 +61,6 @@ const EditTechnicalSkillsProfile = (props) => {
       // Return the updated state
       return newState;
     });
-    console.log('Updating final prof', finalDefinedProf);
   };
 
   const handleSubmit = async () => {
@@ -78,11 +76,7 @@ const EditTechnicalSkillsProfile = (props) => {
       data: resultList,
       email: user.email,
     };
-    console.log(
-      'This is the final object that will be sent to the backend',
-      final,
-    );
-
+    
     const response = await fetch(`/api/learner-profile/editLearnerProfile`, {
       method: 'POST',
       headers: {

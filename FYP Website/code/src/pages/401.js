@@ -55,7 +55,7 @@ const Error401 = () => {
             You are not authorized! 🔐
           </Typography>
           <Typography variant="body2">
-            You don&prime;t have permission to access this page. Go Home!
+            You don&prime;t have permission to access this page. Redirecting to Login!
           </Typography>
         </BoxWrapper>
         <Img
