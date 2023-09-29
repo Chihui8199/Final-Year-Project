@@ -15,6 +15,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ShortLineWithDot from 'src/components/shortline-dot';
+import { getEndpointPath } from 'src/utils/endpoints/endpointUtils';
 
 const UserAcquiredProficiency = () => {
   const [data, setData] = useState([]);
@@ -32,7 +33,7 @@ const UserAcquiredProficiency = () => {
       }
       try {
         const results = await fetch(
-          `/api/technical-skills/getAcquiredProficiency?email=${user?.email}`,
+          `${getEndpointPath('Acquired Skills')}?email=${user?.email}`,
           {
             method: 'GET',
           },
@@ -42,7 +43,7 @@ const UserAcquiredProficiency = () => {
           setData(data);
           setJobTitle(data?.[0]?.jobTitle);
         } else {
-          console.error('Failed to fetch data from /api/jobs');
+          console.error('Failed to fetch data');
         }
       } catch (error) {
         console.error('An error occurred while fetching data:', error);

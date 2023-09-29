@@ -30,7 +30,7 @@ const TechnicalSkillsProfile = (props) => {
     const fetchRequiredProficiency = async () => {
       try {
         const jobProf = await fetch(
-          `/api/technical-skills/getRequiredProficiency?ids=${queryTechnicalSkillsString}`,
+          `${getEndpointPath("Get Required Proficiency")}?ids=${queryTechnicalSkillsString}`,
           {
             method: 'GET',
           },
@@ -39,7 +39,7 @@ const TechnicalSkillsProfile = (props) => {
           const profFilteringList = await jobProf.json();
           setFilteringList(profFilteringList);
         } else {
-          console.error('Failed to fetch data from /api/jobs');
+          console.error('Failed to fetch data');
         }
       } catch (error) {
         console.error('An error occurred while fetching data:', error);
@@ -49,7 +49,7 @@ const TechnicalSkillsProfile = (props) => {
     const fetchTechnicalSkills = async () => {
       try {
         const result = await fetch(
-          `/api/technical-skills/technicalskills?ids=${queryTechnicalSkillsString}`,
+          `${getEndpointPath("Technical Skills")}?ids=${queryTechnicalSkillsString}`,
           {
             method: 'GET',
           },
@@ -58,7 +58,7 @@ const TechnicalSkillsProfile = (props) => {
           const data = await result.json();
           setResults(data.data);
         } else {
-          console.error('Failed to fetch data from /api/jobs');
+          console.error('Failed to fetch data');
         }
       } catch (error) {
         console.error('An error occurred while fetching data:', error);

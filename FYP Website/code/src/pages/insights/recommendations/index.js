@@ -20,6 +20,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Layout from '../../../components/layout'
+import { getEndpointPath } from 'src/utils/endpoints/endpointUtils';
 
 export default function TextMobileStepper() {
   const theme = useTheme();
@@ -68,7 +69,7 @@ export default function TextMobileStepper() {
       if (!user) return;
       try {
         const response = await fetch(
-          `/api/recommendation/getJobsRecc?user_id=${user.email}&strategy_type=${recc}`,
+          `${getEndpointPath("Get Recc")}?user_id=${user.email}&strategy_type=${recc}`,
           {
             method: 'GET',
           },

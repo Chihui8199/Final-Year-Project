@@ -35,6 +35,7 @@ import FooterIllustrationsV1 from 'src/components/pages/auth/FooterIllustration'
 
 //** Utils import
 import { getRoutePath } from '../../../utils/routes/routeUtils';
+import { getEndpointPath } from 'src/utils/endpoints/endpointUtils';
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -85,7 +86,7 @@ const RegisterPage = () => {
     e.preventDefault();
     const { email, password, name } = values;
     try {
-      const response = await fetch('/api/user/signup', {
+      const response = await fetch(getEndpointPath("Register"), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

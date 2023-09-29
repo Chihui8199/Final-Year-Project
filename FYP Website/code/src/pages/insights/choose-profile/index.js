@@ -16,6 +16,7 @@ import { useUserContext } from 'src/context/UserContext'
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../../components/layout'
+import { getEndpointPath } from 'src/utils/endpoints/endpointUtils'
 
 const ProfileChoice = () => {
   const [data, setData] = useState([])
@@ -28,7 +29,7 @@ const ProfileChoice = () => {
     if (!user || !user.email) return;  // Guard clause
   
     try {
-      const results = await fetch(`/api/learner-profile/getAllLearnerProfiles?email=${user.email}`, {
+      const results = await fetch(`${getEndpointPath("Get All Profiles")}?email=${user.email}`, {
         method: 'GET'
       });
       if (results.ok) {
@@ -36,7 +37,7 @@ const ProfileChoice = () => {
         setActiveProfileUUID(data.user.state);
         setData(data.learnerProfiles);
       } else {
-        console.error('Failed to fetch data from /api/jobs');
+        console.error('Failed to fetch data');
       }
     } catch (error) {
       console.error('An error occurred while fetching data:', error);
@@ -52,7 +53,7 @@ const ProfileChoice = () => {
   }, [user, fetchData]);
 
   const handleRowClick = async rowData => {
-    const response = await fetch(`/api/learner-profile/updateActiveProfile`, {
+    const response = await fetch(getEndpointPath("Update Active Profile"), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

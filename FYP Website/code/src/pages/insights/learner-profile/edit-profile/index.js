@@ -41,7 +41,7 @@ const EditTechnicalSkillsProfile = (props) => {
           setData(data);
           setLoading(false);
         } else {
-          console.error('Failed to fetch data from /api/jobs');
+          console.error('Failed to fetch data');
         }
       };
       fetchData();

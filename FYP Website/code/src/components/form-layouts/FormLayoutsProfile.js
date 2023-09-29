@@ -56,7 +56,7 @@ const FormLayoutsAlignment = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await fetch('/api/jobs/getAllJobs', {
+        const result = await fetch(getEndpointPath("Get All Jobs"), {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const FormLayoutsAlignment = () => {
           const data = await result.json()
           setJobData(data.data)
         } else {
-          console.error('Failed to fetch data from /api/jobs')
+          console.error('Failed to fetch data')
         }
       } catch (error) {
         console.error('An error occurred while fetching data:', error)
