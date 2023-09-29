@@ -24,6 +24,7 @@ import MuiFormControlLabel from '@mui/material/FormControlLabel';
 
 // ** Icons Imports
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline';
+import EyeOutline from 'mdi-material-ui/EyeOutline'
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig';
@@ -36,7 +37,8 @@ import FooterIllustrationsV1 from 'src/components/pages/auth/FooterIllustration'
 
 // other
 import { useUserContext } from 'src/context/UserContext';
-import { getRoutePath } from '../../../utils/routeUtils';
+import { getRoutePath } from '../../../utils/routes/routeUtils';
+import { getEndpointPath } from '../../../utils/endpoints/endpointUtils';
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -84,7 +86,9 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(routeObject?.path, {
+      const loginEndpoint = getEndpointPath('Login')
+      
+      const response = await fetch(loginEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +106,7 @@ const LoginPage = () => {
           name: res.data.name,
           token: res.token,
         });
-        router.push(getRoutePath('Acquired'));
+        router.push(getRoutePath('Acquired Skills'));
       } else {
         // Handle login error (e.g., display an error message)
         console.error('Login failed');

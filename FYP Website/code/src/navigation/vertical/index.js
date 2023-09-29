@@ -3,6 +3,8 @@
 import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
 
+import { getRoutePath } from 'src/utils/routes/routeUtils'
+
 const navigation = () => {
   return [
     {
@@ -11,13 +13,13 @@ const navigation = () => {
     {
       title: 'My Skills',
       icon: HomeOutline,
-      path: '/insights/acquired-skills',
+      path: getRoutePath('Acquired Skills'),
       openInNewTab: false
     },
     {
       title: 'Recommendations',
       icon: CubeOutline,
-      path: '/insights/recommendations',
+      path: getRoutePath('Recommendations'),
       openInNewTab: false
     },
   ]

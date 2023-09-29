@@ -33,15 +33,13 @@ import BlankLayout from 'src/@core/layouts/BlankLayout';
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/components/pages/auth/FooterIllustration';
 
-//** Utils import 
-import {getRoutePath} from '../../../utils/routeUtils'
+//** Utils import
+import { getRoutePath } from '../../../utils/routes/routeUtils';
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' },
 }));
-
-
 
 const LinkStyled = styled('a')(({ theme }) => ({
   fontSize: '0.875rem',
@@ -87,7 +85,6 @@ const RegisterPage = () => {
     e.preventDefault();
     const { email, password, name } = values;
     try {
-      
       const response = await fetch('/api/user/signup', {
         method: 'POST',
         headers: {
@@ -97,7 +94,7 @@ const RegisterPage = () => {
       });
       if (response.ok) {
         // Registration was successful, you can redirect the user to a success page or login page
-        router.push(getRoutePath('Login')); 
+        router.push(getRoutePath('Login'));
       } else {
         const data = await response.json();
 
@@ -274,7 +271,7 @@ const RegisterPage = () => {
                 Already have an account?
               </Typography>
               <Typography variant="body2">
-                <Link passHref href= {getRoutePath('Login')}>
+                <Link passHref href={getRoutePath('Login')}>
                   <LinkStyled>Sign in instead</LinkStyled>
                 </Link>
               </Typography>

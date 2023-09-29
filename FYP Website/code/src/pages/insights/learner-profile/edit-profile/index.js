@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+
 import Stepper from '../../../../components/edit-stepper';
-import { useRouter } from 'next/router';
 import { Paper, Grid, Typography } from '@mui/material';
 import { Button } from '@mui/material';
-import { useUserContext } from 'src/context/UserContext';
 import LoadingCard from 'src/components/loading';
 import Layout from '../../../../components/layout'
+
+// next router
+import { useRouter } from 'next/router';
+
+// utils 
+import { useUserContext } from 'src/context/UserContext';
+import { getRoutePath } from '../../../../utils/routes/routeUtils';
+import { getEndpointPath } from '../../../../utils/endpoints/endpointUtils';
+
+
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
@@ -23,7 +31,7 @@ const EditTechnicalSkillsProfile = (props) => {
     try {
       const fetchData = async () => {
         const response = await fetch(
-          `/api/technical-skills/getAcquiredProficiency?email=${user?.email}`,
+         `${getEndpointPath("Acquired Skills")}?email=${user?.email}`,
           {
             method: 'GET',
           },
@@ -76,8 +84,9 @@ const EditTechnicalSkillsProfile = (props) => {
       data: resultList,
       email: user.email,
     };
-    
-    const response = await fetch(`/api/learner-profile/editLearnerProfile`, {
+    const editProfileEndPoint = getEndpointPath('Edit Profile')
+
+    const response = await fetch(editProfileEndPoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -88,7 +97,7 @@ const EditTechnicalSkillsProfile = (props) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    router.push('/insights/acquired-skills');
+    router.push(getRoutePath('Acquired Skills'));
   };
 
   return (

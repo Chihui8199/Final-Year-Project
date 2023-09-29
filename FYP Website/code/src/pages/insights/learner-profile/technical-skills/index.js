@@ -5,7 +5,10 @@ import { Paper, Grid, Typography } from '@mui/material';
 import { Button } from '@mui/material';
 import { useUserContext } from 'src/context/UserContext';
 import LoadingCard from 'src/components/loading';
-import  Layout from '../../../../components/layout'
+import Layout from '../../../../components/layout';
+
+import { getRoutePath } from 'src/utils/routes/routeUtils';
+import { getEndpointPath } from 'src/utils/endpoints/endpointUtils';
 
 const TechnicalSkillsProfile = (props) => {
   const router = useRouter();
@@ -21,12 +24,12 @@ const TechnicalSkillsProfile = (props) => {
   useEffect(() => {
     try {
       const fetchData = async () => {
-        const response = await fetch(
-          `/api/technical-skills/getFormProficiency?pastJobIDs=${queryTechnicalSkillsString}&desiredJobIDs=${targetJobRole}`,
-          {
-            method: 'GET',
-          },
-        );
+        const baseEndpoint = getEndpointPath('Get Form Proficiency');
+        const queryParams = `?pastJobIDs=${queryTechnicalSkillsString}&desiredJobIDs=${targetJobRole}`;
+        
+        const response = await fetch(`${baseEndpoint}${queryParams}`, {
+          method: 'GET',
+        });
         if (response.ok) {
           const data = await response.json();
           setData(data);
@@ -79,7 +82,7 @@ const TechnicalSkillsProfile = (props) => {
       targetJobRole: targetJobRole,
     };
 
-    const response = await fetch(`/api/learner-profile/createLearnerProfile`, {
+    const response = await fetch(getEndpointPath('Create Profile'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -90,12 +93,12 @@ const TechnicalSkillsProfile = (props) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    router.push('/insights/acquired-skills');
+    router.push(getRoutePath('Acquired Skills'));
   };
 
   return (
     <Layout>
-    <div>
+      <div>
         <Typography variant="body2">SET UP LEARNER PROFILE </Typography>
         <h1 style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '2px' }}>
           Step 2. Skills and Competencies
@@ -138,7 +141,7 @@ const TechnicalSkillsProfile = (props) => {
             </Button>
           </Grid>
         </Grid>
-    </div>
+      </div>
     </Layout>
   );
 };

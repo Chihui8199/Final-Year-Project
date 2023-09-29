@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'src/context/UserContext'
-
+import { getEndpointPath } from 'src/utils/endpoints/endpointUtils'
+import { getRoutePath } from 'src/utils/routes/routeUtils'
 import {
   Card,
   Grid,
@@ -99,12 +100,14 @@ const FormLayoutsAlignment = () => {
       targetJobRole,
       queryTechnicalSkillsString
     }
+    const technicalSkillsRoute = getRoutePath('Technical Skills')
     router.push(
       {
-        pathname: '/insights/learner-profile/technical-skills',
+        pathname: technicalSkillsRoute,
         query: result
       },
-      '/insights/learner-profile/technical-skills'
+      technicalSkillsRoute
+      
     )
   }
 

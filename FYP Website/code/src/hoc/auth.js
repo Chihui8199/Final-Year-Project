@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useUserContext } from 'src/context/UserContext';
 import Error401 from '../../src/pages/401'
+import { getRoutePath } from 'src/utils/routes/routeUtils';
 
 
 const withAuth = (WrappedComponent) => {
@@ -20,7 +21,7 @@ const withAuth = (WrappedComponent) => {
       setTimeout(() => {
         // Redirect to login page if on the client-side
         if (typeof window !== 'undefined') {
-          router.replace('/insights/login');
+          router.replace(getRoutePath('Login'));
         }
       }, 3000); 
 

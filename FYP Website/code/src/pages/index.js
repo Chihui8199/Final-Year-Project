@@ -12,7 +12,7 @@ import { CardContent } from '@mui/material';
 
 // ** Router Import
 import { useRouter } from 'next/router';
-import {getRoutePath} from '../utils/routeUtils'
+import { getRoutePath } from '../utils/routes/routeUtils';
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout';

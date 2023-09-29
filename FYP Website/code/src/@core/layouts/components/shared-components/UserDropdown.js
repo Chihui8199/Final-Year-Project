@@ -17,7 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import {getRoutePath} from '../../../../utils/routeUtils'
+import { getRoutePath } from '../../../../utils/routes/routeUtils';
 
 // ** Icons Imports
 import CogOutline from 'mdi-material-ui/CogOutline';

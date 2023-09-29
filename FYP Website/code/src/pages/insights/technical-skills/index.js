@@ -10,6 +10,10 @@ import Layout from '../../../components/layout'
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
 
+// utils 
+import { getRoutePath } from 'src/utils/routes/routeUtils';
+import { getEndpointPath } from 'src/utils/endpoints/endpointUtils';
+
 const TechnicalSkillsProfile = (props) => {
   const router = useRouter();
   const { user } = useUserContext();
@@ -104,7 +108,7 @@ const TechnicalSkillsProfile = (props) => {
       targetJobRole: targetJobRole,
     };
 
-    const response = await fetch(`/api/learner-profile/createLearnerProfile`, {
+    const response = await fetch(getEndpointPath('Create Profile'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -115,7 +119,7 @@ const TechnicalSkillsProfile = (props) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    router.push('/insights/acquired-skills');
+    router.push(getRoutePath('Acquired Skills'));
   };
 
   return (

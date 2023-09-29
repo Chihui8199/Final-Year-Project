@@ -20,6 +20,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 // Import Routing
 import { useRouter } from 'next/router';
+import { getRoutePath } from 'src/utils/routes/routeUtils';
+
 
 const DesiredJob = (props) => {
   const router = useRouter();
@@ -157,7 +159,7 @@ const DesiredJob = (props) => {
                   style={{width: '100%'}}
                     variant="contained"
                     onClick={() => {
-                      router.push('/insights/learner-profile');
+                      router.push(getRoutePath('Learner Profile'));
                     }}
                   >
                     Create Learner Profile
@@ -168,7 +170,7 @@ const DesiredJob = (props) => {
                   style={{width: '100%'}}
                     variant="contained"
                     onClick={() => {
-                      router.push('/insights/choose-profile');
+                      router.push(getRoutePath('Switch Profile'));
                     }}
                   >
                     Switch Learner Profile
@@ -179,7 +181,7 @@ const DesiredJob = (props) => {
                   style={{width: '100%'}}
                     variant="contained"
                     onClick={() => {
-                      router.push('/insights/learner-profile/edit-profile');
+                      router.push(getRoutePath('Edit Profile'));
                     }}
                   >
                     Edit Learner Profile
