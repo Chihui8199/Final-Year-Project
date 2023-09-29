@@ -80,12 +80,12 @@ const FormLayoutsAlignment = () => {
 
 
   const handleCurJobRole = (event, value) => {
-    const curJobID = value.JobId
+    const curJobID = value?.JobId
     setCurRole(curJobID)
   }
 
   const handleTargetJobRole = (event, value) => {
-    const targetJobID = value.JobId
+    const targetJobID = value?.JobId
     setTargetRole(targetJobID)
   }
 

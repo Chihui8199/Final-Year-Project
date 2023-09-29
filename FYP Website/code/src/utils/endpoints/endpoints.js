@@ -25,7 +25,7 @@ const endpoint = [
   },
   {
     name: 'Get Required Proficiency',
-    path: '/api/technical-skills/getRequiredProficiency',
+    path: '/api/technical-skills/technicalskills',
   },
   {
     name: 'Get All Jobs',
@@ -42,10 +42,6 @@ const endpoint = [
   {
     name: 'Get Recc',
     path: '/api/recommendation/getJobsRecc',
-  },
-  {
-    name: 'Tehnical Skills',
-    path: '/api/technical-skills/technicalskills',
   },
 ];
 

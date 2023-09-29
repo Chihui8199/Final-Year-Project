@@ -22,34 +22,15 @@ const TechnicalSkillsProfile = (props) => {
     router.query;
   const { prevJob } = router.query;
   const [results, setResults] = useState(null);
-  const [profFilteringList, setFilteringList] = useState([]);
   const [finalDefinedProf, setFinalDefinedProf] = useState({});
   const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
-    const fetchRequiredProficiency = async () => {
-      try {
-        const jobProf = await fetch(
-          `${getEndpointPath("Get Required Proficiency")}?ids=${queryTechnicalSkillsString}`,
-          {
-            method: 'GET',
-          },
-        );
-        if (jobProf.ok) {
-          const profFilteringList = await jobProf.json();
-          setFilteringList(profFilteringList);
-        } else {
-          console.error('Failed to fetch data');
-        }
-      } catch (error) {
-        console.error('An error occurred while fetching data:', error);
-      }
-    };
 
     const fetchTechnicalSkills = async () => {
       try {
         const result = await fetch(
-          `${getEndpointPath("Technical Skills")}?ids=${queryTechnicalSkillsString}`,
+          `${getEndpointPath("Get Required Proficiency")}?ids=${queryTechnicalSkillsString}`,
           {
             method: 'GET',
           },
@@ -136,7 +117,6 @@ const TechnicalSkillsProfile = (props) => {
               Review Your Mastery of Technical Skills You Have
             </Typography>
             {results &&
-              profFilteringList &&
               results.map(
                 (item, index) =>
                   item && (
