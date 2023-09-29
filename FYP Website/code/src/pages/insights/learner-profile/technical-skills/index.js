@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import Stepper from '../../../../components/stepper';
 import { useRouter } from 'next/router';
 import { Paper, Grid, Typography } from '@mui/material';
 import { Button } from '@mui/material';
 import { useUserContext } from 'src/context/UserContext';
 import LoadingCard from 'src/components/loading';
-
-// ** Styled Component
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
+import  Layout from '../../../../components/layout'
 
 const TechnicalSkillsProfile = (props) => {
   const router = useRouter();
@@ -97,8 +94,8 @@ const TechnicalSkillsProfile = (props) => {
   };
 
   return (
+    <Layout>
     <div>
-      <DatePickerWrapper>
         <Typography variant="body2">SET UP LEARNER PROFILE </Typography>
         <h1 style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '2px' }}>
           Step 2. Skills and Competencies
@@ -141,8 +138,8 @@ const TechnicalSkillsProfile = (props) => {
             </Button>
           </Grid>
         </Grid>
-      </DatePickerWrapper>
     </div>
+    </Layout>
   );
 };
 

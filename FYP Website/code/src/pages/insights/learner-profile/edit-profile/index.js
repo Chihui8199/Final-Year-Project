@@ -6,6 +6,7 @@ import { Paper, Grid, Typography } from '@mui/material';
 import { Button } from '@mui/material';
 import { useUserContext } from 'src/context/UserContext';
 import LoadingCard from 'src/components/loading';
+import Layout from '../../../../components/layout'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
@@ -23,7 +24,7 @@ const EditTechnicalSkillsProfile = (props) => {
     try {
       const fetchData = async () => {
         const response = await fetch(
-          `/api/technical-skills/getAcquiredProficiency?email=${user.email}`,
+          `/api/technical-skills/getAcquiredProficiency?email=${user?.email}`,
           {
             method: 'GET',
           },
@@ -92,6 +93,7 @@ const EditTechnicalSkillsProfile = (props) => {
   };
 
   return (
+    <Layout>
     <div>
       <DatePickerWrapper>
         <Typography variant="body2">Edit LEARNER PROFILE </Typography>
@@ -138,6 +140,7 @@ const EditTechnicalSkillsProfile = (props) => {
         </Grid>
       </DatePickerWrapper>
     </div>
+    </Layout>
   );
 };
 

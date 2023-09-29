@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { Paper, Grid, Typography } from '@mui/material';
 import { Button } from '@mui/material';
 import { useUserContext } from 'src/context/UserContext';
+import Layout from '../../../components/layout'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
@@ -21,7 +22,6 @@ const TechnicalSkillsProfile = (props) => {
   const [finalDefinedProf, setFinalDefinedProf] = useState({});
   const [isDisabled, setIsDisabled] = useState(false);
 
-  // TODO: can combine this two api calls into one
   useEffect(() => {
     const fetchRequiredProficiency = async () => {
       try {
@@ -119,6 +119,7 @@ const TechnicalSkillsProfile = (props) => {
   };
 
   return (
+    <Layout>
     <div>
       <DatePickerWrapper>
         <Typography variant="body2">SET UP LEARNER PROFILE </Typography>
@@ -167,6 +168,7 @@ const TechnicalSkillsProfile = (props) => {
         </Grid>
       </DatePickerWrapper>
     </div>
+    </Layout>
   );
 };
 

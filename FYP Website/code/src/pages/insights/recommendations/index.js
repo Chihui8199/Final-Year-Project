@@ -19,6 +19,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Layout from '../../../components/layout'
 
 export default function TextMobileStepper() {
   const theme = useTheme();
@@ -87,7 +88,7 @@ export default function TextMobileStepper() {
   }, [user, recc]);
 
   return (
-    
+    <Layout>
     <div>
       {loading ? (
         <LoadingCard />
@@ -203,5 +204,6 @@ export default function TextMobileStepper() {
         </div>
       )}
     </div>
+    </Layout>
   );
 }
