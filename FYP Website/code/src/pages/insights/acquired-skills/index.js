@@ -21,20 +21,18 @@ const UserAcquiredProficiency = () => {
   const [jobTitle, setJobTitle] = useState('');
   const { user } = useUserContext();
   const [loading, setLoading] = useState(true);
-  const [userLoading, setUserLoading] = useState(true);
   const [accordionExpanded, setAccordionExpanded] = useState(true);
-  useEffect(() => {
-    if (user) {
-      setUserLoading(false);
-    }
-  }, [user]);
-
+  
   useEffect(() => {
     const fetchData = async () => {
-      if (!user) return;
+      if (!user){ 
+        setLoading(false);
+        
+        return;
+      }
       try {
         const results = await fetch(
-          `/api/technical-skills/getAcquiredProficiency?email=${user.email}`,
+          `/api/technical-skills/getAcquiredProficiency?email=${user?.email}`,
           {
             method: 'GET',
           },
@@ -73,7 +71,7 @@ const UserAcquiredProficiency = () => {
           Career Goal
         </Typography>
       </Grid>
-      {userLoading || loading ? (
+      { loading ? (
 
         // Render a loading card while fetchData is happening
         <Card

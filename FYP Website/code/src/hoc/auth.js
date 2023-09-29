@@ -22,7 +22,7 @@ const withAuth = (WrappedComponent) => {
         if (typeof window !== 'undefined') {
           router.replace('/insights/login');
         }
-      }, 1500); 
+      }, 3000); 
 
       return <Error401/>;
     }

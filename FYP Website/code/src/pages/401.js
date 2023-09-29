@@ -47,15 +47,15 @@ const Error401 = () => {
         }}
       >
         <BoxWrapper>
-          <Typography variant="h1">401</Typography>
+          
           <Typography
             variant="h5"
             sx={{ mb: 1, fontSize: '1.5rem !important' }}
           >
-            You are not authorized! 🔐
+            Login to Proceed! 🔐
           </Typography>
           <Typography variant="body2">
-            You don&prime;t have permission to access this page. Redirecting to Login!
+            You don&prime;t have permission to access this page.
           </Typography>
         </BoxWrapper>
         <Img

@@ -19,7 +19,6 @@ const EditTechnicalSkillsProfile = (props) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // TODO: By right should be able to get from parent component
   useEffect(() => {
     try {
       const fetchData = async () => {
