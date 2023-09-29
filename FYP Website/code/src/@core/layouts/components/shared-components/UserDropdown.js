@@ -17,6 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
+import {getRoutePath} from '../../../../utils/routeUtils'
 
 // ** Icons Imports
 import CogOutline from 'mdi-material-ui/CogOutline';
@@ -115,7 +116,7 @@ const UserDropdown = () => {
                 flexDirection: 'column',
               }}
             >
-              <Typography sx={{fontWeight: 600 }}>{user?.name}</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{user?.name}</Typography>
               <Tooltip title={user?.email}>
                 <Typography
                   sx={{
@@ -136,7 +137,7 @@ const UserDropdown = () => {
         <Divider sx={{ mt: 0, mb: 1 }} />
         <MenuItem
           sx={{ py: 2 }}
-          onClick={() => handleDropdownClose('/insights/login')}
+          onClick={() => handleDropdownClose(getRoutePath('Login'))}
         >
           <LogoutVariant
             sx={{

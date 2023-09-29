@@ -12,6 +12,7 @@ import { CardContent } from '@mui/material';
 
 // ** Router Import
 import { useRouter } from 'next/router';
+import {getRoutePath} from '../utils/routeUtils'
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout';
@@ -46,7 +47,7 @@ const LandingPage = () => {
   const router = useRouter();
 
   const handleClick = async () => {
-    router.push('/insights/login'); // Example: Redirect to a success page
+    router.push(getRoutePath('Login'));
   };
 
   return (

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 
 // ** Next Imports
 import Link from 'next/link';
@@ -8,11 +8,9 @@ import { useRouter } from 'next/router';
 // ** MUI Components
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography';
+import InputLabel from '@mui/material/InputLabel';
 import IconButton from '@mui/material/IconButton';
 import CardContent from '@mui/material/CardContent';
 import FormControl from '@mui/material/FormControl';
@@ -21,13 +19,8 @@ import { styled, useTheme } from '@mui/material/styles';
 import MuiCard from '@mui/material/Card';
 import InputAdornment from '@mui/material/InputAdornment';
 import MuiFormControlLabel from '@mui/material/FormControlLabel';
-import Cookies from 'js-cookie';
 
 // ** Icons Imports
-import Google from 'mdi-material-ui/Google';
-import Github from 'mdi-material-ui/Github';
-import Twitter from 'mdi-material-ui/Twitter';
-import Facebook from 'mdi-material-ui/Facebook';
 import EyeOutline from 'mdi-material-ui/EyeOutline';
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline';
 
@@ -40,13 +33,15 @@ import BlankLayout from 'src/@core/layouts/BlankLayout';
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/components/pages/auth/FooterIllustration';
 
-// other
-import { useUserContext } from 'src/context/UserContext';
+//** Utils import 
+import {getRoutePath} from '../../../utils/routeUtils'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' },
 }));
+
+
 
 const LinkStyled = styled('a')(({ theme }) => ({
   fontSize: '0.875rem',
@@ -55,22 +50,22 @@ const LinkStyled = styled('a')(({ theme }) => ({
 }));
 
 const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
+  marginTop: theme.spacing(1.5),
+  marginBottom: theme.spacing(4),
   '& .MuiFormControlLabel-label': {
     fontSize: '0.875rem',
     color: theme.palette.text.secondary,
   },
 }));
 
-// TODO: add modal for responding to pass and failed for user
-
-const LoginPage = () => {
-  // ** State
+const RegisterPage = () => {
+  // ** States
   const [values, setValues] = useState({
-    email: '',
+    name: '',
+    email: '', // Add email field to state
     password: '',
     showPassword: false,
   });
-  const { setUser } = useUserContext();
 
   // ** Hook
   const theme = useTheme();
@@ -88,29 +83,29 @@ const LoginPage = () => {
     event.preventDefault();
   };
 
-  const handleLogin = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password, name } = values;
     try {
-      const response = await fetch('/api/user/login', {
+      
+      const response = await fetch('/api/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
+        body: JSON.stringify({ name, email, password }),
       });
-      if (response.status === 200) {
-        // Successful login, handle as needed (e.g., redirect to dashboard)
-        const res = await response.json();
-        setUser({ email: res.data.email, name: res.data.name, token: res.token});
-        router.push('/insights/acquired-skills');
+      if (response.ok) {
+        // Registration was successful, you can redirect the user to a success page or login page
+        router.push(getRoutePath('Login')); 
       } else {
-        // Handle login error (e.g., display an error message)
-        console.error('Login failed');
+        const data = await response.json();
+
+        // Handle registration error, such as displaying an error message to the user
+        console.error(data.message); // Log the error message
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('An error occurred:', error);
     }
   };
 
@@ -205,34 +200,39 @@ const LoginPage = () => {
               variant="h5"
               sx={{ fontWeight: 600, marginBottom: 1.5 }}
             >
-              Welcome to {themeConfig.templateName}! 👋🏻
+              Chart your Career Journey 🚀
             </Typography>
             <Typography variant="body2">
-              Please sign-in to your account and let us guide you to your next
-              high in your career
+              Let us guide you to your next high in your career
             </Typography>
           </Box>
-          <form
-            noValidate
-            autoComplete="off"
-            onSubmit={(e) => e.preventDefault()}
-          >
+          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
             <TextField
-              autoFocus
+              required
               fullWidth
-              id="email"
+              type="name"
+              label="Name"
+              sx={{ marginBottom: 4 }}
+              value={values.name} // Bind email value to the input
+              onChange={handleChange('name')} // Handle email input change
+            />
+            <TextField
+              required
+              fullWidth
+              type="email"
               label="Email"
               sx={{ marginBottom: 4 }}
-              value={values.email}
-              onChange={handleChange('email')} // Add this line to handle the email field
+              value={values.email} // Bind email value to the input
+              onChange={handleChange('email')} // Handle email input change
             />
-
-            <FormControl fullWidth>
-              <InputLabel htmlFor="auth-login-password">Password</InputLabel>
+            <FormControl fullWidth sx={{ marginBottom: 4 }}>
+              <InputLabel required htmlFor="auth-register-password">
+                Password
+              </InputLabel>
               <OutlinedInput
                 label="Password"
                 value={values.password}
-                id="auth-login-password"
+                id="auth-register-password"
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
@@ -243,35 +243,24 @@ const LoginPage = () => {
                       onMouseDown={handleMouseDownPassword}
                       aria-label="toggle password visibility"
                     >
-                      {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
+                      {values.showPassword ? (
+                        <EyeOutline fontSize="small" />
+                      ) : (
+                        <EyeOffOutline fontSize="small" />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
               />
             </FormControl>
-            <Box
-              sx={{
-                mb: 4,
-                display: 'flex',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Link passHref href="/">
-                <LinkStyled onClick={(e) => e.preventDefault()}>
-                  Forgot Password?
-                </LinkStyled>
-              </Link>
-            </Box>
             <Button
               fullWidth
               size="large"
+              type="submit"
               variant="contained"
               sx={{ marginBottom: 7 }}
-              onClick={handleLogin}
             >
-              Login
+              Sign up
             </Button>
             <Box
               sx={{
@@ -282,11 +271,11 @@ const LoginPage = () => {
               }}
             >
               <Typography variant="body2" sx={{ marginRight: 2 }}>
-                New on our platform?
+                Already have an account?
               </Typography>
               <Typography variant="body2">
-                <Link passHref href="/pages/register">
-                  <LinkStyled>Create an account</LinkStyled>
+                <Link passHref href= {getRoutePath('Login')}>
+                  <LinkStyled>Sign in instead</LinkStyled>
                 </Link>
               </Typography>
             </Box>
@@ -297,6 +286,6 @@ const LoginPage = () => {
     </Box>
   );
 };
-LoginPage.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+RegisterPage.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
-export default LoginPage;
+export default RegisterPage;
