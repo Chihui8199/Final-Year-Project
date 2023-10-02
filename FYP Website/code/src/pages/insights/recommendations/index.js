@@ -13,7 +13,6 @@ import { useState, useEffect } from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import { FixedSizeList } from 'react-window';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -44,25 +43,6 @@ export default function TextMobileStepper() {
   const handleChange = (event) => {
     setAlgo(event.target.value);
   };
-
-  function renderRow(props) {
-    const { index, style } = props;
-    const task = jobs[activeStep].keyTasksList[index];
-
-    return (
-      <ListItem style={style} key={index} component="div" disablePadding>
-        <ListItemButton>
-          <ListItemText
-            primary={`${index + 1} ${task}`}
-            primaryTypographyProps={{
-              variant: 'caption', //
-              textAlign: 'left',
-            }}
-          />
-        </ListItemButton>
-      </ListItem>
-    );
-  }
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -142,30 +122,6 @@ export default function TextMobileStepper() {
                   {jobs[activeStep].jobRoleDescription}
                 </Typography>
               </Box>
-              <Box sx={{ p: 2 }}>
-                <Typography variant="subtitle1" color="primary" sx={{ px: 2 }}>
-                  Job Tasks
-                </Typography>
-                <Box
-                  sx={{
-                    width: '100%',
-                    maxWidth: '100%',
-                    bgcolor: 'background.paper',
-                    mb: 10,
-                  }}
-                >
-                  <FixedSizeList
-                    height={250}
-                    width={'100%'}
-                    itemSize={46}
-                    itemCount={jobs[activeStep].keyTasksList.length}
-                    overscanCount={5}
-                  >
-                    {renderRow}
-                  </FixedSizeList>
-                </Box>
-              </Box>
-
               <MobileStepper
                 variant="text"
                 steps={maxSteps}
