@@ -8,8 +8,6 @@ import { useRouter } from 'next/router';
 // ** MUI Components
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography';
@@ -39,6 +37,8 @@ import FooterIllustrationsV1 from 'src/components/pages/auth/FooterIllustration'
 import { useUserContext } from 'src/context/UserContext';
 import { getRoutePath } from '../../../utils/routes/routeUtils';
 import { getEndpointPath } from '../../../utils/endpoints/endpointUtils';
+import Snackbar from '../../../components/snackbar'
+import SnackBar from '../../../components/snackbar';
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -66,6 +66,13 @@ const LoginPage = () => {
     password: '',
     showPassword: false,
   });
+
+  const [snackState, setSnackState] = useState({
+    snackBarOpen: false,
+    snackBarMessage: '',
+    alertSeverity: 'error',
+  });
+
   const { setUser } = useUserContext();
 
   // ** Hook
@@ -87,7 +94,7 @@ const LoginPage = () => {
   const handleLogin = async () => {
     try {
       const loginEndpoint = getEndpointPath('Login')
-      
+  
       const response = await fetch(loginEndpoint, {
         method: 'POST',
         headers: {
@@ -98,26 +105,60 @@ const LoginPage = () => {
           password: values.password,
         }),
       });
+      
+      const res = await response.json(); // Moved outside of if condition
+      
       if (response.status === 200) {
         // Successful login, handle as needed (e.g., redirect to dashboard)
-        const res = await response.json();
         setUser({
           email: res.data.email,
           name: res.data.name,
           token: res.token,
         });
+        setSnackState({
+          ...snackState,
+          alertSeverity: 'success',
+          snackBarMessage: 'Logged in successfully!',
+          snackBarOpen: true,
+        });
         router.push(getRoutePath('Acquired Skills'));
       } else {
-        // Handle login error (e.g., display an error message)
-        console.error('Login failed');
+        // Handling non-200 responses
+        setSnackState({
+          ...snackState,
+          alertSeverity: 'error',
+          snackBarMessage: `Login failed! ${res.message}`, // res is defined in this scope
+          snackBarOpen: true,
+        });
+        console.error('Login failed', res.message); // Log the actual error message from the response
       }
     } catch (error) {
       console.error('Login error:', error);
+      setSnackState({
+        ...snackState,
+        alertSeverity: 'error',
+        snackBarMessage: 'Login failed due to a network error!',
+        snackBarOpen: true,
+      });
     }
   };
+  
+  const handleSnackBarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackState({ ...snackState, snackBarOpen: false });
+  };
+
 
   return (
     <Box className="content-center">
+       <SnackBar 
+        open={snackState.snackBarOpen} 
+        handleClose={handleSnackBarClose} 
+        severity={snackState.alertSeverity} 
+        message={snackState.snackBarMessage} 
+      />
       <Card sx={{ zIndex: 1 }}>
         <CardContent
           sx={{ padding: (theme) => `${theme.spacing(12, 9, 7)} !important` }}

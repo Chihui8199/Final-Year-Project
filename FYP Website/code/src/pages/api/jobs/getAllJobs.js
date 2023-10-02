@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).send('Authorization header missing');
   const token = authHeader.split(' ')[1];
-  console.log('fetching token', token);
+
   try {
     const { JWT_SECRET } = process.env;
     const userVerified = jwt.verify(token, JWT_SECRET);
