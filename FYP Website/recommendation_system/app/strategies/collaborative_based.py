@@ -32,7 +32,6 @@ class CollaborativeFilteringRecommender(RecommenderStrategy):
 
     def recommend(self, user_data):
         try:
-            # TODO: No user history for other sectors so exclude all jobs if the user has history in one sector
             user_df = self.preprocess_user_data(user_data)
             current_user_row = self.construct_matrix(user_df)
             recommended_job_ids = self.get_top_recc(current_user_row)

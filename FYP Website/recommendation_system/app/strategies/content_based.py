@@ -6,6 +6,17 @@ import numpy as np
 import os
 
 class ContentBasedRecommender(RecommenderStrategy):
+    def __init__(self):
+        self._initialize_data()
+           
+    def _initialize_data(self):
+        script_directory = os.path.dirname(os.path.realpath(__file__))
+        relative_path = 'ml_data/content/content_jobs_data.pkl'
+        file_path = os.path.join(script_directory, relative_path)
+        with open(file_path, 'rb') as handle:
+            self.jobs_dict = pickle.load(handle)
+
+
     def recommend(self, user_data):
         try:
             user_skills_dict, jobs_dict = self.preprocess_user_data(user_data)
@@ -16,12 +27,7 @@ class ContentBasedRecommender(RecommenderStrategy):
 
     def preprocess_user_data(self, user_data):
         def get_jobs_dict():
-            # TODO: change to relative path later on
-            script_directory = os.path.dirname(os.path.realpath(__file__))
-            relative_path = 'ml_data/content/content_jobs_data.pkl'
-            file_path = os.path.join(script_directory, relative_path)
-            with open(file_path, 'rb') as handle:
-                jobs_dict = pickle.load(handle)
+            self.jobs_dict = jobs_dict
             return jobs_dict
         # We don't want to recommend repeated jobs to user 
         exclude_jobs = user_data['jobids']
