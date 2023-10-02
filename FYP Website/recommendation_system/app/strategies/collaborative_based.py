@@ -38,21 +38,34 @@ class CollaborativeFilteringRecommender(RecommenderStrategy):
             recommended_job_ids = self.get_top_recc(current_user_row)
             # Implement the logic for collaborative filtering recommendation
             return recommended_job_ids
-        except:
+        except Exception as e:
             print(f"Error: {str(e)}")
             return []
 
     def preprocess_user_data(self, user_data):
+        
         data = user_data['data']
         jobs = user_data['jobids']
+
+        tsc_key_ids_set = set(self.df_skills['TSC Key ID'].values)
+        jobs_ids_set = set(self.df_jobs['jobid'].values)
+
         result = {}
         for item in data:
             keyID = item['keyID']
             proficiency = item['proficiency']
+            if keyID not in tsc_key_ids_set:
+                continue
             if keyID not in result or proficiency > result[keyID]:
                 result[keyID] = proficiency
+        final_jobs = []
+        for item in jobs:
+            if item not in jobs_ids_set:
+                continue
+            final_jobs.append(item)
+
         final_data = {
-            'Jobs': [jobs],
+            'Jobs': [final_jobs],
             'Skills': [result]
         }
         user_df = pd.DataFrame(final_data, columns=['Jobs', 'Skills'])
@@ -66,8 +79,6 @@ class CollaborativeFilteringRecommender(RecommenderStrategy):
         scaler = StandardScaler()
         df_skills['Z-Normalized'] = df_skills.groupby('TSC Key ID')['Proficiency Level'].transform(
             lambda x: scaler.fit_transform(x.values.reshape(-1, 1)).squeeze())
-
-        # Assuming user_df is your user data DataFrame and df_jobs is your jobs data DataFrame
 
         # Create a user-item matrix for skills
         num_users = len(user_df)
