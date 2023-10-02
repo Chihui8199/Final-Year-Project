@@ -60,6 +60,9 @@ const Recommendations = () => {
             <Typography variant="h4" sx={{ marginBottom: 2 }}>
               Recommendations
             </Typography>
+            <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
+              Top job picks for you
+            </Typography>
           </Grid>
           <Grid item xs={4}>
             <Box display="flex" justifyContent="flex-end">
@@ -68,8 +71,7 @@ const Recommendations = () => {
           </Grid>
         </Grid>
         <Typography variant="body2" sx={{ marginBottom: 2 }}>
-          Based on Passport Insights, here are our job recommendations. Use them
-          in searching for relevant jobs!
+          Based on Passport Insights, here are our job recommendations. Use them to search for relevant jobs!
         </Typography>
       </Grid>
       <Card>
