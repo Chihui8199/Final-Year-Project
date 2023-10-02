@@ -26,19 +26,26 @@ class ContentBasedRecommender(RecommenderStrategy):
             return []
 
     def preprocess_user_data(self, user_data):
-        def get_jobs_dict():
-            self.jobs_dict = jobs_dict
-            return jobs_dict
+        
         # We don't want to recommend repeated jobs to user 
         exclude_jobs = user_data['jobids']
-        jobs_dict = get_jobs_dict()
+        jobs_dict = self.jobs_dict
         # Filter out the unwanted job IDs when constructing the matrix
         jobs_dict = {key: val for key, val in jobs_dict.items() if key not in exclude_jobs}
+        
 
         user_skills = user_data['data']
-        user_skills.sort(key=lambda x: x['keyID'])
-        filtered_user_skills = [next(g) for k, g in groupby(user_skills, key=lambda x: x['keyID'])]
-        user_skills_dict = {skill['keyID']: skill['proficiency'] for skill in filtered_user_skills} # TODO: what happends if user has multiple levels of proficiency
+        user_skills_dict = {}
+
+        # Group user skills by 'keyID' and keep the one with the highest proficiency
+        for key_id, skills_group in groupby(user_skills, key=lambda x: x['keyID']):
+            highest_proficiency = 0  # Initialize with the lowest possible proficiency
+            for skill in skills_group:
+                proficiency = skill['proficiency']
+                if proficiency > highest_proficiency:
+                    highest_proficiency = proficiency
+            user_skills_dict[key_id] = highest_proficiency
+
         return user_skills_dict, jobs_dict
     
     def get_top_recc(self, user_skills_dict, jobs_dict):
