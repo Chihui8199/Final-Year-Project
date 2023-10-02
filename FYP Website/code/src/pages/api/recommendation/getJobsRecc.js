@@ -3,7 +3,8 @@ import axios from 'axios';
 
 export default async function handler(req, res) {
   try {
-    const reccURL = 'https://recommendation-ml-400402.de.r.appspot.com/recommend';
+    const reccURL =
+      'https://recommendation-ml-400402.de.r.appspot.com/recommend';
 
     const { user_id, strategy_type } = req.query;
 
@@ -13,8 +14,8 @@ export default async function handler(req, res) {
     };
 
     const response = await axios.get(reccURL, { params });
-    const reccJobID = response.data.recommendations;
-
+    const reccJobID = response?.data?.recommendations.map((item) => item[0]);
+    
     // Fetch job details from database
     const query = `
         MATCH (job:Job)-[:HAS_JOB_DESCRIPTION]->(jd:JobDescription)
@@ -24,8 +25,8 @@ export default async function handler(req, res) {
         RETURN job, jobRoleDescription, keyTasksList
       `;
     const result = await read(query, { reccJobID });
-    const finalRes = formatData(result);
-    
+    const finalRes = formatData(result, response?.data?.recommendations);
+
     // Send the response back to the client
     res.status(200).json(finalRes);
   } catch (error) {
@@ -36,17 +37,26 @@ export default async function handler(req, res) {
   }
 }
 
-const formatData = (result) => {
-    const finalRes = result.records
-    .map(record => record.toObject())
-    .map(({ job, jobRoleDescription, keyTasksList }) => ({
+const formatData = (result, similarityValues) => {
+  const finalRes = result.records
+    .map((record) => record.toObject())
+    .map(({ job, jobRoleDescription, keyTasksList }) => {
+      let similarityVal = similarityValues.find(
+        (subArray) => subArray[0] === job.properties.jobid.low,
+      );
+      similarityVal = similarityVal?.[1];
+
+      return {
         jobId: job.properties.jobid.low,
         sector: job.properties.Sector,
         jobRole: job.properties['Job Role'],
         track: job.properties.Track,
+        similarity: similarityVal,
         jobRoleDescription,
         keyTasksList,
-      }));
+      };
+    });
+  finalRes.sort((a, b) => b.similarity - a.similarity);
 
-    return finalRes
-}
+  return finalRes;
+};
