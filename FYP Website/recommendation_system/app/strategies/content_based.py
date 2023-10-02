@@ -58,9 +58,15 @@ class ContentBasedRecommender(RecommenderStrategy):
         # Compute similarity scores
         similarities = cosine_similarity([user_vector], jobs_matrix)[0]
 
-        # Get the top 10 job IDs based on similarity scores
-        top_10_indices = np.argsort(similarities)[-10:][::-1]  # -10: gets the last 10 values, [::-1] reverses the array
+        # Get the top 10 job IDs and their similarity scores
+        top_10_indices = np.argsort(similarities)[-10:][::-1]
         top_10_job_ids = [list(jobs_dict.keys())[i] for i in top_10_indices]
-        return top_10_job_ids
+        top_10_similarities = [similarities[i] for i in top_10_indices]
+
+        # Combine job IDs and similarity scores into a list of tuples
+        top_10_results = [(job_id, int(similarity * 100)) for job_id, similarity in zip(top_10_job_ids, top_10_similarities)]
+        
+        return top_10_results
+
 
     

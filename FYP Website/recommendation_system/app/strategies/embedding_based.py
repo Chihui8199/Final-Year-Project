@@ -36,5 +36,5 @@ class EmbeddingBasedRecommender(RecommenderStrategy):
         # Sorting the similarities
         sorted_similarities = sorted(similarities, key=lambda x: x['Similarity'], reverse=True)
         # Retrieve the top 10
-        top_10_job_ids = [item['JobID'] for item in sorted_similarities[:10]]
+        top_10_job_ids = [(item['JobID'], int(item['Similarity'] * 100)) for item in sorted_similarities[:10]]
         return top_10_job_ids

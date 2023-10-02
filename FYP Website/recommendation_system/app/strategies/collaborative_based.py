@@ -10,7 +10,7 @@ import os
 class CollaborativeFilteringRecommender(RecommenderStrategy):
     def __init__(self):
         self._initialize_data()
-        self.top_n = 5
+        self.top_n = 10
 
     def _initialize_data(self):
         # Define file paths as constants
@@ -114,44 +114,42 @@ class CollaborativeFilteringRecommender(RecommenderStrategy):
         return current_user_row
 
     def get_top_recc(self, current_user_row):
-       
-        all_jobs = self.df_jobs['jobid'].unique()
+        try:
+            all_jobs = self.df_jobs['jobid'].unique()
 
-        loaded_data = self.loaded_data
+            loaded_data = self.loaded_data
 
-        # Access the combined_matrix and jobs_index_map
-        combined_matrix = loaded_data['combined_matrix']
-        jobs_index_map = loaded_data['jobs_index_map']
+            # Access the combined_matrix and jobs_index_map
+            combined_matrix = loaded_data['combined_matrix']
+            jobs_index_map = loaded_data['jobs_index_map']
 
-        # Calculate cosine similarity between the current user and all other users
-        user_similarity_scores = cosine_similarity([current_user_row], combined_matrix)
+            # Calculate cosine similarity between the current user and all other users
+            user_similarity_scores = cosine_similarity([current_user_row], combined_matrix)
+            # Sort users by similarity
+            similar_users = np.argsort(user_similarity_scores[0])[::-1][1:]  # excludes the first user  
+                
+            # Initialize an OrderedDict to collect recommended job indices along with similarity scores
+            recommended_job_indices = OrderedDict()
 
-        # Sort users by similarity
-        similar_users = np.argsort(user_similarity_scores[0])[::-1][1:]  # excludes the first user
+            # Recommend jobs based on similar users' history
+            for user in similar_users:
+                # Find jobs that the similar user has interacted with
+                similar_user_jobs = combined_matrix[user, : len(all_jobs)]  # Include only job columns
+                
+                # Filter jobs that the current user hasn't interacted with
+                new_jobs_indices = np.where((similar_user_jobs > 0))
+                
+                # Update the OrderedDict with new job indices and their similarity scores
+                for idx in new_jobs_indices[0]:
+                    if idx not in recommended_job_indices:
+                        recommended_job_indices[idx] = user_similarity_scores[0][user]  # storing similarity score
+                if len(recommended_job_indices) >= self.top_n:
+                    break
 
-        # Initialize an OrderedDict to collect recommended job indices
-        recommended_job_indices = OrderedDict()
-
-        # Recommend jobs based on similar users' history
-        for user in similar_users:
-            # Find jobs that the similar user has interacted with
-            similar_user_jobs = combined_matrix[user, : len(all_jobs) + 1]  # Include only job columns
-            # Filter jobs that the current user hasn't interacted with
-            new_jobs_indices = np.where((similar_user_jobs > 0))
-            # Update the OrderedDict with new job indices
-            for idx in new_jobs_indices[0]:
-                recommended_job_indices[idx] = None
-            if len(recommended_job_indices) >= self.top_n:
-                break
-
-        # Convert the OrderedDict keys to a list of recommended job indices
-        recommended_job_indices = list(recommended_job_indices.keys())
-
-        # Map the indices directly to job IDs using the switched jobs_index_map
-        recommended_job_ids = [jobs_index_map[idx] for idx in recommended_job_indices]
-
-        # convert to python native int type
-        recommended_job_ids = [int(id) for id in recommended_job_ids]
-
-        # Now, you have a list of recommended job IDs
-        return recommended_job_ids
+            # Convert the OrderedDict to a list of lists containing recommended job indices and their similarity scores
+            recommended_jobs_with_scores = [[int(jobs_index_map[idx]), int(score*100)] for idx, score in recommended_job_indices.items()]
+            # Now, you have a list of recommended job IDs along with their similarity scores
+            return recommended_jobs_with_scores
+        except Exception as e:
+            return []
+            print(e)
