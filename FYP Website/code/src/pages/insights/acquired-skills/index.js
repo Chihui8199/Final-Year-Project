@@ -2,6 +2,7 @@ import React from 'react';
 import TimeLineAccordion from '../../../components/timelineaccordion';
 import { useState, useEffect } from 'react';
 import {
+  Box,
   Grid,
   Typography,
   Card,
@@ -15,6 +16,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ShortLineWithDot from 'src/components/shortline-dot';
+import steps from '../../../utils/data/insight-help/index'
+import InfoCard from 'src/components/infocard';
 import { getEndpointPath } from 'src/utils/endpoints/endpointUtils';
 
 const UserAcquiredProficiency = () => {
@@ -23,12 +26,12 @@ const UserAcquiredProficiency = () => {
   const { user } = useUserContext();
   const [loading, setLoading] = useState(true);
   const [accordionExpanded, setAccordionExpanded] = useState(true);
-  
+
   useEffect(() => {
     const fetchData = async () => {
-      if (!user){ 
+      if (!user) {
         setLoading(false);
-        
+
         return;
       }
       try {
@@ -59,9 +62,18 @@ const UserAcquiredProficiency = () => {
   return (
     <div>
       <Grid item xs={12}>
-        <Typography variant="h4" sx={{ marginBottom: 2 }}>
-          My Skills
-        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <Typography variant="h4" sx={{ marginBottom: 2 }}>
+              My Skills
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Box display="flex" justifyContent="flex-end">
+              <InfoCard steps ={steps}/>
+            </Box>
+          </Grid>
+        </Grid>
         <Typography variant="body2" sx={{ marginBottom: 2 }}>
           Track your progress and be informed of the courses you need to upskill
           and advance in your career.
@@ -72,7 +84,7 @@ const UserAcquiredProficiency = () => {
           Career Goal
         </Typography>
       </Grid>
-      { loading ? (
+      {loading ? (
 
         // Render a loading card while fetchData is happening
         <Card
@@ -89,7 +101,7 @@ const UserAcquiredProficiency = () => {
           </CardContent>
         </Card>
       ) : (
-        
+
         // Render the DesiredJob and Accordion components when loading is false
         <Grid container spacing={2}>
           <Grid item xs={12}>
