@@ -26,8 +26,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-
-export default function InfoCard({steps}) {
+export default function InfoCard({ steps }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -54,7 +53,7 @@ export default function InfoCard({steps}) {
     <div>
       <Chip
         icon={<InfoIcon />} // Added Info Icon to the Chip
-        label="Help"
+        label="How does it work?"
         onClick={handleClickOpen}
         variant="outlined"
         color="primary" // Adjust color as needed
@@ -64,11 +63,8 @@ export default function InfoCard({steps}) {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <DialogTitle
-          sx={{ m: 0, p: 3 }}
-          id="customized-dialog-title"
-        >
-            Tutorial
+        <DialogTitle sx={{ m: 0, p: 3 }} id="customized-dialog-title">
+          Tutorial
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -83,7 +79,14 @@ export default function InfoCard({steps}) {
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
-          <Box sx={{ maxWidth: 500, flexGrow: 1 }}>
+          <Box
+            sx={{
+              maxWidth: 500,
+              maxHeight: 1400,
+              flexGrow: 1,
+              overflow: 'auto',
+            }}
+          >
             <Paper
               square
               elevation={0}
@@ -95,51 +98,63 @@ export default function InfoCard({steps}) {
                 bgcolor: 'background.default',
               }}
             >
-              <Typography>{steps[activeStep].label}</Typography>
+              <Typography>{steps[activeStep]?.label}</Typography>
             </Paper>
-            <Box sx={{ height: 400, maxWidth: 500, width: '100%', p: 2 }}>
+            <Box
+              sx={{
+                maxWidth: 500,
+                maxHeight: 1200,
+                flexGrow: 1,
+                overflow: 'auto',
+              }}
+            >
               <Image
                 src={steps[activeStep].imgLink}
                 alt={steps[activeStep].label}
                 width={500} // Adjust according to your needs
                 height={300} // Adjust according to your needs
               />
-              {steps[activeStep].description}
+              <Typography component="div" sx={{ mb: 4 }}>
+                {steps[activeStep]?.description.map((line, index) => (
+                  <div key={index}>{line}</div>
+                ))}
+              </Typography>
+
+              <MobileStepper
+                variant="text"
+                steps={maxSteps}
+                position="static"
+                activeStep={activeStep}
+                nextButton={
+                  <Button
+                    size="small"
+                    onClick={handleNext}
+                    disabled={activeStep === maxSteps - 1}
+                  >
+                    Next
+                    {theme.direction === 'rtl' ? (
+                      <KeyboardArrowLeft />
+                    ) : (
+                      <KeyboardArrowRight />
+                    )}
+                  </Button>
+                }
+                backButton={
+                  <Button
+                    size="small"
+                    onClick={handleBack}
+                    disabled={activeStep === 0}
+                  >
+                    {theme.direction === 'rtl' ? (
+                      <KeyboardArrowRight />
+                    ) : (
+                      <KeyboardArrowLeft />
+                    )}
+                    Back
+                  </Button>
+                }
+              />
             </Box>
-            <MobileStepper
-              variant="text"
-              steps={maxSteps}
-              position="static"
-              activeStep={activeStep}
-              nextButton={
-                <Button
-                  size="small"
-                  onClick={handleNext}
-                  disabled={activeStep === maxSteps - 1}
-                >
-                  Next
-                  {theme.direction === 'rtl' ? (
-                    <KeyboardArrowLeft />
-                  ) : (
-                    <KeyboardArrowRight />
-                  )}
-                </Button>
-              }
-              backButton={
-                <Button
-                  size="small"
-                  onClick={handleBack}
-                  disabled={activeStep === 0}
-                >
-                  {theme.direction === 'rtl' ? (
-                    <KeyboardArrowRight />
-                  ) : (
-                    <KeyboardArrowLeft />
-                  )}
-                  Back
-                </Button>
-              }
-            />
           </Box>
         </DialogContent>
       </BootstrapDialog>

@@ -11,7 +11,7 @@ import LoadingCard from 'src/components/loading';
 import RecommendationStepper from 'src/components/recc-stepper';
 import InfoCard from 'src/components/infocard';
 import Layout from '../../../components/layout';
-import steps from '../../../utils/data/insight-help';
+import steps from '../../../utils/data/recc-help';
 
 const Recommendations = () => {
   const [jobs, setJobs] = useState([]);
