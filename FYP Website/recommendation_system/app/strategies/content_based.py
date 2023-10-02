@@ -7,9 +7,12 @@ import os
 
 class ContentBasedRecommender(RecommenderStrategy):
     def recommend(self, user_data):
-        user_skills_dict, jobs_dict = self.preprocess_user_data(user_data)
-        top_10_job_ids = self.get_top_recc(user_skills_dict, jobs_dict)
-        return top_10_job_ids
+        try:
+            user_skills_dict, jobs_dict = self.preprocess_user_data(user_data)
+            top_10_job_ids = self.get_top_recc(user_skills_dict, jobs_dict)
+            return top_10_job_ids
+        except:
+            return []
 
     def preprocess_user_data(self, user_data):
         def get_jobs_dict():
