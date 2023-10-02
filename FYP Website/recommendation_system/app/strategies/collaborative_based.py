@@ -8,6 +8,28 @@ import pickle
 import os
 
 class CollaborativeFilteringRecommender(RecommenderStrategy):
+    def __init__(self):
+        self._initialize_data()
+        self.top_n = 5
+
+    def _initialize_data(self):
+        # Define file paths as constants
+        SKILLS_FILE_PATH = 'ml_data/collaborative/Skills Collaborative Filtering.csv'
+        JOBS_FILE_PATH = 'ml_data/collaborative/Jobs Collaborative Filtering.csv'
+        PICKLE_FILE_PATH = 'ml_data/collaborative/collaborative_jobs_data.pkl'
+
+        # Construct absolute file paths
+        script_directory = os.path.dirname(__file__)
+        skills_file_path = os.path.join(script_directory, SKILLS_FILE_PATH)
+        jobs_file_path = os.path.join(script_directory, JOBS_FILE_PATH)
+        pickle_file_path = os.path.join(script_directory, PICKLE_FILE_PATH)
+
+        # Load data
+        self.df_skills = pd.read_csv(skills_file_path)
+        self.df_jobs = pd.read_csv(jobs_file_path)
+        with open(pickle_file_path, 'rb') as file:
+            self.loaded_data = pickle.load(file)
+
     def recommend(self, user_data):
         try:
             # TODO: No user history for other sectors so exclude all jobs if the user has history in one sector
@@ -17,12 +39,12 @@ class CollaborativeFilteringRecommender(RecommenderStrategy):
             # Implement the logic for collaborative filtering recommendation
             return recommended_job_ids
         except:
+            print(f"Error: {str(e)}")
             return []
 
     def preprocess_user_data(self, user_data):
         data = user_data['data']
         jobs = user_data['jobids']
-        # TODO: Takes the maxProficiency if there are duplicate keys
         result = {}
         for item in data:
             keyID = item['keyID']
@@ -37,19 +59,8 @@ class CollaborativeFilteringRecommender(RecommenderStrategy):
         return user_df
 
     def construct_matrix(self, user_df):
-        # Construct relative file paths for data files
-        skills_file_path = 'ml_data/collaborative/Skills Collaborative Filtering.csv'
-        jobs_file_path = 'ml_data/collaborative/Jobs Collaborative Filtering.csv'
-
-        # Get the absolute path of the directory containing this script
-        script_directory = os.path.dirname(__file__)
-
-        # Construct absolute file paths using the script_directory
-        skills_file_path = os.path.join(script_directory, skills_file_path)
-        jobs_file_path = os.path.join(script_directory, jobs_file_path)
-
-        df_skills = pd.read_csv(skills_file_path)
-        df_jobs = pd.read_csv(jobs_file_path)
+        df_skills = self.df_skills
+        df_jobs = self.df_jobs
 
         # Create a user-job-skills matrix for input
         scaler = StandardScaler()
@@ -93,22 +104,10 @@ class CollaborativeFilteringRecommender(RecommenderStrategy):
         return current_user_row
 
     def get_top_recc(self, current_user_row):
-        # Load the data from the pickle file
-        # Construct relative file paths for data files
-        jobs_file_path = 'ml_data/collaborative/Jobs Collaborative Filtering.csv'
-        pickle_file_path = 'ml_data/collaborative/collaborative_jobs_data.pkl'
+       
+        all_jobs = self.df_jobs['jobid'].unique()
 
-        # Get the absolute path of the directory containing this script
-        script_directory = os.path.dirname(__file__)
-
-        # Construct absolute file paths using the script_directory
-        jobs_file_path = os.path.join(script_directory, jobs_file_path)
-        pickle_file_path = os.path.join(script_directory, pickle_file_path)
-
-        all_jobs = pd.read_csv(jobs_file_path)['jobid'].unique()
-
-        with open(pickle_file_path, 'rb') as file:
-            loaded_data = pickle.load(file)
+        loaded_data = self.loaded_data
 
         # Access the combined_matrix and jobs_index_map
         combined_matrix = loaded_data['combined_matrix']
@@ -132,8 +131,7 @@ class CollaborativeFilteringRecommender(RecommenderStrategy):
             # Update the OrderedDict with new job indices
             for idx in new_jobs_indices[0]:
                 recommended_job_indices[idx] = None
-            # You can break after collecting a certain number of recommendations, e.g., 5
-            if len(recommended_job_indices) >= 5:
+            if len(recommended_job_indices) >= self.top_n:
                 break
 
         # Convert the OrderedDict keys to a list of recommended job indices
