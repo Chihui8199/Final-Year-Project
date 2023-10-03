@@ -5,7 +5,7 @@ const endpoint = [
   },
   {
     name: 'Register',
-    path: 'api/user/register',
+    path: '/api/user/signup',
   },
   {
     name: 'Edit Profile',
