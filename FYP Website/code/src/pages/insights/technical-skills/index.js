@@ -127,7 +127,6 @@ const TechnicalSkillsProfile = (props) => {
                     >
                       <Stepper
                         data={item}
-                        filters={profFilteringList}
                         getFinalProf={getFinalProf}
                       />
                     </Paper>
