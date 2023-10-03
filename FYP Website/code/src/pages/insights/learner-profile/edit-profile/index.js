@@ -4,17 +4,15 @@ import Stepper from '../../../../components/edit-stepper';
 import { Paper, Grid, Typography } from '@mui/material';
 import { Button } from '@mui/material';
 import LoadingCard from 'src/components/loading';
-import Layout from '../../../../components/layout'
+import Layout from '../../../../components/layout';
 
 // next router
 import { useRouter } from 'next/router';
 
-// utils 
+// utils
 import { useUserContext } from 'src/context/UserContext';
 import { getRoutePath } from '../../../../utils/routes/routeUtils';
 import { getEndpointPath } from '../../../../utils/endpoints/endpointUtils';
-
-
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
@@ -31,7 +29,7 @@ const EditTechnicalSkillsProfile = (props) => {
     try {
       const fetchData = async () => {
         const response = await fetch(
-         `${getEndpointPath("Acquired Skills")}?email=${user?.email}`,
+          `${getEndpointPath('Acquired Skills')}?email=${user?.email}`,
           {
             method: 'GET',
           },
@@ -75,16 +73,13 @@ const EditTechnicalSkillsProfile = (props) => {
     // Basically store all details about this learner profile
     setIsDisabled(true);
 
-    const resultList = Object.keys(finalDefinedProf).map((key) => ({
-      tscKeyID: parseInt(key),
-      profLevel: finalDefinedProf[key],
-    }));
-
     const final = {
-      data: resultList,
+      data: data,
+      newData: finalDefinedProf,
       email: user.email,
     };
-    const editProfileEndPoint = getEndpointPath('Edit Profile')
+
+    const editProfileEndPoint = getEndpointPath('Edit Profile');
 
     const response = await fetch(editProfileEndPoint, {
       method: 'POST',
@@ -102,52 +97,54 @@ const EditTechnicalSkillsProfile = (props) => {
 
   return (
     <Layout>
-    <div>
-      <DatePickerWrapper>
-        <Typography variant="body2">Edit LEARNER PROFILE </Typography>
-        <h1 style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '2px' }}>
-          Edit Skills and Competencies
-        </h1>
-        <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
-          <Grid item xs={12}>
-            <Typography variant="subtitle1" sx={{ marginBottom: '3%' }}>
-              Keep you Technical Skills Updated
-            </Typography>
-            {loading ? (
-              <LoadingCard />
-            ) : (
-              data.map(
-                (item, index) =>
-                  item && (
-                    <Paper
-                      key={index}
-                      elevation={5}
-                      style={{ padding: '20px', marginBottom: '20px' }}
-                    >
-                      <Stepper item={item} getFinalProf={getFinalProf} />
-                    </Paper>
-                  ),
-              )
-            )}
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+      <div>
+        <DatePickerWrapper>
+          <Typography variant="body2">Edit LEARNER PROFILE </Typography>
+          <h1
+            style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '2px' }}
           >
-            <Button
-              disabled={isDisabled}
-              type="submit"
-              onClick={handleSubmit}
-              variant="contained"
-              color="primary"
+            Edit Skills and Competencies
+          </h1>
+          <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" sx={{ marginBottom: '3%' }}>
+                Keep you Technical Skills Updated
+              </Typography>
+              {loading ? (
+                <LoadingCard />
+              ) : (
+                data.map(
+                  (item, index) =>
+                    item && (
+                      <Paper
+                        key={index}
+                        elevation={5}
+                        style={{ padding: '20px', marginBottom: '20px' }}
+                      >
+                        <Stepper item={item} getFinalProf={getFinalProf} />
+                      </Paper>
+                    ),
+                )
+              )}
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: 'flex', justifyContent: 'flex-end' }}
             >
-              Submit
-            </Button>
+              <Button
+                disabled={isDisabled}
+                type="submit"
+                onClick={handleSubmit}
+                variant="contained"
+                color="primary"
+              >
+                Submit
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </DatePickerWrapper>
-    </div>
+        </DatePickerWrapper>
+      </div>
     </Layout>
   );
 };
