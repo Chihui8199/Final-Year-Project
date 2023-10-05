@@ -4,7 +4,7 @@ import axios from 'axios';
 export default async function handler(req, res) {
   try {
     const reccURL =
-      'https://recommendation-ml-400402.de.r.appspot.com/recommend';
+      'https://recommendation-ml-401105.de.r.appspot.com/';
 
     const { user_id, strategy_type } = req.query;
 
