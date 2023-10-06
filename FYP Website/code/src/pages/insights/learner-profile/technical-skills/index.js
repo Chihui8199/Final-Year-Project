@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Stepper from '../../../../components/stepper';
 import { useRouter } from 'next/router';
-import { Paper, Grid, Typography } from '@mui/material';
+import { Paper, Grid, Typography, Divider } from '@mui/material';
 import { Button } from '@mui/material';
 import { useUserContext } from 'src/context/UserContext';
 import LoadingCard from 'src/components/loading';
@@ -113,9 +113,19 @@ const TechnicalSkillsProfile = (props) => {
           Back to Step 1
         </Button>
         <Typography variant="body2">SET UP LEARNER PROFILE </Typography>
-        <h1 style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '2px' }}>
-          Step 2. Skills and Competencies
-        </h1>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5" component="h1">
+              Step 2. Skills and Competencies
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="caption" component="p">
+              STEP 2/2
+            </Typography>
+          </Grid>
+        </Grid>
+        <Divider />
         <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
           <Grid item xs={12}>
             <Typography variant="subtitle1" sx={{ marginBottom: '3%' }}>

@@ -135,7 +135,7 @@ const FormLayoutsAlignment = () => {
                 onChange={handlePreviousJobs}
                 filterOptions={filterOptions}
                 isOptionEqualToValue={(option, value) => option['Job Role'] === value['Job Role']}
-                renderInput={params => <TextField {...params} variant='standard' placeholder='Enter your previous jobs ' required/>}
+                renderInput={params => <TextField {...params} variant='standard' placeholder='Enter your previous jobs '/>}
               />
             </Grid>
             <Grid item xs={12}>
@@ -154,7 +154,7 @@ const FormLayoutsAlignment = () => {
                 )}
                 sx={{ width: '100%' }}
                 onChange={handleCurJobRole}
-                renderInput={params => <TextField {...params} required/>}
+                renderInput={params => <TextField {...params}/>}
               />
             </Grid>
             <Grid item xs={12}>
@@ -173,7 +173,7 @@ const FormLayoutsAlignment = () => {
                 )}
                 sx={{ width: '100%' }}
                 onChange={handleTargetJobRole}
-                renderInput={params => <TextField {...params} required/>}
+                renderInput={params => <TextField {...params}/>}
               />
             </Grid>
             <Grid item xs={12}>
