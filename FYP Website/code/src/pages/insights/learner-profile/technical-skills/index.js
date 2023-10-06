@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import { useUserContext } from 'src/context/UserContext';
 import LoadingCard from 'src/components/loading';
 import Layout from '../../../../components/layout';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import { getRoutePath } from 'src/utils/routes/routeUtils';
 import { getEndpointPath } from 'src/utils/endpoints/endpointUtils';
@@ -26,13 +27,13 @@ const TechnicalSkillsProfile = (props) => {
       const fetchData = async () => {
         const baseEndpoint = getEndpointPath('Get Form Proficiency');
         const queryParams = `?pastJobIDs=${queryTechnicalSkillsString}&desiredJobIDs=${targetJobRole}`;
-        
-        const response = await fetch(`${baseEndpoint}${queryParams}`,  {
+
+        const response = await fetch(`${baseEndpoint}${queryParams}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user?.token}`,
-          }
+            Authorization: `Bearer ${user?.token}`,
+          },
         });
         if (response.ok) {
           const data = await response.json();
@@ -85,11 +86,11 @@ const TechnicalSkillsProfile = (props) => {
       curJobRole: curJobRole,
       targetJobRole: targetJobRole,
     };
-    
+
     const response = await fetch(getEndpointPath('Create Profile'), {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${user?.token}`,
+        Authorization: `Bearer ${user?.token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(final),
@@ -104,6 +105,13 @@ const TechnicalSkillsProfile = (props) => {
   return (
     <Layout>
       <div>
+        <Button
+          variant="text"
+          startIcon={<ArrowBackIosIcon />}
+          onClick={() => router.back()}
+        >
+          Back to Step 1
+        </Button>
         <Typography variant="body2">SET UP LEARNER PROFILE </Typography>
         <h1 style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '2px' }}>
           Step 2. Skills and Competencies

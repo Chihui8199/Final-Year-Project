@@ -82,7 +82,7 @@ const ProfileChoice = () => {
       </Button>
       <Typography variant='h6'> All Learner Profile</Typography>
       <Typography variant='body2' sx={{ marginBottom: 2 }}>
-        Based on your primary learner profile, we will curate course and job recommendations for you.
+        Based on your main learner profile, we'll tailor job recommendations specifically for you.
       </Typography>
       <Card>
         {loading ? ( // Show loading card if loading is true
