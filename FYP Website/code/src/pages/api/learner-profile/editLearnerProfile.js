@@ -1,11 +1,14 @@
 import { write } from '../../../db/neo4j';
+import verifyJWT from '../../../middlewares/verifyJWT';
+import withMiddleware from '../../../utils/middleware/withMiddleware';
 
-export default async function handler(req, res) {
-  const { email, data, newData } = req.body;
+const handler = async (req, res) => {
+  try {
+    const { email, data, newData } = req.body;
 
-  const proficiencyData = findDiff(data, newData);
+    const proficiencyData = findDiff(data, newData);
 
-  const query = `
+    const query = `
       MATCH (Us:User{email: $email})-[hasLearnerProfile:HAS_LEARNER_PROFILE]->(u:LearnerProfile)
       WHERE u.uuid = Us.state
       OPTIONAL MATCH (u)-[hasTechnicalSkills:HAS_TECHNICAL_SKILLS]->(t:TSCProficiency)
@@ -20,16 +23,16 @@ export default async function handler(req, res) {
       RETURN learner
   `;
 
-  const result = await write(query, {
-    email: email,
-    proficiencyData: proficiencyData,
-  });
-  console.log('new', {
-    email: email,
-    proficiencyData: proficiencyData,
-  });
-  res.status(200).json({ message: 'Success', result });
-}
+    const result = await write(query, {
+      email: email,
+      proficiencyData: proficiencyData,
+    });
+    res.status(200).json({ message: 'Success', result });
+  } catch (error) {
+    console.error('API error:', error);
+    res.status(500).send('Internal server error');
+  }
+};
 
 const findDiff = (data, finalDefinedProf) => {
   const prev = data.map((item) => {
@@ -63,3 +66,5 @@ const findDiff = (data, finalDefinedProf) => {
 
   return resultList;
 };
+
+export default withMiddleware(verifyJWT)(handler);

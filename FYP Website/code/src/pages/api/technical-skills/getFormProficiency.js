@@ -1,9 +1,12 @@
 import { read } from '../../../db/neo4j';
+import verifyJWT from '../../../middlewares/verifyJWT';
+import withMiddleware from '../../../utils/middleware/withMiddleware';
 
-export default async function handler(req, res) {
-  const { desiredJobIDs, pastJobIDs } = req.query;
-  
-  const query = `
+const handler = async (req, res) => {
+  try {
+    const { desiredJobIDs, pastJobIDs } = req.query;
+
+    const query = `
     // Start with your desired job
     MATCH (j)-[:REQUIRE_TECHNICAL_SKILL]->(jt:JobTSC)-[:HAS_TSC_KEY]->(k:TSCKey)
     WHERE j.jobid IN [${desiredJobIDs}]
@@ -64,10 +67,14 @@ export default async function handler(req, res) {
         proficiencyDetails
 `;
 
-  const result = await read(query);
-  const finalResult = formatResult(result);
-  res.status(200).json(finalResult);
-}
+    const result = await read(query);
+    const finalResult = formatResult(result);
+    res.status(200).json(finalResult);
+  } catch (error) {
+    console.error('Error fetching proficiency details:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
 const formatResult = (result) => {
   const data = result.records
@@ -97,3 +104,5 @@ const formatResult = (result) => {
 
   return data;
 };
+
+export default withMiddleware(verifyJWT)(handler);

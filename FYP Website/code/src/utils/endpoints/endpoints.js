@@ -24,10 +24,6 @@ const endpoint = [
     path: '/api/technical-skills/getFormProficiency',
   },
   {
-    name: 'Get Required Proficiency',
-    path: '/api/technical-skills/getRequiredProficiency',
-  },
-  {
     name: 'Get All Jobs',
     path: '/api/jobs/getAllJobs',
   },

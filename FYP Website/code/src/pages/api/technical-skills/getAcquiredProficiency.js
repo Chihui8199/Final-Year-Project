@@ -1,9 +1,12 @@
-import { read } from '../../../db/neo4j'
+import { read } from '../../../db/neo4j';
+import verifyJWT from '../../../middlewares/verifyJWT';
+import withMiddleware from '../../../utils/middleware/withMiddleware';
 
-export default async function handler(req, res) {
-  const { email } = req.query
+const handler = async (req, res) => {
+  try {
+    const { email } = req.query;
 
-  const query = `
+    const query = `
   MATCH (u:User {email: "${email}"})
   WITH u.state AS learnerState
   
@@ -73,37 +76,47 @@ export default async function handler(req, res) {
       proficiencyDetails,
       jobRole;
   `;
-  
 
-  const result = await read(query, { email })
-  const finalData = formatData(result)
+    const result = await read(query, { email });
+    const finalData = formatData(result);
 
-  res.status(200).json(finalData)
-}
+    res.status(200).json(finalData);
+  } catch (error) {
+    console.error('Error fetching proficiency details:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
-const formatData = result => {
+const formatData = (result) => {
   const finalRes = result.records
-    .map(record => record.toObject())
-    .map(item => ({
+    .map((record) => record.toObject())
+    .map((item) => ({
       jobTitle: item.jobRole,
       tscKeyID: item?.tscKeyID?.low,
       proficiencyDetails: item?.proficiencyDetails
-        .map(detail => {
+        .map((detail) => {
           return {
             proficiencyLevel: detail.proficiencyLevel.low,
-            filteredKnowledge: detail?.filteredKnowledge.filter(knowledge => !!knowledge),
-            filteredAbility: detail?.filteredAbility.filter(ability => !!ability),
-            filteredDescription: detail?.filteredDescription.filter(description => !!description)
-          }
+            filteredKnowledge: detail?.filteredKnowledge.filter(
+              (knowledge) => !!knowledge,
+            ),
+            filteredAbility: detail?.filteredAbility.filter(
+              (ability) => !!ability,
+            ),
+            filteredDescription: detail?.filteredDescription.filter(
+              (description) => !!description,
+            ),
+          };
         })
         .sort((a, b) => a.proficiencyLevel - b.proficiencyLevel),
       tscDescrip: item.t.properties['TSC Description'],
       tscCategory: item.t.properties['TSC Category'],
       tscTitle: item.t.properties['TSC Title'],
       jobRequiredProficiency: item.jobProficiency.low,
-      userAcquiredProficiency: item.userProficiency.low
-    }))
-  
-return finalRes;
-}
+      userAcquiredProficiency: item.userProficiency.low,
+    }));
 
+  return finalRes;
+};
+
+export default withMiddleware(verifyJWT)(handler);
