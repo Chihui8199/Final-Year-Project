@@ -39,7 +39,11 @@ const UserAcquiredProficiency = () => {
           `${getEndpointPath('Acquired Skills')}?email=${user?.email}`,
           {
             method: 'GET',
-          },
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user?.token}`,
+            }
+          }
         );
         if (results.ok) {
           const data = await results.json();

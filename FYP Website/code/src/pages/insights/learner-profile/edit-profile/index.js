@@ -32,7 +32,11 @@ const EditTechnicalSkillsProfile = (props) => {
           `${getEndpointPath('Acquired Skills')}?email=${user?.email}`,
           {
             method: 'GET',
-          },
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user?.token}`,
+            }
+          }
         );
         if (response.ok) {
           const data = await response.json();
@@ -85,6 +89,7 @@ const EditTechnicalSkillsProfile = (props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user?.token}`,
       },
       body: JSON.stringify(final),
     });

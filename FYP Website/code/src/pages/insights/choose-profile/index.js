@@ -29,8 +29,12 @@ const ProfileChoice = () => {
     if (!user || !user.email) return;  // Guard clause
   
     try {
-      const results = await fetch(`${getEndpointPath("Get All Profiles")}?email=${user.email}`, {
-        method: 'GET'
+      const results = await fetch(`${getEndpointPath("Get All Profiles")}?email=${user.email}`,  {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user?.token}`,
+        }
       });
       if (results.ok) {
         const data = await results.json();
@@ -56,7 +60,8 @@ const ProfileChoice = () => {
     const response = await fetch(getEndpointPath("Update Active Profile"), {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user?.token}`,
       },
       body: JSON.stringify({ email: user.email, uuid: rowData.uuid })
     });

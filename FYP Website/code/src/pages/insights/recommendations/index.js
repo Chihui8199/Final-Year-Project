@@ -36,6 +36,10 @@ const Recommendations = () => {
           }&strategy_type=${recc}`,
           {
             method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user?.token}`,
+            }
           },
         );
 

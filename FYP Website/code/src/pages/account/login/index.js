@@ -37,7 +37,6 @@ import FooterIllustrationsV1 from 'src/components/pages/auth/FooterIllustration'
 import { useUserContext } from 'src/context/UserContext';
 import { getRoutePath } from '../../../utils/routes/routeUtils';
 import { getEndpointPath } from '../../../utils/endpoints/endpointUtils';
-import Snackbar from '../../../components/snackbar'
 import SnackBar from '../../../components/snackbar';
 
 // ** Styled Components

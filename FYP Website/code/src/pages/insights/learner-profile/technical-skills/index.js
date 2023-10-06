@@ -27,8 +27,12 @@ const TechnicalSkillsProfile = (props) => {
         const baseEndpoint = getEndpointPath('Get Form Proficiency');
         const queryParams = `?pastJobIDs=${queryTechnicalSkillsString}&desiredJobIDs=${targetJobRole}`;
         
-        const response = await fetch(`${baseEndpoint}${queryParams}`, {
+        const response = await fetch(`${baseEndpoint}${queryParams}`,  {
           method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user?.token}`,
+          }
         });
         if (response.ok) {
           const data = await response.json();
@@ -81,10 +85,11 @@ const TechnicalSkillsProfile = (props) => {
       curJobRole: curJobRole,
       targetJobRole: targetJobRole,
     };
-
+    
     const response = await fetch(getEndpointPath('Create Profile'), {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${user?.token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(final),
