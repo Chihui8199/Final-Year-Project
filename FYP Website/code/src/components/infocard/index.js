@@ -113,6 +113,7 @@ export default function InfoCard({ steps }) {
                 alt={steps[activeStep].label}
                 width={500} // Adjust according to your needs
                 height={300} // Adjust according to your needs
+                priority={true}
               />
               <Typography component="div" sx={{ mb: 4 }}>
                 {steps[activeStep]?.description.map((line, index) => (
