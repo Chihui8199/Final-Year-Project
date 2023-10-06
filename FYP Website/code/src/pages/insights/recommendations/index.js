@@ -1,7 +1,15 @@
 // ** External Libraries **
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Grid, Box, Tab, Card, Typography, CardContent } from '@mui/material';
+import {
+  Grid,
+  Box,
+  Tab,
+  Card,
+  Typography,
+  CardContent,
+  Divider,
+} from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
 
 // ** Internal Modules **
@@ -38,8 +46,8 @@ const Recommendations = () => {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user?.token}`,
-            }
+              Authorization: `Bearer ${user?.token}`,
+            },
           },
         );
 
@@ -64,9 +72,6 @@ const Recommendations = () => {
             <Typography variant="h4" sx={{ marginBottom: 2 }}>
               Recommendations
             </Typography>
-            <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
-              Top job picks for you
-            </Typography>
           </Grid>
           <Grid item xs={4}>
             <Box display="flex" justifyContent="flex-end">
@@ -74,8 +79,13 @@ const Recommendations = () => {
             </Box>
           </Grid>
         </Grid>
+        <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
+        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+          Top Job Picks for You
+        </Typography>
         <Typography variant="body2" sx={{ marginBottom: 2 }}>
-          Based on Passport Insights, here are our job recommendations. Use them to search for relevant jobs!
+          Based on Passport Insights, here are our job recommendations. Use them
+          to search for relevant jobs!
         </Typography>
       </Grid>
       <Card>
