@@ -5,6 +5,7 @@ import withMiddleware from '../../../utils/middleware/withMiddleware';
 
 const handler = async (req, res) => {
     try {
+        const token = req.headers.authorization;
         const reccURL = 'https://recommendation-ml-401105.de.r.appspot.com/recommend';
         const { user_id, strategy_type } = req.query;
 
@@ -13,7 +14,12 @@ const handler = async (req, res) => {
             strategy_type: strategy_type,
         };
 
-        const response = await axios.get(reccURL, { params });
+        const response = await axios.get(reccURL, { 
+          params,
+          headers: {
+              'Authorization': token
+          }
+      });
         const reccJobID = response?.data?.recommendations.map((item) => item[0]);
 
         // Fetch job details from database

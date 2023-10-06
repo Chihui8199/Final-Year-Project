@@ -18,7 +18,7 @@ export default async function login(req, res) {
     } else {
       
       const token = jwt.sign(
-        { email: user.email },
+        { sub: user.email, email: user.email },
         process.env.JWT_SECRET,
         { expiresIn: '3h' },
       );
