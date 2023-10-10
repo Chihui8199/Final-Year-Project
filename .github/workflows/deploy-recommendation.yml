@@ -49,13 +49,12 @@ jobs:
       run: cat app.yaml
     
     - name: Deploy to App Engine
-      working-directory: FYP Website/recommendation_system
-      run: |
-        gcloud app deploy app.yaml --project=recommendation-ml-401105 --set-env-vars=AURA_CONNECTION_URI=$AURA_CONNECTION_URI,AURA_USERNAME=$AURA_USERNAME,AURA_PASSWORD=$AURA_PASSWORD,JWT_SECRET=$JWT_SECRET
-      env:
-        AURA_CONNECTION_URI: ${{ secrets.AURA_CONNECTION_URI }}
-        AURA_USERNAME: ${{ secrets.AURA_USERNAME }}
-        AURA_PASSWORD: ${{ secrets.AURA_PASSWORD }}
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
-    
+  working-directory: FYP Website/recommendation_system
+  run: |
+    gcloud app deploy app.yaml --project=recommendation-ml-401105 --set-env-vars AURA_CONNECTION_URI=$AURA_CONNECTION_URI,AURA_USERNAME=$AURA_USERNAME,AURA_PASSWORD=$AURA_PASSWORD,JWT_SECRET=$JWT_SECRET
+  env:
+    AURA_CONNECTION_URI: ${{ secrets.AURA_CONNECTION_URI }}
+    AURA_USERNAME: ${{ secrets.AURA_USERNAME }}
+    AURA_PASSWORD: ${{ secrets.AURA_PASSWORD }}
+    JWT_SECRET: ${{ secrets.JWT_SECRET }}
         
