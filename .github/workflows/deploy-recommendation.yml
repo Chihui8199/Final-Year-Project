@@ -22,10 +22,14 @@ jobs:
         project_id: recommendation-ml-401105
         service_account_key: ${{ secrets.GCLOUD_AUTH }}
         export_default_credentials: true
-
+        
     - name: Authenticate with Google Cloud
       run: |
-        echo "${{ secrets.GCLOUD_AUTH }}" | gcloud auth activate-service-account --key-file=-
+        echo "$GCLOUD_AUTH_JSON" > tmp_key.json
+        gcloud auth activate-service-account --key-file=tmp_key.json
+      env:
+        GCLOUD_AUTH_JSON: ${{ secrets.GCLOUD_AUTH }}
+
 
     - name: Set Environment Variables in app.yaml
       working-directory: FYP Website/recommendation_system
