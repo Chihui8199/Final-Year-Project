@@ -30,6 +30,9 @@ jobs:
       env:
         GCLOUD_AUTH_JSON: ${{ secrets.GCLOUD_AUTH }}
 
+    - name: Print Authenticated Account
+      run: gcloud auth list
+
     - name: Set Environment Variables in app.yaml
       working-directory: FYP Website/recommendation_system
       run: |
@@ -51,5 +54,3 @@ jobs:
     - name: Deploy to App Engine
       working-directory: FYP Website/recommendation_system
       run: gcloud app deploy app.yaml --project=recommendation-ml-401105
-
-            
