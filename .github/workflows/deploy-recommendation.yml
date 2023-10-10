@@ -20,7 +20,7 @@ jobs:
       run: cd recommendation_system
 
     - name: Setup Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@main
       with:
         project_id: recommendation-ml-401105
         service_account_key: ${{ secrets.GCLOUD_AUTH }}
