@@ -1,0 +1,36 @@
+name: Deploy Recommendation to Google App Engine
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'recommendation_system/**'  # This ensures the workflow runs only when there are changes in the 'recommendation' folder.
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set working directory to recommendation
+      run: cd recommendation_system
+
+    - name: Setup Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: recommendation-ml-401105
+        service_account_key: ${{ secrets.GCLOUD_AUTH }}
+        export_default_credentials: true
+
+    - name: Deploy to App Engine
+      env:
+        AURA_CONNECTION_URI: ${{ secrets.AURA_CONNECTION_URI }}
+        AURA_USERNAME: ${{ secrets.AURA_USERNAME }}
+        AURA_PASSWORD: ${{ secrets.AURA_PASSWORD }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      run: |
+        gcloud app create --project=recommendation-ml-401105 || echo "Project already exists"
+        gcloud app deploy app.yaml --project=recommendation-ml-401105 --set-env-vars AURA_CONNECTION_URI=$AURA_CONNECTION_URI,AURA
