@@ -6,7 +6,8 @@ on:
       - main
     paths:
       - 'recommendation_system/**'  # This ensures the workflow runs only when there are changes in the 'recommendation' folder.
-
+  workflow_dispatch:
+  
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -33,4 +34,4 @@ jobs:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
       run: |
         gcloud app create --project=recommendation-ml-401105 || echo "Project already exists"
-        gcloud app deploy app.yaml --project=recommendation-ml-401105 --set-env-vars AURA_CONNECTION_URI=$AURA_CONNECTION_URI,AURA
+        gcloud app deploy app.yaml --project=recommendation-ml-401105 --set-env-vars AURA_CONNECTION_URI=$AURA_CONNECTION_URI,AURA_USERNAME=$AURA_USERNAME,AURA_PASSWORD=$AURA_PASSWORD,JWT_SECRET=$JWT_SECRET
