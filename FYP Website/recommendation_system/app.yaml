@@ -18,9 +18,3 @@ entrypoint: gunicorn -b :$PORT main:app
 
 runtime_config:
   operating_system: ubuntu22
-
-env_variables:
-  AURA_CONNECTION_URI: AURA_CONNECTION_URI
-  AURA_USERNAME: AURA_USERNAME
-  AURA_PASSWORD: AURA_PASSWORD
-  JWT_SECRET: JWT_SECRET
