@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'recommendation_system/**'  # This ensures the workflow runs only when there are changes in the 'recommendation' folder.
+      - 'FYP Website/recommendation_system/**' 
   workflow_dispatch:
-  
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,9 +16,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set working directory to recommendation
-      run: cd "FYP Website/recommendation_system"
-
     - name: Setup Google Cloud SDK
       uses: google-github-actions/setup-gcloud@main
       with:
@@ -26,7 +23,11 @@ jobs:
         service_account_key: ${{ secrets.GCLOUD_AUTH }}
         export_default_credentials: true
 
+    - name: Authenticate with Google Cloud
+      run: echo "${{ secrets.GCLOUD_AUTH }}" | gcloud auth activate-service-account --key-file=-
+
     - name: Deploy to App Engine
+      working-directory: FYP Website/recommendation_system
       env:
         AURA_CONNECTION_URI: ${{ secrets.AURA_CONNECTION_URI }}
         AURA_USERNAME: ${{ secrets.AURA_USERNAME }}
@@ -34,4 +35,4 @@ jobs:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
       run: |
         gcloud app create --project=recommendation-ml-401105 || echo "Project already exists"
-        gcloud app deploy app.yaml --project=recommendation-ml-401105 --set-env-vars AURA_CONNECTION_URI=$AURA_CONNECTION_URI,AURA_USERNAME=$AURA_USERNAME,AURA_PASSWORD=$AURA_PASSWORD,JWT_SECRET=$JWT_SECRET
+        gcloud app deploy app.yaml --project=recommendation-ml-401105 --set-env-vars=AURA_CONNECTION_URI=$AURA_CONNECTION_URI,AURA_USERNAME=$AURA_USERNAME,AURA_PASSWORD=$AURA_PASSWORD,JWT_SECRET=$JWT_SECRET
