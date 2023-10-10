@@ -30,7 +30,6 @@ jobs:
       env:
         GCLOUD_AUTH_JSON: ${{ secrets.GCLOUD_AUTH }}
 
-
     - name: Set Environment Variables in app.yaml
       working-directory: FYP Website/recommendation_system
       run: |
@@ -45,7 +44,10 @@ jobs:
         AURA_PASSWORD: ${{ secrets.AURA_PASSWORD }}
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
+    - name: Display app.yaml
+      working-directory: FYP Website/recommendation_system
+      run: cat app.yaml
+
     - name: Deploy to App Engine
       working-directory: FYP Website/recommendation_system
-      run: |
-        gcloud app deploy app.yaml --project=recommendation-ml-401105
+      run: gcloud app deploy app.yaml --project=recommendation-ml-401105
