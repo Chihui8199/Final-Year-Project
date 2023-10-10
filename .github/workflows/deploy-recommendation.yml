@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'FYP Website/recommendation_system/**' 
+      - 'FYP Website/recommendation_system/**'
   workflow_dispatch:
 
 jobs:
@@ -22,17 +22,40 @@ jobs:
         project_id: recommendation-ml-401105
         service_account_key: ${{ secrets.GCLOUD_AUTH }}
         export_default_credentials: true
-
+        
     - name: Authenticate with Google Cloud
-      run: echo "${{ secrets.GCLOUD_AUTH }}" | gcloud auth activate-service-account --key-file=-
+      run: |
+        echo "$GCLOUD_AUTH_JSON" > tmp_key.json
+        gcloud auth activate-service-account --key-file=tmp_key.json
+      env:
+        GCLOUD_AUTH_JSON: ${{ secrets.GCLOUD_AUTH }}
 
-    - name: Deploy to App Engine
+    - name: Set Environment Variables in app.yaml
       working-directory: FYP Website/recommendation_system
+      run: |
+        echo "env_variables:" >> app.yaml
+        echo "  AURA_CONNECTION_URI: '$AURA_CONNECTION_URI'" >> app.yaml
+        echo "  AURA_USERNAME: '$AURA_USERNAME'" >> app.yaml
+        echo "  AURA_PASSWORD: '$AURA_PASSWORD'" >> app.yaml
+        echo "  JWT_SECRET: '$JWT_SECRET'" >> app.yaml
       env:
         AURA_CONNECTION_URI: ${{ secrets.AURA_CONNECTION_URI }}
         AURA_USERNAME: ${{ secrets.AURA_USERNAME }}
         AURA_PASSWORD: ${{ secrets.AURA_PASSWORD }}
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    - name: Display app.yaml
+      working-directory: FYP Website/recommendation_system
+      run: cat app.yaml
+    
+    - name: Deploy to App Engine
+      working-directory: FYP Website/recommendation_system
       run: |
-        gcloud app create --project=recommendation-ml-401105 || echo "Project already exists"
         gcloud app deploy app.yaml --project=recommendation-ml-401105 --set-env-vars=AURA_CONNECTION_URI=$AURA_CONNECTION_URI,AURA_USERNAME=$AURA_USERNAME,AURA_PASSWORD=$AURA_PASSWORD,JWT_SECRET=$JWT_SECRET
+      env:
+        AURA_CONNECTION_URI: ${{ secrets.AURA_CONNECTION_URI }}
+        AURA_USERNAME: ${{ secrets.AURA_USERNAME }}
+        AURA_PASSWORD: ${{ secrets.AURA_PASSWORD }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    
+        
