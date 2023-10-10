@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-runtime: python
+runtime: python37  # Adjust as per your Python version
 env: flex
 entrypoint: gunicorn -b :$PORT main:app
 
@@ -20,7 +20,7 @@ runtime_config:
   operating_system: ubuntu22
 
 env_variables:
-  AURA_CONNECTION_URI : "${AURA_CONNECTION_URI}"
-  AURA_USERNAME: "${AURA_USERNAME}"
-  AURA_PASSWORD: "${AURA_PASSWORD}"
-  JWT_SECRET: "${JWT_SECRET}"
+  AURA_CONNECTION_URI: AURA_CONNECTION_URI
+  AURA_USERNAME: AURA_USERNAME
+  AURA_PASSWORD: AURA_PASSWORD
+  JWT_SECRET: JWT_SECRET
