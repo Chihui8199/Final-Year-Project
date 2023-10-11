@@ -104,7 +104,7 @@ const EditTechnicalSkillsProfile = (props) => {
     <Layout>
       <div>
         <DatePickerWrapper>
-          <Typography variant="body2">Edit LEARNER PROFILE </Typography>
+          <Typography variant="body2">EDIT LEARNER PROFILE </Typography>
           <h1
             style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '2px' }}
           >
