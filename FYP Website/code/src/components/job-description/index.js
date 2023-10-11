@@ -22,7 +22,6 @@ const StyledBox = styled(Box)(({ theme }) => ({
 import { useRouter } from 'next/router';
 import { getRoutePath } from 'src/utils/routes/routeUtils';
 
-
 const DesiredJob = (props) => {
   const router = useRouter();
   const { jobTitle } = props;
@@ -156,7 +155,7 @@ const DesiredJob = (props) => {
               >
                 <Grid item>
                   <Button
-                  style={{width: '100%'}}
+                    style={{ width: '100%' }}
                     variant="contained"
                     onClick={() => {
                       router.push(getRoutePath('Learner Profile'));
@@ -167,7 +166,7 @@ const DesiredJob = (props) => {
                 </Grid>
                 <Grid item>
                   <Button
-                  style={{width: '100%'}}
+                    style={{ width: '100%' }}
                     variant="contained"
                     onClick={() => {
                       router.push(getRoutePath('Switch Profile'));
@@ -176,17 +175,19 @@ const DesiredJob = (props) => {
                     Switch Learner Profile
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button
-                  style={{width: '100%'}}
-                    variant="contained"
-                    onClick={() => {
-                      router.push(getRoutePath('Edit Profile'));
-                    }}
-                  >
-                    Edit Learner Profile
-                  </Button>
-                </Grid>
+                {!doesProfileExists ? (
+                  <Grid item>
+                    <Button
+                      style={{ width: '100%' }}
+                      variant="contained"
+                      onClick={() => {
+                        router.push(getRoutePath('Edit Profile'));
+                      }}
+                    >
+                      Edit Learner Profile
+                    </Button>
+                  </Grid>
+                ) : null}
               </Grid>
             </Box>
           </CardContent>

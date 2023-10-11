@@ -113,7 +113,7 @@ const UserAcquiredProficiency = () => {
               <DesiredJob jobTitle={jobTitle} />
             </div>
           </Grid>
-          {data.length > 0 && (
+          {data?.length > 0 && (
             <Grid item xs={12}>
               <Accordion
                 expanded={accordionExpanded}
