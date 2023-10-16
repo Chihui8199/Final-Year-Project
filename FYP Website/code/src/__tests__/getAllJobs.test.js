@@ -14,7 +14,7 @@ describe('Job API Handler', () => {
         jest.clearAllMocks();  
     });
 
-    it('returns reformatted data on success', async () => {
+    it('should fetch and format all job data successfully', async () => {
         // Arrange
         const mockRecords = [
             {
@@ -59,7 +59,7 @@ describe('Job API Handler', () => {
         });
     });
 
-    it('returns 500 on error', async () => {
+    it('should return a 500 status code on database error', async () => {
         // Arrange
         read.mockRejectedValueOnce(new Error('Database error'));
 
